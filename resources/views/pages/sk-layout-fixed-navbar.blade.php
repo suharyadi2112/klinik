@@ -15,7 +15,47 @@
     </div>
     <div class="card-body">
         <div class="card-text">
-            <p>The fixed navbar layout has a fixed navbar and navigation menu and footer. Only navbar section is fixed to user. In this page you can experience it.</p>
+            <td class="text-center">
+                {{-- Tes Role Dan Permission --}}
+
+                @can('edit posts', LanguageController::class)
+                    <a href="{{ route('post.edit', '1') }}" class="btn btn-sm btn-primary">EDIT</a>
+                @endcan
+
+                @can('delete posts', LanguageController::class)
+                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('post.destroy', '1') }}" method="POST">
+
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
+                    </form>
+
+                @endcan
+
+                @can('publish posts', LanguageController::class)
+                <form onsubmit="return confirm('Publish post ini?');" action="{{ route('post.publish', '1') }}" method="POST">
+
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-sm btn-info">Publish</button>
+                </form>
+
+                @endcan
+
+                @can('unpublish posts', LanguageController::class)
+                <form onsubmit="return confirm('Unpublish post ini?');" action="{{ route('post.unpublish', '1') }}" method="POST">
+
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-sm btn-info">Unpublish</button>
+                </form>
+
+                @endcan
+
+            </td>
+
+
+
         </div>
     </div>
 </section>
