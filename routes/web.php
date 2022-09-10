@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StarterKitController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Auth\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,5 +25,11 @@ Route::get('/sk-layout-static', [StarterKitController::class, 'static_layout'])-
 
 // locale Route
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('language');
+
+//tes permission
+Route::get('publish/{id}', [LanguageController::class, 'publish'])->name('post.publish');
+Route::get('unpublish/{id}', [LanguageController::class, 'unpublish'])->name('post.unpublish');
+Route::get('edit/{id}', [LanguageController::class, 'edit'])->name('post.edit');
+Route::get('destroy/{id}', [LanguageController::class, 'destroy'])->name('post.destroy');
 
 Auth::routes(['verify' => true]);
