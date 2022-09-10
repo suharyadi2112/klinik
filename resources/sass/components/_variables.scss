@@ -1,0 +1,199 @@
+//  ================================================================================================
+//  File Name: variables.scss
+//  Description: Custom theme specific variables and other content variations
+//  ----------------------------------------------------------------------------------------------
+//  Item Name: Frest HTML Admin Template
+//  Author: PIXINVENT
+//  Author URL: http://www.themeforest.net/user/pixinvent
+//  ================================================================================================
+
+//  ================================================================================================
+//  WARNING: PLEASE DO NOT CHANGE THIS VARIABLE FILE.
+//  THIS FILE WILL GET OVERWRITTEN WITH EACH Frest HTML TEMPLATE RELEASE.
+//  TIP:
+//  We suggest you to use this (assets/scss/variables/components-variables.scss) file for overriding app variables.
+//  ================================================================================================
+
+// General
+$base-font-size: 15px !default;
+$body-direction: ltr !default; // Default ltr, change it to rtl for Right To Left support.
+$content-padding: 2.2rem !default;
+$font-weight-600: 600 !default;
+$menu-light-sub-bg: #fafbfb !default;
+$menu-light-active-bg: #e2ecff !default;
+$font-size-xs: 0.75rem !default;
+$font-size-xl: ($font-size-base + 0.5) !default;
+$line-height-xl: 1.7 !default;
+$line-height-xs: 1.5 !default;
+$input-padding-y-xl: 0.5rem !default;
+$input-padding-x-xl: 0.5rem !default;
+$input-padding-y-xs: 0.2rem !default;
+$input-padding-x-xs: 0.275rem !default;
+$input-height-xl: (($font-size-xl * $line-height-xl) + ($input-padding-y-xl * 2)) !default;
+$input-height-xs: (($font-size-xs * $line-height-xs) + ($input-padding-y-xs * 2)) !default;
+
+// Colors
+$chip-bg-color: #f0f0f0 !default;
+$chip-avatar-bg: #c3c3c3 !default;
+$avatar-bg: $chip-avatar-bg !default;
+$swiper-bg: #f2f4f4 !default;
+$hover-color: #f2f4f4 !default;
+
+// Buttons
+$btn-border-radius-square: 0 !default;
+
+// Navbar
+$navbar-height: 5rem !default;
+
+// Timeline
+$timeline-border: #dfe3e7 !default;
+$timeline-content-bg: #fafbfb !default;
+
+// Touchspin
+$touchspin-border-color: #f2f4f4 !default;
+
+// Dropdown
+$dropdown-btn-padding-x: 1.5rem !default;
+$dropdown-btn-padding-y: 0.85rem !default;
+$dropdown-btn-split-padding-x: 1rem !default;
+
+// Treeview Badge
+$badge-light-primary: #e2ecff !default;
+
+
+// Tabs Component
+$tabs-border-color: #ededed !default;
+$nav-link-bg-color: #f2f4f4 !default;
+
+// Main Menu
+// ---------
+
+//Main Menu Dark
+$menu-dark-color: #8a99b5 !default;
+$menu-dark-bg-color: #1a233a !default;
+$menu-dark-active-bg: #343b53 !default;
+$menu-padding: 10px 30px !default;
+$menu-second-level-padding: 10px 9px !default;
+$menu-third-level-padding: 10px 20px !default;
+
+// Vertical Menu
+$menu-expanded-width: 260px !default;
+$menu-collapsed-width: 78px !default;
+
+// Sidebar
+$sidebar-width: 260px !default;
+$chat-sidebar-width: 290px !default;
+
+// Avatar
+$avatar-size: 32px !default;
+$avatar-status-size: 11px !default;
+$avatar-status-size-lg: 17px !default;
+$avatar-size-xl: 70px !default;
+$avatar-size-lg: 50px !default;
+$avatar-size-sm: 24px !default;
+
+// Progress
+$progress-size: 0.6rem !default;
+$progress-size-sm: 0.4rem !default;
+
+// Spinner
+$spinner-width-lg: 3rem !default;
+$spinner-height-lg: 3rem !default;
+
+// List Group Item
+$list-group-icon-bg: #fafbfb !default;
+
+// Collapse
+$collapse-header-border: $border-color !default;
+
+//  Bootstrap Checkbox
+$checkbox-disabled-bg: #b3c0ce !default;
+
+// Blank Page Bg Color
+// $blank-bg-color: #eff2f7 !default;
+
+// Pick-A-Date Arrow Border Color
+$pick-a-date-arrow-color: #ddd !default;
+
+// Select2 Plugin
+$select-arrow-border: #b3c0ce !default;
+
+// Data Tables Bg Color
+$datatable-bg-color: #f8f8f8 !default;
+
+// Chips
+$chip-min-height: 1.857rem !default;
+$chip-min-width: $chip-min-height !default;
+$chip-font-size: 0.8rem !default;
+$chip-border-radius: 1.428rem !default;
+$chip-avatar-min-height: 1.714rem !default;
+$chip-avatar-min-width: $chip-avatar-min-height !default;
+$chip-closeable-min-height: 24px !default;
+$chip-closeable-min-width: 24px !default;
+
+//  Tables
+$table-th-font-size: 1rem !default;
+$table-icon-bg: #f2f4f4 !default;
+$table-striped-hover: #e7edf3 !default;
+
+//  Switch
+$switch-bg-color: #e7edf3 !default;
+$switch-indicator-color: $white !default;
+$switch-md-size: 4rem !default;
+$switch-lg-size: 5.5rem !default;
+
+//  Kanban App
+$kanban-board-bg: #e7edf3 !default;
+$kanban-sidebar-label: #bac0c7 !default;
+
+// Dark Layout
+// -----------
+$theme-dark-bg: #1a233a !default;
+$theme-dark-menu-active-bg: #343b53 !default;
+$theme-dark-card-color: #272e48 !default;
+$theme-dark-active-bg-color: #162239 !default;
+$theme-dark-heading-color: #bdd1f8 !default;
+$theme-dark-text-color: #8a99b5 !default;
+$theme-dark-table-bg: #212744 !default;
+$theme-dark-chat-bg-color: #18223c !default;
+$theme-dark-border-color: #464d5c !default;
+$theme-dark-progress-bar-bg: #464d5c !default;
+$theme-dark-pagination-bg: #464d5c !default;
+$theme-dark-hover-bg: #304256 !default;
+$theme-dark-placeholder-color: #585d67 !default;
+$theme-dark-select-bg: #353d52 !default;
+$theme-dark-switch-color: #d6e3fb !default;
+$theme-dark-checkbox-color: #5a627d !default;
+$theme-dark-switch-bg: #353d52 !default;
+$theme-dark-scroll-bg: #eeeeee0d !default;
+$theme-dark-scroll-bar-bg: #d1d7de !default;
+$theme-dark-shadow-gradient: #1a233af0 !default;
+$theme-dark-shadow-gradient2: #1a233abf !default;
+$theme-dark-shadow-gradient3: #2c303c00 !default;
+$theme-dark-card-shadow: #0b1a33 !default;
+$theme-dark-email-hover: #101010 !default;
+$theme-dark-footer-shadow: #192a46 !default;
+
+// Chat Application
+$chat-badge-bg: #f3f8fd !default;
+$app-chat-message-bg: #fafbfb !default;
+
+// Email Application
+$selected-email-bg: #e7edf3 !default;
+$detail-mail-bg: #fafbfb !default;
+$favorite-star-color: #c7cfd6 !default;
+
+// File-Manager Application
+$file-label-color: #bac0c7 !default;
+$folder-icon-color: #b3c0ce !default;
+$file-progress-bg: #e7edf3 !default;
+$timeline-content-color: #304156 !default;
+$left-sidebar-bg: #fafbfb !default;
+
+// Todo Application
+$todo-filters-color: #bac0c7 !default;
+$todo-star-color: #c7cfd6 !default;
+
+// Invoice Application
+$invoice-actions-bg: #fafbfb !default;
+$invoice-value-color: #304156 !default;

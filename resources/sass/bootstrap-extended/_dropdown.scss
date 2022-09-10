@@ -1,0 +1,189 @@
+/*     Dropdown css   */
+/*-------------------*/
+
+.show {
+  > .dropdown-menu {
+    /*dropdown wrapper has show class dropdown menu display block */
+    display: block;
+    margin-bottom: $dropdown-spacer;
+  }
+  // outline btn on show color
+  [class*="btn-outline-"].dropdown-toggle{
+    color: #fff !important;
+  }
+}
+
+/*  dropdown toggle css */
+/*---------------------*/
+.btn.dropdown-toggle.dropdown-toggle-split {
+  padding: 0 $dropdown-btn-split-padding-x;
+  border-left-color: rgba($white, 0.2) !important;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/*   dropdown menu  */
+/*-----------------*/
+.dropdown-menu {
+  box-shadow: -7px 8px 16px 0px rgba(55, 70, 95, 0.2);
+
+  .dropdown-header {
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+  }
+
+  .dropdown-item {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+
+    // Dropdown Items with Emojis
+    .dropdown-item-emoji {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    &:active,
+    &.active {
+      // icon color on active
+      i {
+        color: $white;
+      }
+    }
+  }
+
+  i {
+    color: $secondary;
+  }
+}
+
+// same padding for different directions
+.dropdown,
+.dropup,
+.dropright,
+.dropleft {
+  .dropdown-toggle {
+    &::after {
+      border: none !important;
+      font-family: "boxicons";
+      content: "\e9ac" !important;
+      position: relative;
+      top: 1px;
+      right: 0px;
+      left: 0.714rem;
+      padding: 0;
+      margin: 0;
+      vertical-align: 0;
+    }
+
+    &.dropdown-toggle-split {
+      &:after {
+        left: 0;
+      }
+    }
+
+    // hide default arrow to show custom icon DD
+    &.nav-hide-arrow {
+      &::after {
+        display: none;
+      }
+    }
+
+    // Prevent the focus on the dropdown toggle when closing dropdowns
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+[data-open="hover"] {
+  .dropdown,
+  .dropup,
+  .dropright,
+  .dropleft {
+    .dropdown-menu {
+      margin: 0 !important;
+    }
+  }
+}
+
+.dropleft {
+  .dropdown-toggle {
+    &::before {
+      border: none !important;
+      font-family: "boxicons";
+      content: "\e9af" !important;
+      position: relative;
+      top: 1px;
+      // right: 0px;
+      // left: -.714rem;
+      left: -0.5rem;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+/*  DropUp css  */
+/*-------------*/
+.dropup {
+  .dropdown-toggle {
+    // changed icon dropup caret
+    &::after {
+      content: "\e9b9" !important;
+      vertical-align: 0.05rem;
+      top: 3px;
+    }
+  }
+  .dropdown-menu {
+    margin-top: $dropdown-spacer;
+  }
+
+  .dropdown-submenu {
+    .dropdown-menu {
+      bottom: auto;
+      top: 0;
+    }
+  }
+}
+
+.dropright {
+  .dropdown-toggle::after {
+    transform: rotate(-90deg);
+  }
+}
+
+/*   Dropdown Icon  */
+/*-----------------*/
+.dropdown,
+.dropup {
+  &.dropdown-icon-wrapper {
+    .dropdown-toggle {
+      &:after {
+        display: none;
+      }
+    }
+
+    .dropdown-menu {
+      min-width: auto;
+
+      .dropdown-item {
+        cursor: pointer;
+
+        i {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+}
+
+/* Dropdown inside white button */
+.btn.btn-white ~ .dropdown-menu {
+  .dropdown-item:not(.active):hover {
+    color: $body-color !important;
+  }
+
+  .dropdown-item.active {
+    color: $body-color;
+  }
+}

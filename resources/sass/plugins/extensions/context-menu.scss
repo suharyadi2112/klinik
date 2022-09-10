@@ -1,0 +1,23 @@
+@import "../../bootstrap-extended/include";   // Bootstrap includes
+@import "../../components/include";           // Components includes
+
+
+/* Context Menu css */
+/*----------------- */
+
+.context-menu-list{
+  /* context-menu-list */
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-lg;
+  border: 1px solid $border-color !important;
+  .context-menu-item{
+    padding: .6rem 2rem;
+    &:not(:last-child){
+      border-bottom: 1px solid $border-color;
+    }
+    &:hover{
+      background-color:$hover-color;
+      color:inherit;
+    }
+  }
+}

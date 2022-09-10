@@ -1,0 +1,40 @@
+@import "../../bootstrap-extended/include";   // Bootstrap includes
+@import "../../components/include";           // Components includes
+
+// draggable cursor - grab
+.draggable {
+  cursor: grab;
+  .gu-unselectable & {
+    cursor: grabbing;
+  }
+}
+
+// For Multi List
+#multiple-list-group-a,
+#multiple-list-group-b {
+  min-height: 5.714rem;
+}
+
+// For Handle
+#dd-with-handle {
+  .list-group {
+    min-height: 5.714rem;
+    .handle {
+      /* handle in list-group*/
+      padding: 0 5px;
+      margin-right: 5px;
+      background-color: rgba($black, 0.1);
+      cursor: move;
+      font-size: 1.2rem;
+    }
+  }
+}
+.gu-mirror {
+  .handle {
+    padding: 0 5px;
+    margin-right: 5px;
+    background-color: rgba($black, 0.1);
+    cursor: move;
+    font-size: 1.2rem;
+  }
+}

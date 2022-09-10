@@ -1,0 +1,104 @@
+// Core variables and mixins
+@import "../bootstrap-extended/include";   // Bootstrap includes
+@import "../components/include";           // Components includes
+
+/* dashboard analytics page css */
+/*------------------------------*/
+
+// Donut Charts in center
+#donut-chart {
+  .apexcharts-canvas {
+    margin: 0 auto;
+  }
+}
+
+// Light Icon color For Box Icons
+.icon-light {
+  color: #b3c0ce;
+}
+
+// dropdown button color when show on wrapper
+.show>.btn-outline-secondary.dropdown-toggle {
+  color: $white !important;
+}
+
+// Activity Card Content
+.activity-content {
+  margin-bottom: 2.13rem;
+}
+
+// Sales Card
+.sales-info-content {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 0.7;
+  }
+}
+
+
+// Todo - Task List
+.widget-todo {
+  .dropdown {
+    .dropdown-toggle {
+      &:after {
+        /* widget todo-task list - dropdown arrow position */
+        left: 0.1rem;
+        color: $select-arrow-border;
+      }
+    }
+  }
+}
+
+// timeline wrapper
+.timeline {
+  padding-right: 0;
+
+  .timeline-text {
+    color: $text-muted;
+    font-size: 13px;
+  }
+
+  .timeline-content {
+    color: #304156;
+    font-size: 13px;
+    font-weight: 500;
+    padding-left: 0 !important;
+  }
+
+  .timeline-time {
+    font-size: 0.8rem !important;
+  }
+}
+
+/*@media screen and(max-width:1280px) and (min-width:960px) {
+
+  .activity-card,
+  .profit-report-card,
+  .sales-card,
+  .growth-card {
+    flex: 0 0 50%;
+    min-width: 50%;
+  }
+}*/
+
+@media screen and (max-width:1320px) and (min-width:1200px) {
+  .dashboard-referral-impression {
+    .donut-chart-wrapper {
+      ul {
+        li {
+          font-size: .8rem;
+        }
+      }
+    }
+  }
+
+  #primary-line-chart,
+  #warning-line-chart {
+    display: none;
+  }
+}

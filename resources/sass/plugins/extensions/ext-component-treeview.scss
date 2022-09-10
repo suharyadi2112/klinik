@@ -1,0 +1,50 @@
+@import "../../bootstrap-extended/include";   // Bootstrap includes
+@import "../../components/include";           // Components includes
+
+/* treeview Wrapper css */
+/* -------------------- */
+.bootstraptreeview{
+  // Comman list group inside treeview
+  .list-group{
+  // Comman list group inside treeview
+    .list-group-item{
+      // Colourful treeview specific style
+      &.node-colourful-treeview{
+        &:hover{
+          color: $white;
+        }
+        &.node-selected{
+          .badge{
+            background-color:$badge-light-primary;
+            color: $primary;
+          }
+        }
+      }
+      // node override treeview specific
+      &.node-node-override-treeview{
+        &:last-child, &.node-selected{
+          .badge{
+            background-color:$white;
+            color:$warning;
+          }
+        }
+        .badge{
+          background-color:$warning;
+          color: $white;
+        }
+      }
+      .badge{
+        /* Comman badge style inside treeview */
+        margin-left: .8rem;
+        background-color:$badge-light-primary;
+        color: $primary;
+      }
+      .icon{
+      /* treeview icon alignment and spacing */
+        vertical-align: middle;
+        margin-right: .5rem;
+      }
+    }
+  }
+}
+
