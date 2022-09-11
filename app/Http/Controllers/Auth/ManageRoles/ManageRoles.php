@@ -62,6 +62,7 @@ class ManageRoles extends Controller
 
   }
 
+  //update role
   public function PutRoles(Role $role, Request $request, $id){
 
     $role = Role::findById($id);
@@ -80,6 +81,7 @@ class ManageRoles extends Controller
 
   }
 
+  //del role
   public function DelRoles(Role $role, $id){
 
     $role = Role::findById($id); 
