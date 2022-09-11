@@ -47,12 +47,20 @@
       ]
     },
     {
-      "url": "https://pixinvent.ticksy.com/",
-      "name": "Raise Support",
-      "slug": "raise-support",
-      "icon": "help",
-      "newTab":"_blank"
+      "url": "#",
+      "name": "Users",
+      "slug": "users",
+      "icon": "users",
+      "submenu": [
+          {
+            "url": "users/roles",
+            "nameRoute" : "testPage",
+            "name": "Roles",
+            "slug": "role"
+          }
+      ]
     },
+   
     {
       "url": "https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation",
       "name": "Documentation",
