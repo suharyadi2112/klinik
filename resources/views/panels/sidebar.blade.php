@@ -51,6 +51,7 @@
     </ul>
   </div>
   <div class="shadow-bottom"></div>
+  {{-- DIMENU JSON -> MENU TIDAK BOLEH DI BERI KOMENTAR, MAKA TIDAK AKAN SHOW --}}
   <div class="main-menu-content">
     <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
         @if(!empty($menuData[0]) && isset($menuData[0]))
@@ -64,7 +65,7 @@
                     <i class="menu-livicon" data-icon="{{$menu->icon}}"></i>
                 @endif
                 @if(isset($menu->name))
-                    <span class="menu-title text-truncate">{{ __('locale.'.$menu->name)}}</span>
+                    <span class="menu-title text-truncate">{{ __(/*'locale.'.*/$menu->name)}}</span>
                 @endif
                 @if(isset($menu->tag))
                 <span class="{{$menu->tagcustom}} ml-auto">{{$menu->tag}}</span>
@@ -168,7 +169,7 @@
               <i class="{{$menu->icon}}"></i>
             @endif
             @if(isset($menu->name))
-              <span class="menu-title text-truncate">{{ __('locale.'.$menu->name)}}</span>
+              <span class="menu-title text-truncate">{{ __(/*'locale.'.*/$menu->name)}}</span>
             @endif
             @if(isset($menu->tag))
               <span class="{{$menu->tagcustom}} ml-auto">{{$menu->tag}}</span>
