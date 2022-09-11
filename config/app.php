@@ -176,7 +176,10 @@ return [
     App\Providers\RouteServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
 
+    //spatie hakakses
     Spatie\Permission\PermissionServiceProvider::class,
+    //datatable
+    Yajra\DataTables\DataTablesServiceProvider::class,
 
   ],
 
