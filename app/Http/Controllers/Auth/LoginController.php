@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use App\Models\User;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class LoginController extends Controller
 {
   /*
