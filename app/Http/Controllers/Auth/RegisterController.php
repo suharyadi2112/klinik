@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
+
+use App\Models\User;
+use Spatie\Permission\models\Role;
+
 
 class RegisterController extends Controller
 {
@@ -36,10 +42,15 @@ class RegisterController extends Controller
    *
    * @return void
    */
+
+  // construct yang lama
   public function __construct()
   {
-    $this->middleware('guest');
+    // $this->middleware('guest'); //old middleware
+    // akses users untuk super-admin dan admin
+    $this->middleware(['role:super-admin|admin']);
   }
+
 
   /**
    * Get a validator for an incoming registration request.
