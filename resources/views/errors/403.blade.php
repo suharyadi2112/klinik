@@ -14,7 +14,7 @@
             You do not have permission to view this directory or page using
             the credentials that you supplied.
         </p>
-        <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO HOME</a>
+        <a href="{{asset('/login')}}" class="btn btn-primary round glow mt-2">BACK TO HOME</a>
       </div>
     </div>
   </div>
