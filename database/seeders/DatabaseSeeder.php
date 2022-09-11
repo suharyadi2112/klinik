@@ -66,10 +66,21 @@ class DatabaseSeeder extends Seeder
         $user->assignRole($adminRole);
 
         $user = User::factory()->create([
+            'name' => 'Example admin user kedua',
+            'email' => 'adminkedua@qadrlabs.com',
+            'password' => bcrypt('12345678')
+        ]);
+        $user->assignRole($adminRole);
+
+        $user = User::factory()->create([
             'name' => 'Example superadmin user',
             'email' => 'superadmin@qadrlabs.com',
             'password' => bcrypt('12345678')
         ]);
         $user->assignRole($superadminRole);
+
+        // cara running seeder
+        // php artisan migrate:fresh --seed --seeder=DatabaseSeeder
+
     }
 }
