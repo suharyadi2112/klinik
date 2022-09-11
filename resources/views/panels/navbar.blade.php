@@ -185,8 +185,12 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
           <li class="dropdown dropdown-user nav-item">
             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
               <div class="user-nav d-sm-flex d-none">
-                <span class="user-name">John Doe</span>
-                <span class="user-status text-muted">Available</span>
+                <span class="user-name">{{ Auth::user()->name ?? 'none' }}</span>
+                <span class="user-status text-muted">
+                  @if(Auth::user())
+                    {{ Auth::user()->getRoleNames()[0] }}
+                  @endif
+                </span>
               </div>
               <span><img class="round" src="{{asset('images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
             </a>
