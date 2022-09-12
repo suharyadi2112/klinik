@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- page Title --}}
-@section('title','Dashboard E-commerce')
+@section('title','OSMARO')
 {{-- vendor css --}}
 @section('vendor-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/charts/apexcharts.css')}}">
@@ -15,7 +15,7 @@
 <section id="dashboard-ecommerce">
   <div class="row">
     <!-- Greetings Content Starts -->
-    <div class="col-xl-4 col-md-6 col-12 dashboard-greetings">
+    <!-- <div class="col-xl-4 col-md-6 col-12 dashboard-greetings">
       <div class="card">
         <div class="card-header">
           <h3 class="greeting-text">Congratulations John!</h3>
@@ -35,9 +35,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- Multi Radial Chart Starts -->
-    <div class="col-xl-4 col-md-6 col-12 dashboard-visit">
+    <!-- <div class="col-xl-4 col-md-6 col-12 dashboard-visit">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h4 class="card-title">Visits of 2020</h4>
@@ -52,11 +52,11 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-xl-4 col-12 dashboard-users">
       <div class="row  ">
         <!-- Statistics Cards Starts -->
-        <div class="col-12">
+        <!-- <div class="col-12">
           <div class="row">
             <div class="col-sm-6 col-12 dashboard-users-success">
               <div class="card text-center">
@@ -95,16 +95,15 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- Revenue Growth Chart Starts -->
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-xl-8 col-12 dashboard-order-summary">
+    <!-- <div class="col-xl-8 col-12 dashboard-order-summary">
       <div class="card">
         <div class="row">
-          <!-- Order Summary Starts -->
           <div class="col-md-8 col-12 order-summary border-right pr-md-0">
             <div class="card mb-0">
               <div class="card-header d-flex justify-content-between align-items-center">
@@ -119,7 +118,6 @@
               </div>
             </div>
           </div>
-          <!-- Sales History Starts -->
           <div class="col-md-4 col-12 pl-md-0">
             <div class="card mb-0">
               <div class="card-header pb-50">
@@ -159,11 +157,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- Latest Update Starts -->
     <div class="col-xl-4 col-md-6 col-12 dashboard-latest-update">
       <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center pb-50">
+        <!-- <div class="card-header d-flex justify-content-between align-items-center pb-50">
           <h4 class="card-title">Latest Update</h4>
           <div class="dropdown">
             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec"
@@ -176,8 +174,8 @@
               <a class="dropdown-item" href="javascript:;">2018</a>
             </div>
           </div>
-        </div>
-        <div class="card-body p-0 pb-1">
+        </div> -->
+        <!-- div class="card-body p-0 pb-1">
           <ul class="list-group list-group-flush">
             <li
               class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
@@ -282,11 +280,11 @@
               <span>46k</span>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- Earning Swiper Starts -->
-    <div class="col-xl-4 col-md-6 col-12 dashboard-earning-swiper" id="widget-earnings">
+    <!-- <div class="col-xl-4 col-md-6 col-12 dashboard-earning-swiper" id="widget-earnings">
       <div class="card">
         <div class="card-header border-bottom d-flex justify-content-between align-items-center">
           <h5 class="card-title"><i class="bx bx-dollar font-medium-5 align-middle"></i> <span
@@ -294,7 +292,6 @@
           <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
         </div>
         <div class="card-body py-1 px-0">
-          <!-- earnings swiper starts -->
           <div class="widget-earnings-swiper swiper-container p-1">
             <div class="swiper-wrapper">
               <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="repo-design">
@@ -334,7 +331,6 @@
               </div>
             </div>
           </div>
-          <!-- earnings swiper ends -->
         </div>
         <div class="main-wrapper-content">
           <div class="wrapper-content" data-earnings="repo-design">
@@ -817,9 +813,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div -->
     <!-- Marketing Campaigns Starts -->
-    <div class="col-xl-8 col-12 dashboard-marketing-campaign">
+    <div class="col-xl-12 col-12 dashboard-marketing-campaign">
       <div class="card marketing-campaigns">
         <div class="card-header d-flex justify-content-between align-items-center pb-1">
           <h4 class="card-title">Marketing campaigns</h4>
