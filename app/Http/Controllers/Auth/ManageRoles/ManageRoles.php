@@ -82,6 +82,7 @@ class ManageRoles extends Controller
   }
 
   //del role
+  //test
   public function DelRoles(Role $role, $id){
 
     $role = Role::findById($id); 
