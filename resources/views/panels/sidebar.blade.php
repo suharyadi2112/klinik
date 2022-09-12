@@ -6,7 +6,9 @@
     <li class="nav-item mr-auto">
       <a class="navbar-brand" href="{{asset('/')}}">
       <div class="brand-logo">
-        <svg class="logo" width="26px" height="26px" viewbox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+        <!-- <img src="{{asset('images/logo/logo-osmaro.png')}}" style="width: 100px;height: auto;" class="logo" alt=""> -->
+        <!-- <svg class="logo" width="26px" height="26px" viewbox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <title>icon</title>
           <defs>
               <lineargradient id="linearGradient-1" x1="50%" y1="0%" x2="50%" y2="100%">
@@ -31,14 +33,15 @@
                   </g>
               </g>
           </g>
-        </svg>
+        </svg> -->
       </div>
       <h2 class="brand-text mb-0">
-        @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
+        Osmaro
+        <!-- @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
         {{$configData['templateTitle']}}
         @else
-        Frest
-        @endif
+        Osmaro
+        @endif -->
       </h2>
       </a>
     </li>

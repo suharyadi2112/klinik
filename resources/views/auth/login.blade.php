@@ -24,21 +24,6 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="d-flex flex-md-row flex-column justify-content-around">
-                <a href="#" class="btn btn-social btn-google btn-block font-small-3 mr-md-1 mb-md-0 mb-1">
-                  <i class="bx bxl-google font-medium-3"></i>
-                  <span class="pl-50 d-block text-center">Google</span>
-                </a>
-                <a href="#" class="btn btn-social btn-block mt-0 btn-facebook font-small-3">
-                  <i class="bx bxl-facebook-square font-medium-3"></i>
-                  <span class="pl-50 d-block text-center">Facebook</span>
-                </a>
-              </div>
-              <div class="divider">
-                <div class="divider-text text-uppercase text-muted">
-                  <small>or login with email</small>
-                </div>
-              </div>
               {{-- form  --}}
               <form method="POST" action="{{ route('login') }}">
                 @csrf
@@ -78,10 +63,6 @@
                 </button>
               </form>
               <hr>
-              <div class="text-center">
-                <small class="mr-25">Don't have an account?</small>
-                <a href="{{route('register')}}"><small>Sign up</small></a>
-              </div>
             </div>
           </div>
         </div>

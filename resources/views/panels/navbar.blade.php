@@ -25,12 +25,12 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
           </ul>
           @endif
 
-          <ul class="nav navbar-nav bookmark-icons">
+          <!-- <ul class="nav navbar-nav bookmark-icons">
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{asset('sk-layout-1-column')}}" data-toggle="tooltip" data-placement="top" title="1-Column"><i class="ficon bx bx-file"></i></a></li>
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{asset('sk-layout-2-columns')}}" data-toggle="tooltip" data-placement="top" title="2-Columns"><i class="ficon bx bx-sidebar"></i></a></li>
             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{asset('sk-layout-static')}}" data-toggle="tooltip" data-placement="top" title="Static Layout"><i class="ficon bx bx-align-middle"></i></a></li>
-        </ul>
-          <ul class="nav navbar-nav">
+          </ul> -->
+          <!-- <ul class="nav navbar-nav">
             <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon bx bx-star warning"></i></a>
               <div class="bookmark-input search-input">
                 <div class="bookmark-input-icon"><i class="bx bx-search primary"></i></div>
@@ -38,10 +38,10 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <ul class="search-list"></ul>
               </div>
             </li>
-          </ul>
+          </ul> -->
         </div>
         <ul class="nav navbar-nav float-right">
-          <li class="dropdown dropdown-language nav-item">
+          <!-- <li class="dropdown dropdown-language nav-item">
             <a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span>
             </a>
@@ -59,16 +59,16 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <i class="flag-icon flag-icon-pt mr-50"></i> Portuguese
               </a>
             </div>
-          </li>
-          <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-          <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon bx bx-search"></i></a>
+          </li> -->
+          <!-- <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li> -->
+          <!-- <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon bx bx-search"></i></a>
             <div class="search-input">
               <div class="search-input-icon"><i class="bx bx-search primary"></i></div>
               <input class="input" type="text" placeholder="Explore Frest..." tabindex="-1" data-search="starter-list">
               <div class="search-input-close"><i class="bx bx-x"></i></div>
               <ul class="search-list"></ul>
             </div>
-          </li>
+          </li> -->
           <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
               <li class="dropdown-menu-header">
@@ -192,7 +192,7 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                   @endif
                 </span>
               </div>
-              <span><img class="round" src="{{asset('images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
+              <span><img class="round" src="{{asset('images/portrait/small/user.png')}}" alt="avatar" height="40" width="40"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right pb-0">
               <a class="dropdown-item" href="#">
