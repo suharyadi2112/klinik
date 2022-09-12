@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- page Title --}}
-@section('title','OSMARO')
+@section('title','Dashboard')
 {{-- vendor css --}}
 @section('vendor-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/charts/apexcharts.css')}}">
