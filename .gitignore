@@ -1,13 +1,13 @@
 /node_modules
-/public/hot
-/public/storage
-/public/assets
-/public/css
-/public/data
-/public/fonts
-/public/images
-/public/js
-/public/vendors
+# /public/hot
+# /public/storage
+# /public/assets
+# /public/css
+# /public/data
+# /public/fonts
+# /public/images
+# /public/js
+# /public/vendors
 /storage/*.key
 /vendor
 .env.backup
