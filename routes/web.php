@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\UserController;
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ManageRoles\ManageRoles;
+use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,10 +41,14 @@ Route::get('/', [StarterKitController::class, 'index'])->name('dashboard')->midd
 
 // users Routes dengan spatie role and permission
 Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses untuk super-admin dan admin
+	//role
 	Route::get('/users/roles', [ManageRoles::class, 'ShowRolesUsers'])->name('ShowRolesUsers');
 	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles');
 	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
 	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
+
+	//permission
+	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
 });
 
 // locale Route
