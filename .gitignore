@@ -8,6 +8,8 @@
 # /public/images
 # /public/js
 # /public/vendors
+.env
+.env.example
 /storage/*.key
 /vendor
 .env.backup
