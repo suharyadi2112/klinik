@@ -8,6 +8,27 @@
       "tag": "2",
       "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
     },
+
+    {
+      "navheader": "Main"
+    },
+
+    {
+      "url": "/",
+      "name": "Action",
+      "slug": "action",
+      "icon": "pen",
+      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
+    },
+
+    {
+      "url": "/",
+      "name": "Partner",
+      "slug": "partner",
+      "icon": "pen",
+      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
+    },
+
     {
       "url": "#",
       "name": "Starter kit",
@@ -46,6 +67,107 @@
         }
       ]
     },
+      
+    {
+      "url": "#",
+      "name": "Transaction",
+      "slug": "transaction",
+      "icon": "shoppingcart-in",
+      "submenu": [
+        {
+          "url": "#",
+          "name": "Registration",
+          "slug": "registration",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Action Input",
+          "slug": "action_input",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Laboratorium",
+          "slug": "laboratorium",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Billing",
+          "slug": "billing",
+          "icon": "bx bx-right-arrow-alt"
+        }
+      ]
+    },
+
+    {
+      "navheader": "Report"
+    },
+
+    {
+      "url": "#",
+      "name": "Report",
+      "slug": "report",
+      "icon": "print-doc",
+      "submenu": [
+        {
+          "url": "#",
+          "name": "Registration",
+          "slug": "registration",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Cashier",
+          "slug": "2-columns",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Print Registration",
+          "slug": "print_Registration",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Print Cashier",
+          "slug": "print_cashier",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Print Income",
+          "slug": "print_income",
+          "icon": "bx bx-right-arrow-alt"
+        }
+      ]
+    },
+
+    {
+      "navheader": "Setup Category"
+    },
+
+    {
+      "url": "/",
+      "name": "Action Category",
+      "slug": "partner_category",
+      "icon": "wrench",
+      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
+    },
+
+    {
+      "url": "/",
+      "name": "Partner Category",
+      "slug": "partner_category",
+      "icon": "wrench",
+      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
+    },
+
+    {
+      "navheader": "Setup Users"
+    },
+
     {
       "url": "#",
       "name": "Users",
