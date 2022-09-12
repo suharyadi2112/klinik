@@ -54,9 +54,9 @@
                       </label>
                     </div>
                   </div>
-                  <div class="text-right">
+                  <!-- <div class="text-right">
                     <a href="{{ route('password.request') }}" class="card-link"><small>Forgot Password?</small></a>
-                  </div>
+                  </div> -->
                 </div>
                 <button type="submit" class="btn btn-primary glow w-100 position-relative">Login
                   <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
