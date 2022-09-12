@@ -6,7 +6,7 @@
       <li class="nav-item">
       <a class="navbar-brand" href="{{asset('/')}}">
           <div class="brand-logo">
-            <img src="{{asset('images/logo/logo-light.png')}}" class="logo" alt="">
+            <img src="{{asset('images/logo/logo-osmaro.png')}}" class="logo" alt="">
           </div>
           <h2 class="brand-text mb-0">
             @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
