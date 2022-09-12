@@ -27,19 +27,19 @@ class ManageRoles extends Controller
     //dashboard role
     public function ShowRolesUsers(Request $request){
 
-    $roles = Role::all();
+        $roles = Role::all();
 
-    if ($request->ajax()) {
-        $data = Role::all();
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                $actionBtn = '<button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button>
-                            <button type="button" class="btn btn-sm btn-outline-danger round delRole" data-id="'.$row->id.'">del</button>';
-                return $actionBtn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        if ($request->ajax()) {
+            $data = Role::all();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger round delRole" data-id="'.$row->id.'">del</button>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
     }
 
     return view("/auth/users/roles");
