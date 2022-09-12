@@ -27,8 +27,6 @@ class ManageRoles extends Controller
     //dashboard role
     public function ShowRolesUsers(Request $request){
 
-        $roles = Role::all();
-
         if ($request->ajax()) {
             $data = Role::all();
             return DataTables::of($data)
