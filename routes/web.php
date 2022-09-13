@@ -48,6 +48,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
 	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
 
+	//users
+	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
+	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
+
+
 	//category
 	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
 	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
@@ -62,4 +67,4 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('language');
 
 //route global bawaan laravel
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true,'register' => false]);
