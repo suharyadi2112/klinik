@@ -175,6 +175,12 @@
       "icon": "users",
       "submenu": [
           {
+            "url": "users",
+            "nameRoute" : "testPage",
+            "name": "Users",
+            "slug": "users"
+          },
+          {
             "url": "users/roles",
             "nameRoute" : "testPage",
             "name": "Roles",
