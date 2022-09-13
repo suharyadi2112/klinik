@@ -12,8 +12,9 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 use App\Models\User;
-use Spatie\Permission\models\Role;
 
+use Spatie\Permission\models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RegisterController extends Controller
 {
@@ -100,10 +101,44 @@ class RegisterController extends Controller
           ->make(true);
     }
 
-    return view('/auth/users/users-list');
+    $getRole = Role::all();
+
+    return view('/auth/users/users-list', ["roless" => $getRole]);
 
   }
 
+  public function PostUsers(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:255',
+        'username' => 'required|string|alpha_dash|max:50|unique:users',
+        'email' => 'required|email|unique:users',
+        'roless' => 'required',
+        'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+        'password_confirmation' => 'min:6'
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+
+      // reset cache permission
+      app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+      $user = User::create([
+          'name' => $request->name,
+          'username' => $request->username,
+          'email' => $request->email,
+          'password' => bcrypt($request->password),
+          'status' => 1,
+      ]);
+      $user->assignRole($request->roless);
+
+      return response()->json(['code' => '2'], 200);
+
+    }
+
+  }
 
   // Register old
   public function showRegistrationForm()
