@@ -82,7 +82,30 @@ class RegisterController extends Controller
     ]);
   }
 
-  // Register
+
+  public function ShowUsers(Request $request){
+
+    if ($request->ajax()) {
+      $data = User::with('roles')->get();
+      return DataTables::of($data)
+          ->addIndexColumn()
+          ->addColumn('roles', function($row){
+              $showr = '';
+              foreach ($row->roles as $key => $valueRole) {
+                $showr .= $valueRole->name;
+              }
+              return $showr;
+          })
+          ->rawColumns(['action'])
+          ->make(true);
+    }
+
+    return view('/auth/users/users-list');
+
+  }
+
+
+  // Register old
   public function showRegistrationForm()
   {
     $pageConfigs = ['bodyCustomClass' => 'bg-full-screen-image blank-page', 'navbarType' => 'hidden'];
