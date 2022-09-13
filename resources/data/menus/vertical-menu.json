@@ -161,13 +161,13 @@
             "slug": "category"
           },
           {
-            "url": "#",
+            "url": "category_action",
             "nameRoute" : "testPage",
             "name": "Category Action",
             "slug": "category_action"
           },
           {
-            "url": "#",
+            "url": "action",
             "nameRoute" : "testPage",
             "name": "Action",
             "slug": "action"
