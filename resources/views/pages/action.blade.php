@@ -29,10 +29,10 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Category</th>
-                  <th>Category Action</th>
-                  <th>Category Price</th>
-                  <th>Category Note</th>
+                  <th>Category Action ID</th>
+                  <th>Name</th>
+                  <th>Unit</th>
+                  <th>Value</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -65,13 +65,13 @@
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowCategoryAction') }}",
+        ajax: "{{ route('ShowAction') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'kattndnama', name: 'kattndnama'},
-            {data: 'tndnama', name: 'tndnama'},
-            {data: 'tndharga', name: 'tndharga'},
-            {data: 'tndnote', name: 'tndnote'},
+            {data: 'katlabtndid', name: 'katlabtndid'},
+            {data: 'katlabnama', name: 'katlabnama'},
+            {data: 'katlabsat', name: 'katlabsat'},
+            {data: 'katlabnilai', name: 'katlabnilai'},
             {
               data: 'action', 
               name: 'action' 

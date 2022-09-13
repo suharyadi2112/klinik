@@ -65,13 +65,13 @@
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowAction') }}",
+        ajax: "{{ route('ShowCategoryAction') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'katlabtndid', name: 'katlabtndid'},
-            {data: 'katlabnama', name: 'katlabnama'},
-            {data: 'katlabsat', name: 'katlabsat'},
-            {data: 'katlabnilai', name: 'katlabnilai'},
+            {data: 'tndid', name: 'tndid'},
+            {data: 'kattndnama', name: 'kattndnama'},
+            {data: 'tndharga', name: 'tndharga'},
+            {data: 'tndnote', name: 'tndnote'},
             {
               data: 'action', 
               name: 'action' 
