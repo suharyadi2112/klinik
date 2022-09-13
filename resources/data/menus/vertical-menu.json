@@ -149,7 +149,7 @@
     },
 
     {
-      "url": "/",
+      "url": "category",
       "name": "Action Category",
       "slug": "partner_category",
       "icon": "wrench",
