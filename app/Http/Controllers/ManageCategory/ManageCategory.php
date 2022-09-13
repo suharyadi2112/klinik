@@ -87,4 +87,57 @@ class ManageCategory extends Controller
 
     }
 
+
+    // View Category Action//
+    public function ShowCategoryAction(Request $request){
+
+        if ($request->ajax()) {
+            // $data = Role::all();
+           $data = DB::table('tindakan')
+                   ->leftJoin('kategoritindakan', 'tindakan.tndkattndid', '=', 'kategoritindakan.kattndid')
+                   ->orderBy('tindakan.tndid', 'desc')
+                   ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = ''
+                                // '
+                                // <button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->tndnama.'" data-id="'.$row->tndid .'">edit</button>
+                                // <button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->tndid .'">del</button>
+                                // '
+                                ;
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        
+        return view("/pages/category_action");
+    }
+
+    //View Action//
+    public function ShowAction(Request $request){
+
+        if ($request->ajax()) {
+            // $data = Role::all();
+           $data = DB::table('katlab')
+                   ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = ''
+                                // '
+                                // <button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->tndnama.'" data-id="'.$row->tndid .'">edit</button>
+                                // <button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->tndid .'">del</button>
+                                // '
+                                ;
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        
+        return view("/pages/action");
+    }
+
 }
