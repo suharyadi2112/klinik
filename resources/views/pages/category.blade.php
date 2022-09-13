@@ -62,10 +62,10 @@
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowRolesUsers') }}",
+        ajax: "{{ route('ShowCategory') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'name', name: 'name'},
+            {data: 'kattndnama', name: 'kattndnama'},
             {
               data: 'action', 
               name: 'action' 
@@ -95,7 +95,7 @@
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({nameroles: data})
+                    body: JSON.stringify({namecategory: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();
@@ -120,7 +120,7 @@
     }); 
 
     // delete role
-    $(document).on('click', '.delRole', function () {
+    $(document).on('click', '.delCategory', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
           title: 'Are you sure delete this category ?',
@@ -152,7 +152,7 @@
     });
 
     //update role
-    $(document).on('click', '.upRole', function () {
+    $(document).on('click', '.upCategory', function () {
         var id = $(this).attr('data-id')
         var nameRole = $(this).attr('vall')
         Swal.fire({
@@ -174,7 +174,7 @@
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({NewUpdateRoles: data})
+                    body: JSON.stringify({NewUpdateCategory: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();

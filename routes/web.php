@@ -51,8 +51,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	//category
 	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
 	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
-	Route::delete('/category/delelete/{id}', [ManageRoles::class, 'DelCategory'])->name('DelCategory');
-	Route::post('/category/put/{id}', [ManageRoles::class, 'PutCategory'])->name('PutCategory');
+	Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
+	Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory');
 
 	//permission
 	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
