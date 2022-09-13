@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ManageRoles\ManageRoles;
 use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
+use App\Http\Controllers\ManageCategory\ManageCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,12 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles');
 	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
 	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
+
+	//category
+	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
+	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
+	Route::delete('/category/delelete/{id}', [ManageRoles::class, 'DelCategory'])->name('DelCategory');
+	Route::post('/category/put/{id}', [ManageRoles::class, 'PutCategory'])->name('PutCategory');
 
 	//permission
 	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
