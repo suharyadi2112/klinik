@@ -14,6 +14,29 @@
     },
 
     {
+      "url": "#",
+      "name": "Menu Levels",
+      "slug": "menu-levels",
+      "icon": "morph-menu-arrow-bottom",
+      "submenu": [
+        {
+          "url": "#",
+          "name": "Second Level",
+          "slug": "second-level",
+          "icon": "bx bx-right-arrow-alt",
+          "submenu": [
+            {
+              "url": "#",
+              "name": "Third Level",
+              "slug": "third-level",
+              "icon": "bx bx-right-arrow-alt"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
       "url": "/",
       "name": "Action",
       "slug": "action",
