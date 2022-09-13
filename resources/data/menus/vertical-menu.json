@@ -149,19 +149,30 @@
     },
 
     {
-      "url": "/",
-      "name": "Action Category",
-      "slug": "partner_category",
+      "url": "#",
+      "name": "Category",
+      "slug": "category",
       "icon": "wrench",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
-    },
-
-    {
-      "url": "/",
-      "name": "Partner Category",
-      "slug": "partner_category",
-      "icon": "wrench",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
+      "submenu": [
+          {
+            "url": "category",
+            "nameRoute" : "testPage",
+            "name": "Category",
+            "slug": "category"
+          },
+          {
+            "url": "category_action",
+            "nameRoute" : "testPage",
+            "name": "Category Action",
+            "slug": "category_action"
+          },
+          {
+            "url": "action",
+            "nameRoute" : "testPage",
+            "name": "Action",
+            "slug": "action"
+          }
+      ]
     },
 
     {
@@ -174,6 +185,12 @@
       "slug": "users",
       "icon": "users",
       "submenu": [
+          {
+            "url": "users",
+            "nameRoute" : "testPage",
+            "name": "Users",
+            "slug": "users"
+          },
           {
             "url": "users/roles",
             "nameRoute" : "testPage",
