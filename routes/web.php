@@ -48,11 +48,26 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
 	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
 
+	//users
+	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
+	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
+	Route::post('/post/users', [RegisterController::class, 'PostUsers'])->name('PostUsers');
+
+
 	//category
 	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
 	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
-	Route::delete('/category/delelete/{id}', [ManageRoles::class, 'DelCategory'])->name('DelCategory');
-	Route::post('/category/put/{id}', [ManageRoles::class, 'PutCategory'])->name('PutCategory');
+	Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
+	Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory');
+
+    //category_action
+	Route::get('/category_action', [ManageCategory::class, 'ShowCategoryAction'])->name('ShowCategoryAction');
+	// Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
+	// Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
+	// Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory');
+
+	//action
+	Route::get('/action', [ManageCategory::class, 'ShowAction'])->name('ShowAction');
 
 	//permission
 	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
@@ -62,4 +77,4 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('language');
 
 //route global bawaan laravel
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true,'register' => false]);

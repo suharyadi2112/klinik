@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- title --}}
-@section('title','Category')
+@section('title','Action')
 
 {{-- vendor styles --}}
 @section('vendor-styles')
@@ -18,18 +18,21 @@
 
 <section id="description" class="card">
     <div class="card-header">
-        <h4 class="card-title">Dashboard Category</h4>
+        <h4 class="card-title">Dashboard Action</h4>
     </div>
     <div class="card-body">
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
-            <button type="button" class="btn btn-primary round addcategory"><i class="bx bx-plus-circle"></i> Create Category</button>
+            <!-- <button type="button" class="btn btn-primary round addcategory"><i class="bx bx-plus-circle"></i> Create Action Action</button> -->
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Category</th>
+                  <th>Category Action ID</th>
+                  <th>Name</th>
+                  <th>Unit</th>
+                  <th>Value</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -62,10 +65,13 @@
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowCategory') }}",
+        ajax: "{{ route('ShowAction') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'kattndnama', name: 'kattndnama'},
+            {data: 'katlabtndid', name: 'katlabtndid'},
+            {data: 'katlabnama', name: 'katlabnama'},
+            {data: 'katlabsat', name: 'katlabsat'},
+            {data: 'katlabnilai', name: 'katlabnilai'},
             {
               data: 'action', 
               name: 'action' 
