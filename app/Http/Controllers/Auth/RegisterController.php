@@ -100,7 +100,7 @@ class RegisterController extends Controller
               return $showr;
           })
          ->addColumn('action', function($row){
-                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers">edit</button>
+                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers" data-id="'.$row->id.'">edit</button>
                               <button type="button" class="btn btn-sm btn-outline-danger round ArsipUser" data-id="'.$row->id.'">del</button>';
                   return $actionBtn;
           })
@@ -111,6 +111,72 @@ class RegisterController extends Controller
     $getRole = Role::all();
 
     return view('/auth/users/users-list', ["roless" => $getRole]);
+
+  }
+
+  //modal edit user
+  public function ModalEdit(Request $request){
+
+    // $user = User::find($request->id_user);
+    $user = User::with('roles')->where('id','=', $request->id_user)->first();
+    $getRole = Role::all();
+
+    $modal = '';
+    $modal .= '<div class="modal-body" >
+                <div class="form-group">
+                      <label class="form-label" for="basic-default-name">Name</label>
+                      <input type="hidden" class="form-control" value="'.$user->id.'" id="basic-default-name" name="id" placeholder="John Doe"/>
+                      <input type="text" class="form-control" value="'.$user->name.'" id="basic-default-name" name="name" placeholder="John Doe"/>
+                  </div>
+                  <div class="form-group">
+                      <label class="form-label" for="basic-default-username">Username</label>
+                      <input type="text" class="form-control" value="'.$user->username.'" id="basic-default-username" name="username" placeholder="Username" />
+                  </div>
+                  <div class="form-group">
+                      <label class="form-label" for="basic-default-email">Email</label>
+                      <input type="text" id="basic-default-email" value="'.$user->email.'" name="email" class="form-control" placeholder="john.doe@email.com" />
+                  </div>
+                  <div class="form-group">
+                      <label for="select-country">Role</label>
+                      <select class="form-control" id="select-roless" name="roless">
+                        <option value="">Select Roles</option>';
+                        foreach($getRole as $valrole){
+    $modal .=           '<option value="'.$valrole->name.'" '.(($valrole->name==$user->roles[0]->name)?'selected':"").'>'.$valrole->name.'</option>';
+                        }
+    $modal .=        '</select>
+                  </div>
+                </div>';
+
+      return response()->json(['modalUpdate' => $modal], 200);
+
+  }
+
+  public function UpdateUsers(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:255',
+        'username' => 'required|string|alpha_dash|max:50|unique:users',
+        'email' => 'required|email',
+        'roless' => 'required'
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+
+    // reset cache permission
+    app()[PermissionRegistrar::class]->forgetCachedPermissions();
+    $user = User::find($request->id);
+     
+    $user->name = $request->name;
+    $user->username = $request->username;
+    $user->email = $request->email;
+    $user->save();
+    
+    $user->syncRoles($request->roless);
+
+    return response()->json(['code' => '2'], 200);
+    }
 
   }
 
