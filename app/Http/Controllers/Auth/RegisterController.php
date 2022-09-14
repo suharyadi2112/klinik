@@ -86,8 +86,10 @@ class RegisterController extends Controller
 
   public function ShowUsers(Request $request){
 
+    // 1 aktif 2 arsip/delete 0 deactive 
+
     if ($request->ajax()) {
-      $data = User::with('roles')->get();
+      $data = User::with('roles')->orderBy('created_at','DESC')->where('status','!=',2)->get();
       return DataTables::of($data)
           ->addIndexColumn()
           ->addColumn('roles', function($row){
@@ -97,6 +99,11 @@ class RegisterController extends Controller
               }
               return $showr;
           })
+         ->addColumn('action', function($row){
+                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers">edit</button>
+                              <button type="button" class="btn btn-sm btn-outline-danger round ArsipUser" data-id="'.$row->id.'">del</button>';
+                  return $actionBtn;
+          })
           ->rawColumns(['action'])
           ->make(true);
     }
@@ -105,6 +112,29 @@ class RegisterController extends Controller
 
     return view('/auth/users/users-list', ["roless" => $getRole]);
 
+  }
+
+  public function DeleteUser(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'id_user' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+      $user = User::find($request->id_user);
+
+      if ($user) {
+
+        $user->status = 2; $user->save();
+        return response()->json(['code' => '2'], 200);
+
+      }else{
+        return response()->json(['code' => '3'], 200);
+      }
+    }
+    
   }
 
   public function PostUsers(Request $request){
