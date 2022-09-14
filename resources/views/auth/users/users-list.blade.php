@@ -9,6 +9,10 @@
 
 {{-- sweetalert2 --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- pace --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
+
 @endsection
 {{-- page styles --}}
 @section('page-styles')
