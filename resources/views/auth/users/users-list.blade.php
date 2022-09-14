@@ -46,6 +46,7 @@
 <!-- users list ends -->
 @endsection
 
+{{-- modal insert users --}}
 <div class="modal fade" id="ModalInsertUser" data-keyboard="false" data-backdrop="static">  
 	<div class="modal-dialog ">
 		<div class="modal-content" id="modal-content">
@@ -78,6 +79,7 @@
                                 @forelse($roless as $key => $valroles)
                                		<option value="{{ $valroles->name }}">{{ $valroles->name }}</option>
                                	@empty
+                               		<option value="">Data not found</option>
                                	@endforelse
                             </select>
                         </div>
@@ -93,7 +95,7 @@
 					</div>
 					<div class="modal-footer">
                       <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="insertus btn btn-primary"><i class='bx bx-upload' ></i> Simpan</button>
+                      <button type="submit" class="insertus btn btn-primary"><i class='bx bx-upload' ></i> Insert</button>
                  	</div>
 
                  	</form>
@@ -104,6 +106,31 @@
 	</div>
 </div>
 
+<div class="modal fade" id="ModalUpdateUser" data-keyboard="false" data-backdrop="static">  
+	<div class="modal-dialog">
+		<div class="modal-content" id="modal-content">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="modal-header bg-primary p-2">
+						<h5 class="modal-title white" id="staticBackdropLabel">Update Users</h5> 
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+							<span aria-hidden="true">&times;</span> 
+						</button>
+					</div>
+					<form id="FormUpdateUsers" data-route="{{ route('UpdateUsers') }}" role="form" method="POST" accept-charset="utf-8">		
+						{{-- render modal --}}
+						<div id="RenderFormUpdateUser"></div>
+
+						<div class="modal-footer">
+			              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+			              <button type="submit" class="updateus btn btn-primary"><i class='bx bx-pencil' ></i> Update</button>
+			          </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 {{-- vendor scripts --}}
 @section('vendor-scripts')
@@ -169,6 +196,63 @@ didOpen: (toast) => {
 	}
 })
 
+/*---------------------get modal edit users------------------------*/
+$(document).on("click", ".UpUsers", function () {
+	var id = $(this).attr('data-id')
+	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	Pace.track(function(){
+		$.post( '{{ route('ModalEdit') }}', { id_user : id })
+		  .done(function( data ) {
+		  	$("#RenderFormUpdateUser").html(data.modalUpdate);
+		  	$("#ModalUpdateUser").modal("show");
+		  })
+		  .fail(function() { alert( "error" );})
+	});
+});
+/*---------------------post modal update users------------------------*/
+
+$(document).on('submit', '#FormUpdateUsers', function(e) {
+    e.preventDefault();
+    var route = $('#FormUpdateUsers').data('route');
+    var form_data = $(this);
+    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+  	Pace.track(function(){
+	  	$.ajax({
+	        type: 'POST',
+	        url: route,
+	        data: form_data.serialize(),
+	        beforeSend: function() {
+	        	$('.updateus').prop('disabled', true);
+	        },
+	        success: function(data) {
+			   	switch (data.code) {
+	                case "1":
+						Toast.fire({
+							icon: 'error',
+							title: data.fail
+						})
+					break;
+					case "2":
+						Toast.fire({
+							icon: 'success',
+							title: 'Update Success'
+						})
+					break;
+	                default:
+	                break;
+	            }
+	        },
+	        complete: function() {
+	            $('#users-list-datatable').DataTable().ajax.reload();
+	            $('.updateus').prop('disabled', false);
+	        },
+	        error: function(data,xhr) {
+	        	alert("Failed response")
+	        },
+	    });
+	});
+});
+
 // 1 aktif 2 arsip/delete 0 deactive 
 
 /*-----------------delete(arship) users--------------------*/
@@ -180,7 +264,6 @@ $(document).on("click", ".ArsipUser", function () {
 	  confirmButtonColor: '#dc3741',
 	  confirmButtonText: 'Delete',
 	}).then((result) => {
-	  /* Read more about isConfirmed, isDenied below */
 	  if (result.isConfirmed) {
 	  	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
 	  	$.post( '{{ route('DeleteUser') }}', { id_user : id })
