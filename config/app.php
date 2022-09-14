@@ -56,6 +56,8 @@ return [
 
   'asset_url' => env('ASSET_URL', null),
 
+  'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
+
   /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -67,7 +69,8 @@ return [
     |
     */
 
-  'timezone' => 'UTC',
+  // 'timezone' => 'UTC',
+      'timezone' => 'Asia/Jakarta',
 
   /*
     |--------------------------------------------------------------------------
@@ -80,7 +83,8 @@ return [
     |
     */
 
-  'locale' => 'en',
+  // 'locale' => 'en',
+    'locale' => 'id',
 
   /*
     |--------------------------------------------------------------------------
@@ -106,7 +110,8 @@ return [
     |
     */
 
-  'faker_locale' => 'en_US',
+  // 'faker_locale' => 'en_US',
+  'faker_locale' => 'id_ID',
 
   /*
     |--------------------------------------------------------------------------
@@ -233,6 +238,7 @@ return [
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
     'Helper' => App\Helpers\Helper::class,
+
   ],
 
 ];
