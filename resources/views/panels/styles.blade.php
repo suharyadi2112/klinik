@@ -18,9 +18,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/themes/dark-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/themes/semi-dark-layout.css')}}">
 
-    <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
-
     @if($configData['direction'] === 'rtl')
     <link rel="stylesheet" type="text/css" href="{{asset('css/custom-rtl.css')}}">
     @endif
