@@ -155,7 +155,7 @@ class RegisterController extends Controller
 
     $validator = Validator::make($request->all(), [
         'name' => 'required|max:255',
-        'username' => 'required|string|alpha_dash|max:50|unique:users',
+        'username' => 'required|string|alpha_dash|max:50',
         'email' => 'required|email',
         'roless' => 'required'
     ]);
