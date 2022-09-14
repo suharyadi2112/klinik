@@ -16,6 +16,8 @@ use App\Models\User;
 use Spatie\Permission\models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
+use App\Helpers\Helper as HelperLog;
+
 class RegisterController extends Controller
 {
   /*
@@ -109,6 +111,8 @@ class RegisterController extends Controller
     }
 
     $getRole = Role::all();
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Show data user', json_encode($request->all())); 
 
     return view('/auth/users/users-list', ["roless" => $getRole]);
 
@@ -155,8 +159,8 @@ class RegisterController extends Controller
 
     $validator = Validator::make($request->all(), [
         'name' => 'required|max:255',
-        'username' => 'required|string|alpha_dash|max:50',
-        'email' => 'required|email',
+        'username' => 'required|string|alpha_dash|max:50|unique:users,username,'.$request->id,
+        'email' => 'required|unique:users,email,'.$request->id,
         'roless' => 'required'
     ]);
 
@@ -171,9 +175,13 @@ class RegisterController extends Controller
     $user->name = $request->name;
     $user->username = $request->username;
     $user->email = $request->email;
+    $user->updated_at = date('Y-m-d H:i:s');
     $user->save();
     
     $user->syncRoles($request->roless);
+
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Update data user', json_encode($request->all())); 
 
     return response()->json(['code' => '2'], 200);
     }
@@ -194,6 +202,8 @@ class RegisterController extends Controller
       if ($user) {
 
         $user->status = 2; $user->save();
+        //param pertama subject dan kedua data request
+        HelperLog::addToLog('Delete data user', json_encode($request->all())); 
         return response()->json(['code' => '2'], 200);
 
       }else{
@@ -226,10 +236,12 @@ class RegisterController extends Controller
           'username' => $request->username,
           'email' => $request->email,
           'password' => bcrypt($request->password),
+          'created_at' => date('Y-m-d H:i:s'),
           'status' => 1,
       ]);
       $user->assignRole($request->roless);
-
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Created data user', json_encode($request->all())); 
       return response()->json(['code' => '2'], 200);
 
     }
