@@ -24,15 +24,15 @@
         <div class="table-responsive">
         <button type="button" class="btn btn-primary round addusers"><i class="bx bx-plus-circle"></i> Create users</button>
         <hr>
-          <table id="users-list-datatable" class="table border-top table-hover" width="100%">
+          <table id="users-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
               <tr>
-                <th>No</th>
                 <th>Name</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
           </table>
@@ -92,8 +92,8 @@
                         
 					</div>
 					<div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="insertus btn btn-primary">Simpan</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="submit" class="insertus btn btn-primary"><i class='bx bx-upload' ></i> Simpan</button>
                  	</div>
 
                  	</form>
@@ -124,7 +124,6 @@
 	        serverSide: true,
 	        ajax: "{{ route('GetListUsers') }}",
 	        columns: [
-	            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
 	            {data: 'name', name: 'name'},
 	            {data: 'username', name: 'username'},
 	            {data: 'email', name: 'email'},
@@ -133,14 +132,17 @@
 	            	render: function(type, row, data){
 	            		if(data.status == 1){
 	            			return '<span class="badge badge-light-success">active</span>';
-	            		}else{
+	            		}else if(data.status == 0){
 	            			return '<span class="badge badge-secondary">deactive</span>';
 	            		}
 		            }
 		        },
-	          
+		        {data: 'action', name: 'action'},
 	        ],
-	        createdRow:function(row,data,index){$('td',row).eq(4).attr("nowrap","nowrap");}
+	        createdRow:function(row,data,index){
+	        	$('td',row).eq(0).attr("nowrap","nowrap");
+	        	$('td',row).eq(3).attr("nowrap","nowrap");
+	    	}
 	    });
 	});
 
@@ -154,6 +156,7 @@
 
 <script type="text/javascript">
 
+//top end notif
 const Toast = Swal.mixin({
 	toast: true,
 	position: 'top-end',
@@ -166,6 +169,47 @@ didOpen: (toast) => {
 	}
 })
 
+// 1 aktif 2 arsip/delete 0 deactive 
+
+/*-----------------delete(arship) users--------------------*/
+$(document).on("click", ".ArsipUser", function () {
+	var id = $(this).attr('data-id')
+	Swal.fire({
+	  title: 'Delete this user ?',
+	  showCancelButton: true,
+	  confirmButtonColor: '#dc3741',
+	  confirmButtonText: 'Delete',
+	}).then((result) => {
+	  /* Read more about isConfirmed, isDenied below */
+	  if (result.isConfirmed) {
+	  	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	  	$.post( '{{ route('DeleteUser') }}', { id_user : id })
+		  .done(function( data ) {
+		  	switch (data.code) {
+                case "1":
+					Toast.fire({icon: 'error',title: data.fail })
+				break;
+				case "2":
+					Toast.fire({ icon: 'success', title: 'Deleted!'})
+				break;
+				case "3":
+					Toast.fire({ icon: 'warning', title: 'User not found'})
+				break;
+                default:
+                break;
+            }
+		  })
+		  .fail(function() { alert( "error" );})
+		  .always(function() {
+		  	$('#users-list-datatable').DataTable().ajax.reload();
+		  });
+	  } 
+	})
+});
+
+
+
+/*---------------------insert users------------------------*/
 $(document).on("click", ".addusers", function () {
 	$("#ModalInsertUser").modal("show");
 });
