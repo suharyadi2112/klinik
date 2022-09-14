@@ -52,6 +52,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
 	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
 	Route::post('/post/users', [RegisterController::class, 'PostUsers'])->name('PostUsers');
+	Route::post('/del/users', [RegisterController::class, 'DeleteUser'])->name('DeleteUser');
 
 
 	//category
