@@ -4,8 +4,34 @@ namespace App\Helpers;
 use Config;
 use Illuminate\Support\Str;
 
+
+use Request;
+use App\Models\LogActivity as LogActivityModel;
+
 class Helper
-{
+{ 
+    
+
+  public static function addToLog($subject, $data)
+  {
+    $log = [];
+    $log['subject'] = $subject;
+    $log['url'] = Request::fullUrl();
+    $log['method'] = Request::method();
+    $log['ip'] = Request::ip();
+    $log['agent'] = Request::header('user-agent');
+    $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
+    $log['data'] = $data;
+    LogActivityModel::create($log);
+  }
+
+
+  public static function logActivityLists()
+  {
+    return LogActivityModel::latest()->get();
+  }
+
+
   public static function applClasses()
   {
     // Demo
