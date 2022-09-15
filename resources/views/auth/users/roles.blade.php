@@ -59,6 +59,19 @@
 <script type="text/javascript">
 
  $(function () {  
+
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
     //datatable
     var table = $('.yajra-datatable').DataTable({
         processing: true,
@@ -138,11 +151,22 @@
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                }).then(response => {
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    switch (data.code) {
+                        case "6":
+                            Toast.fire({icon: 'error',title: 'Cant delete role, because have '+data.data.users_count+' user used it, please delete user first' })
+                        break;
+                        case "1":
+                            Toast.fire({ icon: 'success', title: 'Deleted!'})
+                        break;
+                        default:
+                        break;
+                    }
                     $('.yajra-datatable').DataTable().ajax.reload();
-                    Swal.fire('Success!', '', 'success')
-                    return response.json()
-                }).catch(error => {
+                })
+                .catch(error => {
                     Swal.fire('Server Error', '', 'error')
                     console.log(error)
                 })

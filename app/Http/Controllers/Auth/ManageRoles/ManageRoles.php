@@ -91,6 +91,12 @@ class ManageRoles extends Controller
   //test
   public function DelRoles(Role $role, $id){
 
+    $item = Role::withCount('users')->find($id);
+
+    if ($item->users_count > 0) {
+       return response()->json(['code' =>  '6', 'data' => $item]);
+    }
+
     $role = Role::findById($id);
     $role->delete();
     //param pertama subject dan kedua data request
