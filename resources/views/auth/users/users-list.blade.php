@@ -200,7 +200,7 @@ didOpen: (toast) => {
 	}
 })
 
-// 1 aktif 2 arsip/delete 0 deactive 
+// 1 aktif 0 deactive 
 /*---------------------Change status users------------------------*/
 $(document).on("click", ".Status", function () {
 	var id = $(this).attr('data-id');
@@ -294,10 +294,10 @@ $(document).on('submit', '#FormUpdateUsers', function(e) {
 	});
 });
 
-// 1 aktif 2 arsip/delete 0 deactive 
+// 1 aktif 0 deactive 
 
-/*-----------------delete(arship) users--------------------*/
-$(document).on("click", ".ArsipUser", function () {
+/*-----------------delete arship users--------------------*/
+$(document).on("click", ".DeleteUser", function () {
 	var id = $(this).attr('data-id')
 	Swal.fire({
 	  title: 'Delete this user ?',
