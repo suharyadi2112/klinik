@@ -28,11 +28,11 @@
               <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group mb-50">
-                  <label class="text-bold-600" for="email">Email address</label>
-                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email" autofocus placeholder="Email address">
-                  @error('email')
+                  <label class="text-bold-600" for="email">Email address / Username</label>
+                  <input id="login" type="text" class="form-control {{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}" name="login" value="{{ old('username') ?: old('email') }}" autocomplete="email" autofocus placeholder="Email address or Username">
+                  @if ($errors->has('username') || $errors->has('email'))
                     <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
+                      <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
                     </span>
                   @enderror
                 </div>
