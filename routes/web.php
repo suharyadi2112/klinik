@@ -65,6 +65,12 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
     //category_action
 	Route::get('/category_action', [ManageCategory::class, 'ShowCategoryAction'])->name('ShowCategoryAction');
 	Route::post('/category_action/post', [ManageCategory::class, 'PostCa'])->name('PostCa');
+	Route::delete('/category_action/delete/{id}', [ManageCategory::class, 'DelCa'])->name('DelCa');
+	Route::post('/category_action/modaledit', [ManageCategory::class, 'ModalEditCa'])->name('ModalEditCa');
+	Route::post('/category_action/update', [ManageCategory::class, 'UpdateCa'])->name('UpdateCa');
+
+
+
 	// Route::get('/category_action', [ManageCategory::class, 'CategoryList'])->name('CategoryList');
 	// Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
 	// Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
