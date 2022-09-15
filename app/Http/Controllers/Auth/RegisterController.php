@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
@@ -88,10 +89,10 @@ class RegisterController extends Controller
 
   public function ShowUsers(Request $request){
 
-    // 1 aktif 2 arsip/delete 0 deactive 
+    // 1 aktif 0 deactive 
 
     if ($request->ajax()) {
-      $data = User::with('roles')->orderBy('created_at','DESC')->where('status','!=',2)->get();
+      $data = User::with('roles')->orderBy('created_at','DESC')->get();
       return DataTables::of($data)
           ->addIndexColumn()
           ->addColumn('roles', function($row){
@@ -102,8 +103,16 @@ class RegisterController extends Controller
               return $showr;
           })
          ->addColumn('action', function($row){
-                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers" data-id="'.$row->id.'">edit</button>
-                              <button type="button" class="btn btn-sm btn-outline-danger round ArsipUser" data-id="'.$row->id.'">del</button>';
+                  $actionBtn = '
+                  <div class="dropdown">
+                    <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>
+                      <a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>
+                      <a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>
+                    </div>
+                  </div>';
                   return $actionBtn;
           })
           ->rawColumns(['action'])
@@ -188,6 +197,28 @@ class RegisterController extends Controller
 
   }
 
+  public function StatusChange(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'id_user' => 'required',
+    ]);
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+      $user = User::find($request->id_user);
+      if ($user->status == 1) {
+        $user->status = 0; 
+      }elseif($user->status == 0){
+        $user->status = 1; 
+      }
+      $user->save();//simpan data
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Change status data user', json_encode($request->all())); 
+      return response()->json(['code' => '2'], 200);
+    }
+
+  }
+
   public function DeleteUser(Request $request){
 
     $validator = Validator::make($request->all(), [
@@ -200,8 +231,8 @@ class RegisterController extends Controller
       $user = User::find($request->id_user);
 
       if ($user) {
-
-        $user->status = 2; $user->save();
+        $user->delete();
+        $user->roles()->detach();
         //param pertama subject dan kedua data request
         HelperLog::addToLog('Delete data user', json_encode($request->all())); 
         return response()->json(['code' => '2'], 200);
@@ -217,12 +248,13 @@ class RegisterController extends Controller
 
     $validator = Validator::make($request->all(), [
         'name' => 'required|max:255',
-        'username' => 'required|string|alpha_dash|max:50|unique:users',
+        'username' => 'required|string|alpha_dash|max:50|unique:users,username,'.$request->id,
         'email' => 'required|email|unique:users',
         'roless' => 'required',
         'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
         'password_confirmation' => 'min:6'
     ]);
+
 
     if ($validator->fails()) {
       return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
