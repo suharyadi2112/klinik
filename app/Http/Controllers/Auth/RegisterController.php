@@ -102,8 +102,16 @@ class RegisterController extends Controller
               return $showr;
           })
          ->addColumn('action', function($row){
-                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers" data-id="'.$row->id.'">edit</button>
-                              <button type="button" class="btn btn-sm btn-outline-danger round ArsipUser" data-id="'.$row->id.'">del</button>';
+                  $actionBtn = '
+                  <div class="dropdown">
+                    <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>
+                      <a class="dropdown-item ArsipUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>
+                      <a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>
+                    </div>
+                  </div>';
                   return $actionBtn;
           })
           ->rawColumns(['action'])
@@ -184,6 +192,28 @@ class RegisterController extends Controller
     HelperLog::addToLog('Update data user', json_encode($request->all())); 
 
     return response()->json(['code' => '2'], 200);
+    }
+
+  }
+
+  public function StatusChange(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'id_user' => 'required',
+    ]);
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+      $user = User::find($request->id_user);
+      if ($user->status == 1) {
+        $user->status = 0; 
+      }elseif($user->status == 0){
+        $user->status = 1; 
+      }
+      $user->save();//simpan data
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Change status data user', json_encode($request->all())); 
+      return response()->json(['code' => '2'], 200);
     }
 
   }

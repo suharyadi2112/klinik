@@ -36,7 +36,7 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th><i class="bx bx-cog"></i></th>
               </tr>
             </thead>
           </table>
@@ -199,6 +199,43 @@ didOpen: (toast) => {
 		toast.addEventListener('mouseleave', Swal.resumeTimer)
 	}
 })
+
+// 1 aktif 2 arsip/delete 0 deactive 
+/*---------------------Change status users------------------------*/
+$(document).on("click", ".Status", function () {
+	var id = $(this).attr('data-id');
+	var status = $(this).attr('data-status');
+	if (status == 0) { statuss = 'deactive'; }else if(status == 1){ statuss = 'active'; }else if(status == 2){
+		statuss = 'delete';
+	}
+	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	Pace.track(function(){
+		 Swal.fire({
+		  title: 'Change status user '+statuss+' ?',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes',
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	$.post( '{{ route('StatusChange') }}', { id_user : id })
+			  .done(function( data ) {
+			  	switch (data.code) {
+	                case "1":
+						Toast.fire({ icon: 'error', title: data.fail})
+					break;
+					case "2":
+						Toast.fire({ icon: 'success', title: 'Change status Success'})
+						$('#users-list-datatable').DataTable().ajax.reload();//reload datatable
+					break;
+	                default:
+	                break;
+	            }
+			  	Toast.fire({ icon: 'success', title: 'Status Change'})
+			  })
+			  .fail(function() { alert( "error" );})
+		  	}
+		});
+	});
+});
 
 /*---------------------get modal edit users------------------------*/
 $(document).on("click", ".UpUsers", function () {
