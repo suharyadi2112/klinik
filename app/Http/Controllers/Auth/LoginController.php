@@ -10,6 +10,7 @@ use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -32,6 +33,14 @@ class LoginController extends Controller
    * @var string
    */
   protected $redirectTo = RouteServiceProvider::HOME;
+
+  protected function authenticated(Request $request, $user)
+  {  
+      if ($user->status == 0) { //status 0 adalah status nonaktif
+          Auth::logout();
+          return redirect('/login')->with('error', 'Looks Like Your status is DeActive');
+      }
+  }
 
   /**
    * Create a new controller instance.
