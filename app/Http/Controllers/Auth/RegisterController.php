@@ -16,6 +16,8 @@ use App\Models\User;
 use Spatie\Permission\models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
+use App\Helpers\Helper as HelperLog;
+
 class RegisterController extends Controller
 {
   /*
@@ -86,8 +88,10 @@ class RegisterController extends Controller
 
   public function ShowUsers(Request $request){
 
+    // 1 aktif 2 arsip/delete 0 deactive 
+
     if ($request->ajax()) {
-      $data = User::with('roles')->get();
+      $data = User::with('roles')->orderBy('created_at','DESC')->where('status','!=',2)->get();
       return DataTables::of($data)
           ->addIndexColumn()
           ->addColumn('roles', function($row){
@@ -97,14 +101,116 @@ class RegisterController extends Controller
               }
               return $showr;
           })
+         ->addColumn('action', function($row){
+                  $actionBtn = '<button type="button" class="btn btn-sm round btn-info UpUsers" data-id="'.$row->id.'">edit</button>
+                              <button type="button" class="btn btn-sm btn-outline-danger round ArsipUser" data-id="'.$row->id.'">del</button>';
+                  return $actionBtn;
+          })
           ->rawColumns(['action'])
           ->make(true);
     }
 
     $getRole = Role::all();
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Show data user', json_encode($request->all())); 
 
     return view('/auth/users/users-list', ["roless" => $getRole]);
 
+  }
+
+  //modal edit user
+  public function ModalEdit(Request $request){
+
+    // $user = User::find($request->id_user);
+    $user = User::with('roles')->where('id','=', $request->id_user)->first();
+    $getRole = Role::all();
+
+    $modal = '';
+    $modal .= '<div class="modal-body" >
+                <div class="form-group">
+                      <label class="form-label" for="basic-default-name">Name</label>
+                      <input type="hidden" class="form-control" value="'.$user->id.'" id="basic-default-name" name="id" placeholder="John Doe"/>
+                      <input type="text" class="form-control" value="'.$user->name.'" id="basic-default-name" name="name" placeholder="John Doe"/>
+                  </div>
+                  <div class="form-group">
+                      <label class="form-label" for="basic-default-username">Username</label>
+                      <input type="text" class="form-control" value="'.$user->username.'" id="basic-default-username" name="username" placeholder="Username" />
+                  </div>
+                  <div class="form-group">
+                      <label class="form-label" for="basic-default-email">Email</label>
+                      <input type="text" id="basic-default-email" value="'.$user->email.'" name="email" class="form-control" placeholder="john.doe@email.com" />
+                  </div>
+                  <div class="form-group">
+                      <label for="select-country">Role</label>
+                      <select class="form-control" id="select-roless" name="roless">
+                        <option value="">Select Roles</option>';
+                        foreach($getRole as $valrole){
+    $modal .=           '<option value="'.$valrole->name.'" '.(($valrole->name==$user->roles[0]->name)?'selected':"").'>'.$valrole->name.'</option>';
+                        }
+    $modal .=        '</select>
+                  </div>
+                </div>';
+
+      return response()->json(['modalUpdate' => $modal], 200);
+
+  }
+
+  public function UpdateUsers(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:255',
+        'username' => 'required|string|alpha_dash|max:50|unique:users,username,'.$request->id,
+        'email' => 'required|unique:users,email,'.$request->id,
+        'roless' => 'required'
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+
+    // reset cache permission
+    app()[PermissionRegistrar::class]->forgetCachedPermissions();
+    $user = User::find($request->id);
+     
+    $user->name = $request->name;
+    $user->username = $request->username;
+    $user->email = $request->email;
+    $user->updated_at = date('Y-m-d H:i:s');
+    $user->save();
+    
+    $user->syncRoles($request->roless);
+
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Update data user', json_encode($request->all())); 
+
+    return response()->json(['code' => '2'], 200);
+    }
+
+  }
+
+  public function DeleteUser(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'id_user' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+      $user = User::find($request->id_user);
+
+      if ($user) {
+
+        $user->status = 2; $user->save();
+        //param pertama subject dan kedua data request
+        HelperLog::addToLog('Delete data user', json_encode($request->all())); 
+        return response()->json(['code' => '2'], 200);
+
+      }else{
+        return response()->json(['code' => '3'], 200);
+      }
+    }
+    
   }
 
   public function PostUsers(Request $request){
@@ -130,10 +236,12 @@ class RegisterController extends Controller
           'username' => $request->username,
           'email' => $request->email,
           'password' => bcrypt($request->password),
+          'created_at' => date('Y-m-d H:i:s'),
           'status' => 1,
       ]);
       $user->assignRole($request->roless);
-
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Created data user', json_encode($request->all())); 
       return response()->json(['code' => '2'], 200);
 
     }

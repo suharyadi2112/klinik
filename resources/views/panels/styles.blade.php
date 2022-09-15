@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/components.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/themes/dark-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/themes/semi-dark-layout.css')}}">
+
     @if($configData['direction'] === 'rtl')
     <link rel="stylesheet" type="text/css" href="{{asset('css/custom-rtl.css')}}">
     @endif

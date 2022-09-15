@@ -14,6 +14,8 @@ use Yajra\Datatables\Datatables;
 use App\Models\User;
 use Spatie\Permission\models\Role;
 
+use App\Helpers\Helper as HelperLog;
+
 class ManageRoles extends Controller
 {
     // construct yang lama
@@ -40,6 +42,8 @@ class ManageRoles extends Controller
                 ->make(true);
     }
 
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Show data role', json_encode($request->all()));
     return view("/auth/users/roles");
   }
 
@@ -49,10 +53,12 @@ class ManageRoles extends Controller
     if ($request->nameroles == null || empty($request->nameroles)) {
         return redirect()->route('/');
     }
-        
+
     $cekInsert = Role::create(['name' => strtolower($request->nameroles)]); //create role baru
 
     if ($cekInsert) {
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Store data role', json_encode($request->all()));
       return response()->json(['code' => '1', 'data' => $request->nameroles]);
     }else{
       return response()->json(['code' => '2']);
@@ -68,10 +74,12 @@ class ManageRoles extends Controller
     if ($request->NewUpdateRoles == null || empty($request->NewUpdateRoles)) {
         return redirect()->route('/');
     }
-        
+
     $cekUpdate = $role->update(['name' => strtolower($request->NewUpdateRoles)]); //update role baru
 
     if ($cekUpdate) {
+      //param pertama subject dan kedua data request
+      HelperLog::addToLog('Update data role', json_encode($request->all()));
       return response()->json(['code' =>  '1',  'value' => $request->NewUpdateRoles]);
     }else{
       return response()->json(['code' => '2']);
@@ -83,9 +91,10 @@ class ManageRoles extends Controller
   //test
   public function DelRoles(Role $role, $id){
 
-    $role = Role::findById($id); 
+    $role = Role::findById($id);
     $role->delete();
-
+    //param pertama subject dan kedua data request
+    HelperLog::addToLog('Delete data role', json_encode($role, $id)); 
     return response()->json(['code' =>  '1']);
 
   }

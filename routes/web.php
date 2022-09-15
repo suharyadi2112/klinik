@@ -52,7 +52,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
 	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
 	Route::post('/post/users', [RegisterController::class, 'PostUsers'])->name('PostUsers');
-
+	Route::post('/del/users', [RegisterController::class, 'DeleteUser'])->name('DeleteUser');
+	Route::post('/modaledit/users', [RegisterController::class, 'ModalEdit'])->name('ModalEdit');
+	Route::post('/update/users', [RegisterController::class, 'UpdateUsers'])->name('UpdateUsers');
 
 	//category
 	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
@@ -62,6 +64,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 
     //category_action
 	Route::get('/category_action', [ManageCategory::class, 'ShowCategoryAction'])->name('ShowCategoryAction');
+	Route::post('/category_action/post', [ManageCategory::class, 'PostCa'])->name('PostCa');
+	// Route::get('/category_action', [ManageCategory::class, 'CategoryList'])->name('CategoryList');
 	// Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
 	// Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
 	// Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory');

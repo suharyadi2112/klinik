@@ -9,6 +9,10 @@
 
 {{-- sweetalert2 --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- pace --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
+
 @endsection
 {{-- page styles --}}
 @section('page-styles')
@@ -24,15 +28,15 @@
         <div class="table-responsive">
         <button type="button" class="btn btn-primary round addusers"><i class="bx bx-plus-circle"></i> Create users</button>
         <hr>
-          <table id="users-list-datatable" class="table border-top table-hover" width="100%">
+          <table id="users-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
               <tr>
-                <th>No</th>
                 <th>Name</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
           </table>
@@ -46,6 +50,7 @@
 <!-- users list ends -->
 @endsection
 
+{{-- modal insert users --}}
 <div class="modal fade" id="ModalInsertUser" data-keyboard="false" data-backdrop="static">  
 	<div class="modal-dialog ">
 		<div class="modal-content" id="modal-content">
@@ -78,6 +83,7 @@
                                 @forelse($roless as $key => $valroles)
                                		<option value="{{ $valroles->name }}">{{ $valroles->name }}</option>
                                	@empty
+                               		<option value="">Data not found</option>
                                	@endforelse
                             </select>
                         </div>
@@ -92,8 +98,8 @@
                         
 					</div>
 					<div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="insertus btn btn-primary">Simpan</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="submit" class="insertus btn btn-primary"><i class='bx bx-upload' ></i> Insert</button>
                  	</div>
 
                  	</form>
@@ -104,6 +110,31 @@
 	</div>
 </div>
 
+<div class="modal fade" id="ModalUpdateUser" data-keyboard="false" data-backdrop="static">  
+	<div class="modal-dialog">
+		<div class="modal-content" id="modal-content">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="modal-header bg-primary p-2">
+						<h5 class="modal-title white" id="staticBackdropLabel">Update Users</h5> 
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+							<span aria-hidden="true">&times;</span> 
+						</button>
+					</div>
+					<form id="FormUpdateUsers" data-route="{{ route('UpdateUsers') }}" role="form" method="POST" accept-charset="utf-8">		
+						{{-- render modal --}}
+						<div id="RenderFormUpdateUser"></div>
+
+						<div class="modal-footer">
+			              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+			              <button type="submit" class="updateus btn btn-primary"><i class='bx bx-pencil' ></i> Update</button>
+			          </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 {{-- vendor scripts --}}
 @section('vendor-scripts')
@@ -124,7 +155,6 @@
 	        serverSide: true,
 	        ajax: "{{ route('GetListUsers') }}",
 	        columns: [
-	            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
 	            {data: 'name', name: 'name'},
 	            {data: 'username', name: 'username'},
 	            {data: 'email', name: 'email'},
@@ -133,14 +163,17 @@
 	            	render: function(type, row, data){
 	            		if(data.status == 1){
 	            			return '<span class="badge badge-light-success">active</span>';
-	            		}else{
+	            		}else if(data.status == 0){
 	            			return '<span class="badge badge-secondary">deactive</span>';
 	            		}
 		            }
 		        },
-	          
+		        {data: 'action', name: 'action'},
 	        ],
-	        createdRow:function(row,data,index){$('td',row).eq(4).attr("nowrap","nowrap");}
+	        createdRow:function(row,data,index){
+	        	$('td',row).eq(0).attr("nowrap","nowrap");
+	        	$('td',row).eq(3).attr("nowrap","nowrap");
+	    	}
 	    });
 	});
 
@@ -154,6 +187,7 @@
 
 <script type="text/javascript">
 
+//top end notif
 const Toast = Swal.mixin({
 	toast: true,
 	position: 'top-end',
@@ -166,6 +200,103 @@ didOpen: (toast) => {
 	}
 })
 
+/*---------------------get modal edit users------------------------*/
+$(document).on("click", ".UpUsers", function () {
+	var id = $(this).attr('data-id')
+	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	Pace.track(function(){
+		$.post( '{{ route('ModalEdit') }}', { id_user : id })
+		  .done(function( data ) {
+		  	$("#RenderFormUpdateUser").html(data.modalUpdate);
+		  	$("#ModalUpdateUser").modal("show");
+		  })
+		  .fail(function() { alert( "error" );})
+	});
+});
+/*---------------------post modal update users------------------------*/
+
+$(document).on('submit', '#FormUpdateUsers', function(e) {
+    e.preventDefault();
+    var route = $('#FormUpdateUsers').data('route');
+    var form_data = $(this);
+    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+  	Pace.track(function(){
+	  	$.ajax({
+	        type: 'POST',
+	        url: route,
+	        data: form_data.serialize(),
+	        beforeSend: function() {
+	        	$('.updateus').prop('disabled', true);
+	        },
+	        success: function(data) {
+			   	switch (data.code) {
+	                case "1":
+						Toast.fire({
+							icon: 'error',
+							title: data.fail
+						})
+					break;
+					case "2":
+						Toast.fire({
+							icon: 'success',
+							title: 'Update Success'
+						})
+					break;
+	                default:
+	                break;
+	            }
+	        },
+	        complete: function() {
+	            $('#users-list-datatable').DataTable().ajax.reload();
+	            $('.updateus').prop('disabled', false);
+	        },
+	        error: function(data,xhr) {
+	        	alert("Failed response")
+	        },
+	    });
+	});
+});
+
+// 1 aktif 2 arsip/delete 0 deactive 
+
+/*-----------------delete(arship) users--------------------*/
+$(document).on("click", ".ArsipUser", function () {
+	var id = $(this).attr('data-id')
+	Swal.fire({
+	  title: 'Delete this user ?',
+	  showCancelButton: true,
+	  confirmButtonColor: '#dc3741',
+	  confirmButtonText: 'Delete',
+	}).then((result) => {
+	  if (result.isConfirmed) {
+	  	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	  	$.post( '{{ route('DeleteUser') }}', { id_user : id })
+		  .done(function( data ) {
+		  	switch (data.code) {
+                case "1":
+					Toast.fire({icon: 'error',title: data.fail })
+				break;
+				case "2":
+					Toast.fire({ icon: 'success', title: 'Deleted!'})
+				break;
+				case "3":
+					Toast.fire({ icon: 'warning', title: 'User not found'})
+				break;
+                default:
+                break;
+            }
+		  })
+		  .fail(function() { alert( "error" );})
+		  .always(function() {
+		  	$('#users-list-datatable').DataTable().ajax.reload();
+		  });
+	  } 
+	})
+});
+
+
+
+/*---------------------insert users------------------------*/
 $(document).on("click", ".addusers", function () {
 	$("#ModalInsertUser").modal("show");
 });
