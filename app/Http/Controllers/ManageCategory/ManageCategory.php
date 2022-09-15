@@ -84,9 +84,10 @@ class ManageCategory extends Controller
 
     public function DelCategory($id){
 
+
+        $res = HelperLog::addToLog('Delete data Category', json_encode($id));
         DB::table('kategoritindakan')->where('kattndid', '=', $id)->delete();
-        // HelperLog::addToLog('Delete data Category', json_encode($request->$id));
-        return response()->json(['code' =>  '1']);
+        return response()->json(['code' =>  '1', 'res' => $res]);
 
     }
 
@@ -155,8 +156,9 @@ class ManageCategory extends Controller
     //DELETE TABEL TINDAKAN//
     public function DelCa($id){
 
+        HelperLog::addToLog('Delete data Category Action', json_encode($id));
+
         DB::table('tindakan')->where('tndid', '=', $id)->delete();
-        // HelperLog::addToLog('Dlete data Category Action', json_encode($request->all()));
         return response()->json(['code' =>  '1']);
 
     }
