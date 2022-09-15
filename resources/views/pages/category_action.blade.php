@@ -99,8 +99,9 @@
 
               <div class="form-group">
                   <label class="form-label" for="basic-default-id">ID</label>
-                  <input type="text" class="form-control" id="basic-default-id" value="L{{ $count+1 }}" name="id_cat" placeholder="John Doe"/>
+                  <input type="text" class="form-control" id="basic-default-id" value="L{{ $count+1 }}" name="id_cat" readonly/>
               </div>
+
               <div class="form-group">
                   <label class="form-label" for="basic-default-name">Name</label>
                   <input type="text" class="form-control" id="basic-default-name" name="nama" placeholder="Name" />
@@ -122,6 +123,32 @@
 
           </form>
           {{-- tutup form --}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalUpdateCa" data-keyboard="false" data-backdrop="static">  
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-content">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="modal-header bg-primary p-2">
+            <h5 class="modal-title white" id="staticBackdropLabel">Update Category Action</h5> 
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+              <span aria-hidden="true">&times;</span> 
+            </button>
+          </div>
+          <form id="FormUpdateCa" data-route="{{ route('UpdateCa') }}" role="form" method="POST" accept-charset="utf-8">    
+            {{-- render modal --}}
+            <div id="RenderFormUpdateCa"></div>
+
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="updateus btn btn-primary"><i class='bx bx-pencil' ></i> Update</button>
+                </div>
+          </form>
         </div>
       </div>
     </div>
@@ -151,18 +178,17 @@
         ]
     });
 
-    // delete role
-    $(document).on('click', '.delCategory', function () {
+    // delete category action
+    $(document).on('click', '.delCa', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
-          title: 'Are you sure delete this category ?',
+          title: 'Are you sure delete this data ?',
           showCancelButton: true,
           confirmButtonText: 'Yes',
         }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
               if (id) {
-                return fetch('{{route("DelCategory", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("DelCa", ":id")}}'.replace(":id", id),{
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
@@ -181,55 +207,7 @@
             }
           }
         })
-    });
-
-    //update role
-    $(document).on('click', '.upCategory', function () {
-        var id = $(this).attr('data-id')
-        var nameRole = $(this).attr('vall')
-        Swal.fire({
-          title: 'Update category',
-          input: 'text',
-          inputValue: nameRole,
-          inputAttributes: {
-            autocapitalize: 'off'
-          },
-          showCancelButton: true,
-          confirmButtonText: 'Update',
-          showLoaderOnConfirm: true,
-          allowOutsideClick: false,
-          preConfirm: (data) => {
-            if (data) {
-                return fetch('{{route("PutCategory", ":id")}}'.replace(":id", id),{
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify({NewUpdateCategory: data})
-                }).then(response => {
-                    
-                    $('.yajra-datatable').DataTable().ajax.reload();
-                    return response.json()
-                }).catch(error => {
-                    Swal.showValidationMessage(
-                      `Request failed: ${error}`
-                    )
-                    console.log(error)
-                })
-            } else {
-                Swal.showValidationMessage('First input missing')   
-            }
-          },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: `Success`,
-            })
-          }
-        })
-    }); 
-    
+    });    
 });
 </script>
 
@@ -281,17 +259,77 @@
         break;
                 default:
                 break;
-            }
+        }
         },
         complete: function() {
             $('.yajra-datatable').DataTable().ajax.reload();
             $('.insertca').prop('disabled', false);
+            $("#ModalInsertCA").modal("hide");
         },
         error: function(data,xhr) {
           alert("Failed response")
         },
     });
   });
+
+
+  /*---------------------get modal edit ca------------------------*/
+  $(document).on("click", ".upCa", function () {
+    var id = $(this).attr('data-id')
+    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+    Pace.track(function(){
+      $.post( '{{ route('ModalEditCa') }}', { id1 : id })
+        .done(function( data ) {
+          $("#RenderFormUpdateCa").html(data.modalUpdate);
+          $("#ModalUpdateCa").modal("show");
+        })
+        .fail(function() { alert( "error" );})
+    });
+  });
+
+  $(document).on('submit', '#FormUpdateCa', function(e) {
+      e.preventDefault();
+      var route = $('#FormUpdateCa').data('route');
+      var form_data = $(this);
+      $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+      Pace.track(function(){
+        $.ajax({
+            type: 'POST',
+            url: route,
+            data: form_data.serialize(),
+            beforeSend: function() {
+              $('.updateus').prop('disabled', true);
+            },
+            success: function(data) {
+            switch (data.code) {
+                    case "1":
+              Toast.fire({
+                icon: 'error',
+                title: data.fail
+              })
+            break;
+            case "2":
+              Toast.fire({
+                icon: 'success',
+                title: 'Update Success'
+              })
+            break;
+                    default:
+                    break;
+                }
+            },
+            complete: function() {
+                $('.yajra-datatable').DataTable().ajax.reload();
+                $('.updateus').prop('disabled', false);
+                $("#ModalUpdateCa").modal("hide");
+            },
+            error: function(data,xhr) {
+              alert("Failed response")
+            },
+        });
+    });
+  });
+
 </script>
 
 
