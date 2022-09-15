@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -38,7 +39,7 @@ class LoginController extends Controller
   {  
       if ($user->status == 0) { //status 0 adalah status nonaktif
           Auth::logout();
-          return redirect('/login')->with('error', 'Looks Like Your status is DeActive');
+          return redirect('/login')->with('error', 'Your status is DeActive');
       }
   }
 
