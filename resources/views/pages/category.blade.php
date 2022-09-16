@@ -75,7 +75,7 @@
         ]
     });
 
-    //add role
+    //ADD CATEGORY//
     $(document).on('click', '.addcategory', function () {
         Swal.fire({
           title: 'New Category',
@@ -119,7 +119,7 @@
         })
     }); 
 
-    // delete role
+    // DELETE CATEGORY//
     $(document).on('click', '.delCategory', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
@@ -151,7 +151,7 @@
         })
     });
 
-    //update role
+    //UPDATE CATEGORY//
     $(document).on('click', '.upCategory', function () {
         var id = $(this).attr('data-id')
         var nameRole = $(this).attr('vall')
