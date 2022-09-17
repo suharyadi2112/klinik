@@ -86,6 +86,30 @@ class RegisterController extends Controller
     ]);
   }
 
+  //reset pass
+  public function ResetPass(Request $request){
+    $id_users_login = auth()->user()->id;
+    $userPass = User::find($request->id_user);
+
+    if ($id_users_login == $userPass->id) {
+      return response()->json(['code' => '1'], 200);
+    }
+
+    //default pass
+    $passDefaultReset = "12345678";
+    $HashPassDefault = Hash::make($passDefaultReset);
+
+    $userPass->password = $HashPassDefault;
+    $userPass->updated_at = date('Y-m-d H:i:s');
+    $Res = $userPass->save();
+
+    if ($Res) {
+        //param pertama subject dan kedua data request
+        HelperLog::addToLog('Reset Password user', json_encode(['id_user yang me-reset' => $request->id_user, 'yang di reset' => $id_users_login])); 
+        return response()->json(['code' => '2'], 200);
+    }
+  }
+
 
   public function ShowUsers(Request $request){
 
@@ -111,6 +135,7 @@ class RegisterController extends Controller
                       <a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>
                       <a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>
                       <a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>
+                      <a class="dropdown-item ResetPassword" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-reset mr-1"></i> Reset Pass</a>
                     </div>
                   </div>';
                   return $actionBtn;
@@ -267,7 +292,7 @@ class RegisterController extends Controller
           'name' => $request->name,
           'username' => $request->username,
           'email' => $request->email,
-          'password' => bcrypt($request->password),
+          'password' => Hash::make($request->password),
           'created_at' => date('Y-m-d H:i:s'),
           'status' => 1,
       ]);

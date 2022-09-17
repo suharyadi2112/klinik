@@ -200,6 +200,39 @@ didOpen: (toast) => {
 	}
 })
 
+
+/*---------------------Reset Pass------------------------*/
+$(document).on("click", ".ResetPassword", function () {
+	var id = $(this).attr('data-id')
+	$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	Swal.fire({
+	  title: 'Reset password this user ?',
+	  showCancelButton: true,
+	  confirmButtonColor: '#dc3741',
+	  confirmButtonText: 'Reset now !',
+	}).then((result) => {
+		 if (result.isConfirmed) {
+			Pace.track(function(){
+				$.post( '{{ route('ResetPass') }}', { id_user : id })
+				  .done(function( data ) {
+				  	switch (data.code) {
+		                case "1":
+							Toast.fire({ icon: 'error', title: 'cant reset yourself password'})
+						break;
+						case "2":
+							Toast.fire({ icon: 'success', title: 'Success reset password'})
+							$('#users-list-datatable').DataTable().ajax.reload();//reload datatable
+						break;
+		                default:
+		                break;
+		            }
+				  })
+				  .fail(function() { alert( "error" );})
+			});
+		}
+	});
+});
+
 // 1 aktif 0 deactive 
 /*---------------------Change status users------------------------*/
 $(document).on("click", ".Status", function () {
