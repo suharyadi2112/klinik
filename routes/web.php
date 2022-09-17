@@ -61,6 +61,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::post('/update/users', [RegisterController::class, 'UpdateUsers'])->name('UpdateUsers');
 	Route::post('/statuschange/users', [RegisterController::class, 'StatusChange'])->name('StatusChange');
 	Route::post('/reset/pass/users', [RegisterController::class, 'ResetPass'])->name('ResetPass');
+	Route::post('/changepass/users', [RegisterController::class, 'ChangePass'])->name('ChangePass');
 	
 
 	//category

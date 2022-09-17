@@ -195,16 +195,15 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
               <span><img class="round" src="{{asset('images/portrait/small/user.png')}}" alt="avatar" height="40" width="40"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right pb-0">
+              
               <a class="dropdown-item" href="#">
                 <i class="bx bx-user mr-50"></i> Edit Profile
               </a>
-              <a class="dropdown-item" href="#">
-                <i class="bx bx-envelope mr-50"></i> My Inbox
+
+              <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
+                <i class="bx bx-key mr-50"></i> Change Password
               </a>
-              <a class="dropdown-item" href="#">
-                <i class="bx bx-check-square mr-50"></i> Task</a>
-                <a class="dropdown-item" href="#"><i class="bx bx-message mr-50"></i> Chats
-              </a>
+             
               <div class="dropdown-divider mb-0"></div>
               <a class="dropdown-item" href="{{ Route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off mr-50"></i> Logout</a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -217,3 +216,49 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
     </div>
   </div>
 </nav>
+
+{{-- modal insert users --}}
+<div class="modal fade" id="Modalcp" data-keyboard="false" data-backdrop="static">  
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="modal-content">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="modal-header bg-info p-2">
+            <h5 class="modal-title white" id="staticBackdropLabel">Change Password</h5> 
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+              <span aria-hidden="true">&times;</span> 
+            </button>
+          </div>
+          <form id="FormChangePassUser"  data-route="{{ route('ChangePass') }}" role="form" method="POST" accept-charset="utf-8">
+          <div class="modal-body" >
+              <div class="form-group">
+                    <label class="form-label" for="basic-default-name">Current Password</label>
+                    <input type="password" class="form-control" id="basic-default-current-password" name="current_password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"/>
+              </div>
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-username">New Password</label>
+                  <input type="password" class="form-control" id="basic-default-new-password" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+              </div>
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-username">Confirm Password</label>
+                  <input type="password" class="form-control" id="basic-default-confirm-password" name="password_confirmation" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"> Cancel</button>
+              <button type="submit" class="ccp btn btn-primary"><i class='bx bx-edit-alt' ></i> Update</button>
+          </div>
+
+          </form>
+          {{-- tutup form --}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function ModalChangePassword (id_users) {
+  $("#Modalcp").modal()
+}
+</script>

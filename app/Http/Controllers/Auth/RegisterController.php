@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
@@ -84,6 +85,40 @@ class RegisterController extends Controller
       'email' => $data['email'],
       'password' => Hash::make($data['password']),
     ]);
+  }
+
+  //change password
+  public function ChangePass(Request $request){
+
+    $User = User::find(auth()->user()->id)->makeVisible(['password']);//field yang hidden untuk tampil
+ 
+    $validator = Validator::make($request->all(), [
+        'current_password' => 'required|max:50',
+        'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+
+      if (Hash::check($request->current_password, $User->password)) {
+
+          $SetNewPassword = Hash::make($request->password_confirmation);
+
+          $User->password = $SetNewPassword;
+          $User->updated_at = date('Y-m-d H:i:s');
+          $Res = $User->save();
+
+          if ($Res) {
+            HelperLog::addToLog('Reset Password user', json_encode($request->except(['current_password']))); 
+            Auth::logout();//instan logout
+            return response()->json(['code' => '2'], 200);
+          }
+
+      }else{
+          return response()->json(['code' => '3'], 200);
+      }
+    }
   }
 
   //reset pass
