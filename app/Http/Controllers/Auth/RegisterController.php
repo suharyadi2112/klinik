@@ -298,7 +298,7 @@ class RegisterController extends Controller
       ]);
       $user->assignRole($request->roless);
       //param pertama subject dan kedua data request
-      HelperLog::addToLog('Created data user', json_encode($request->all())); 
+      HelperLog::addToLog('Created data user', json_encode($request->except(['password', 'password_confirmation']))); 
       return response()->json(['code' => '2'], 200);
 
     }
