@@ -39,7 +39,7 @@ class ManageRoles extends Controller
                         $actionBtn = 'this super admin role';
                     }else{
                     $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-primary round CekPermission" data-id="'.$row->id.'">permissions</button>
-                    <button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button>
+                    <!--button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button-->
                                 <button type="button" class="btn btn-sm btn-outline-danger round delRole" data-id="'.$row->id.'">del</button>';
                     }
                     return $actionBtn;
