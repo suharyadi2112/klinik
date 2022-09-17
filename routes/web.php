@@ -48,6 +48,10 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
 	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
 
+	//permission
+	Route::post('/permission/roles/', [ManagePermissions::class, 'ShowModalPermission'])->name('ShowModalPermission');
+	Route::post('/permission/update/', [ManagePermissions::class, 'UpdatePermission'])->name('UpdatePermission');
+
 	//users
 	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
 	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
@@ -56,6 +60,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 	Route::post('/modaledit/users', [RegisterController::class, 'ModalEdit'])->name('ModalEdit');
 	Route::post('/update/users', [RegisterController::class, 'UpdateUsers'])->name('UpdateUsers');
 	Route::post('/statuschange/users', [RegisterController::class, 'StatusChange'])->name('StatusChange');
+	Route::post('/reset/pass/users', [RegisterController::class, 'ResetPass'])->name('ResetPass');
 	
 
 	//category

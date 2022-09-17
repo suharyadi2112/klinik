@@ -35,6 +35,9 @@
                       <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
                     </span>
                   @enderror
+                  @if ($message = Session::get('error'))
+                      <strong style="color: red;">{{ $message }}</strong>
+                  @endif
                 </div>
                 <div class="form-group">
                   <label class="text-bold-600" for="password">Password</label>

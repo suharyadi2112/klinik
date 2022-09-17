@@ -44,6 +44,32 @@
 </section>
 <!--/ Description -->
 
+<div class="modal fade" id="permissionRoles" data-keyboard="false" data-backdrop="static">  
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="modal-header bg-primary p-2">
+                        <h5 class="modal-title white" id="staticBackdropLabel">Permissions</h5> 
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                            <span aria-hidden="true">&times;</span> 
+                        </button>
+                    </div>
+                    <form id="FormUpdatePermission" data-route="{{ route('UpdatePermission') }}" role="form" method="POST" accept-charset="utf-8">        
+                        {{-- render modal --}}
+                        <div id="RenderFormPermissionRole"></div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                          <button type="submit" class="updatepers btn btn-primary"><i class='bx bx-pencil' ></i> Update</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--/ HTML Markup -->
 @endsection
 
@@ -88,6 +114,71 @@
               // searchable: true
             },
         ]
+    });
+
+
+    /*---------------------get modal for permission users------------------------*/
+    $(document).on("click", ".CekPermission", function () {
+        var id = $(this).attr('data-id')
+        $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+        Pace.track(function(){
+            $.post( '{{ route('ShowModalPermission') }}', { rolesid : id })
+              .done(function( data ) {
+                // $("#ModalUpdateUser").modal("show");
+                switch (data.code) {
+                    case "1":
+                        Toast.fire({ icon: 'warning', title: 'Role no have permission, <b>ignore if superadmin role</b>'})
+                    break;
+                    case "2":
+                        $("#RenderFormPermissionRole").html(data.modalData);
+                        $("#permissionRoles").modal("show");
+                    break;
+                    case "3":
+                        Toast.fire({ icon: 'error', title: data.fail})
+                    break;
+                    default:
+                    break;
+                }
+              })
+              .fail(function() { alert( "error" );})
+        });
+    });
+
+    /*---------------------Update Permission roles------------------------*/
+    $(document).on('submit', '#FormUpdatePermission', function(e) {
+        e.preventDefault();
+        var route = $('#FormUpdatePermission').data('route');
+        var form_data = $(this);
+        $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+        Pace.track(function(){
+            $.ajax({
+                type: 'POST',
+                url: route,
+                data: form_data.serialize(),
+                beforeSend: function() {
+                    $('.updatepers').prop('disabled', true);
+                },
+                success: function(data) {
+                    switch (data.code) {
+                        case "1":
+                            Toast.fire({ icon: 'error',title: data.fail })
+                        break;
+                        case "2":
+                            Toast.fire({ icon: 'success', title: 'Update Permissions success' })
+                        break;
+                        default:
+                        break;
+                    }
+                },
+                complete: function() {
+                    $('#users-list-datatable').DataTable().ajax.reload();
+                    $('.updatepers').prop('disabled', false);
+                },
+                error: function(data,xhr) {
+                    alert("Failed response")
+                },
+            });
+        });
     });
 
     //add role
