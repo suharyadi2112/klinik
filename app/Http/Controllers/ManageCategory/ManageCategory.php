@@ -21,10 +21,11 @@ class ManageCategory extends Controller
         $this->middleware(['role:super-admin|admin']);
     }
 
+
+    //SHOW CATEGORY DATA//
     public function ShowCategory(Request $request){
 
         if ($request->ajax()) {
-            // $data = Role::all();
            $data = DB::table('kategoritindakan')
                    ->orderBy('kattndid', 'desc')
                    ->get();
@@ -42,6 +43,7 @@ class ManageCategory extends Controller
 	    return view("/pages/category");
   	}
 
+    // ADD CATEGORY DATA//
     public function StoreCategory(Request $request){
 
         if ($request->namecategory == null || empty($request->namecategory)) {
@@ -61,6 +63,7 @@ class ManageCategory extends Controller
 
     }
 
+    // UPDATE CATEGORY DATA//
     public function PutCategory(Request $request, $id){
 
         if ($request->NewUpdateCategory == null || empty($request->NewUpdateCategory)) {
@@ -71,8 +74,6 @@ class ManageCategory extends Controller
                         ->where('kattndid', $id)
                         ->update(array('kattndnama' => strtolower($request->NewUpdateCategory)));
             
-        //$cekUpdate = $role->update(['name' => strtolower($request->NewUpdateCategory)]); //update role baru
-
         if ($cekUpdate) {
           HelperLog::addToLog('Update data Category', json_encode($request->all()));
           return response()->json(['code' =>  '1',  'value' => $request->NewUpdateCategory]);
@@ -82,8 +83,8 @@ class ManageCategory extends Controller
 
     }
 
+    // DALETE CATEGORY DATA//
     public function DelCategory($id){
-
 
         $res = HelperLog::addToLog('Delete data Category', json_encode($id));
         DB::table('kategoritindakan')->where('kattndid', '=', $id)->delete();
@@ -96,7 +97,6 @@ class ManageCategory extends Controller
     public function ShowCategoryAction(Request $request){
 
         if ($request->ajax()) {
-            // $data = Role::all();
            $data = DB::table('tindakan')
                    ->leftJoin('kategoritindakan', 'tindakan.tndkattndid', '=', 'kategoritindakan.kattndid')
                    ->orderBy('tindakan.tndid', 'desc')
@@ -123,7 +123,7 @@ class ManageCategory extends Controller
         return view("/pages/category_action", ['category' => $category, 'count' => $count]);
     }
 
-    // INSERT TBL TINDAKAN //
+    // ADD TBL TINDAKAN //
     public function PostCa(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -203,7 +203,7 @@ class ManageCategory extends Controller
 
                       <div class="form-group">
                           <label class="form-label" for="basic-default-note">Note</label>
-                          <input type="text" class="form-control" id="basic-default-note" name="note" value="'.$ct->tndnote.'" />
+                          <textarea class="form-control" id="basic-default-note" name="note">"'.$ct->tndnote.'"</textarea>
                       </div> 
 
 
@@ -245,17 +245,16 @@ class ManageCategory extends Controller
     public function ShowAction(Request $request){
 
         if ($request->ajax()) {
-            // $data = Role::all();
            $data = DB::table('katlab')
                    ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = ''
-                                // '
-                                // <button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->tndnama.'" data-id="'.$row->tndid .'">edit</button>
-                                // <button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->tndid .'">del</button>
-                                // '
+                    $actionBtn =
+                                '
+                                <button type="button" class="btn btn-sm round btn-info upC" data-id="'.$row->katlabid.'">edit</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger round delC" data-id="'.$row->katlabid .'">del</button>
+                                '
                                 ;
                     return $actionBtn;
                 })
@@ -263,7 +262,122 @@ class ManageCategory extends Controller
                 ->make(true);
         }
         
-        return view("/pages/action");
+        $tindakan = DB::table('tindakan')->get();  
+        return view("/pages/action", ['tindakan' => $tindakan]);
+    }
+
+    // ADD TBL KATLAB //
+    public function PostC(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'action' => 'required',
+            'nama' => 'required|max:255',
+            'unit' => 'required',
+            'value' => 'required|max:255'
+        ]);
+
+        if ($validator->fails()) {
+          return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+        }else{
+
+          DB::table('katlab')->insert([
+              'katlabnama' => $request->nama,
+              'katlabsat' => $request->unit,
+              'katlabnilai' => $request->value,
+              'katlabtndid' => $request->action,
+          ]);
+
+          HelperLog::addToLog('Create data Action', json_encode($request->all()));
+          return response()->json(['code' => '2'], 200);
+
+        }
+
+    }
+
+    //DELETE TABEL KATLAB//
+    public function DelC($id){
+
+        HelperLog::addToLog('Delete data action', json_encode($id));
+
+        DB::table('katlab')->where('katlabid', '=', $id)->delete();
+        return response()->json(['code' =>  '1']);
+
+    }
+
+    //SHOW MODAL ACTION//
+    public function ModalEditC(Request $request){
+
+        $tindakan = DB::table('tindakan')->get();
+
+        $ct     = DB::table('katlab')
+                ->where('katlabid', '=', $request->id1)
+                ->first();
+
+        $modal = '';
+        $modal .= '<div class="modal-body" >
+                      
+                      <div class="form-group">
+                          <label for="select-country">Category Action</label>
+                          <select class="form-control" id="action" name="action">
+                            <option value="">Select Category</option>';
+                            foreach($tindakan as $valca){
+                            $modal .= '<option value="'.$valca->tndid.'" '.(($valca->tndid==$ct->katlabtndid)?'selected':"").'>'.$valca->tndnama.'</option>';
+                            }
+                            $modal .=        
+                          '</select>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="form-label" for="basic-default-name">Name</label>
+                          <input type="text" class="form-control" id="basic-default-name" name="nama" value="'.$ct->katlabnama.'" />
+                      </div>
+
+                      <input type="hidden" name="id_ac" value="'.$ct->katlabid.'" />
+
+                      <div class="form-group">
+                          <label class="form-label" for="basic-default-unit">Unit</label>
+                          <input type="text" class="form-control" id="basic-default-unit" name="unit" value="'.$ct->katlabsat.'" />
+                      </div>    
+
+                      <div class="form-group">
+                          <label class="form-label" for="basic-default-value">Value</label>
+                          <input type="text" class="form-control" id="basic-default-value" name="value" value="'.$ct->katlabnilai.'" />
+                      </div> 
+
+
+                    </div>';
+
+          return response()->json(['modalUpdateaction' => $modal], 200);
+
+    }
+
+
+    //UPDATE TABEL KATLAB//
+    public function UpdateC(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'id_ac' => 'required',
+            'action' => 'required',
+            'nama' => 'required|max:255',
+            'unit' => 'required',
+            'value' => 'required|max:255'
+        ]);
+
+        if ($validator->fails()) {
+          return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+        }else{
+
+        $updateCa = DB::table('katlab')
+          ->where('katlabid', $request->id_ac)
+          ->update(['katlabnama' => $request->nama,
+                    'katlabtndid' => $request->action,
+                    'katlabsat' => $request->unit,
+                    'katlabnilai' => $request->value]
+                   );
+        HelperLog::addToLog('Update data Action', json_encode($request->all()));
+        return response()->json(['code' => '2'], 200);
+        }
+
     }
     
 

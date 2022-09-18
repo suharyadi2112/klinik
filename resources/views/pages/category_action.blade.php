@@ -112,7 +112,7 @@
               </div>    
               <div class="form-group">
                   <label class="form-label" for="basic-default-note">Note</label>
-                  <input type="text" class="form-control" id="basic-default-note" name="note" placeholder="Note" />
+                  <textarea class="form-control" id="basic-default-note" name="note"></textarea>
               </div>   
                         
           </div>
