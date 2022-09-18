@@ -183,7 +183,12 @@ class RegisterController extends Controller
     //param pertama subject dan kedua data request
     HelperLog::addToLog('Show data user', json_encode($request->all())); 
 
-    return view('/auth/users/users-list', ["roless" => $getRole]);
+    //Pasang Breadcrumbs
+    $breadcrumbs = [
+      ['link' => "/users", 'name' => "Users"], ['link' => "/users", 'name' => "List Users"], ['name' => "Dashboard Users"],
+    ];
+
+    return view('/auth/users/users-list', ["roless" => $getRole, 'breadcrumbs'=>$breadcrumbs]);
 
   }
 
