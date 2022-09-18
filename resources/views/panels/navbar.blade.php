@@ -199,21 +199,23 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
               <a class="dropdown-item" href="#">
                 <i class="bx bx-user mr-50"></i> Edit Profile
               </a>
-
-              <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
-                <i class="bx bx-key mr-50"></i> Change Password
-              </a>
              
-              <div class="dropdown-divider mb-0"></div>
-              <a class="dropdown-item" href="{{ Route('logout') }}" onclick="
-                event.preventDefault(); 
-                var result = confirm('Want to Logout ?');
-              if (result) {
-                document.getElementById('logout-form').submit();
-              }"><i class="bx bx-power-off mr-50"></i> Logout</a>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                  {{ csrf_field() }}
-              </form>
+              @if(auth()->user()->can('change_pass users')/* && $some_other_condition*/)
+                <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
+                  <i class="bx bx-key mr-50"></i> Change Password
+                </a>
+              @endif
+             
+                <div class="dropdown-divider mb-0"></div>
+                <a class="dropdown-item" href="{{ Route('logout') }}" onclick="
+                  event.preventDefault(); 
+                  var result = confirm('Want to Logout ?');
+                if (result) {
+                  document.getElementById('logout-form').submit();
+                }"><i class="bx bx-power-off mr-50"></i> Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
             </div>
           </li>
         </ul>

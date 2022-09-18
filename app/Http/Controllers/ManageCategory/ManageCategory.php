@@ -18,10 +18,10 @@ class ManageCategory extends Controller
     {
         // $this->middleware('guest'); //old middleware
         // akses users untuk super-admin dan admin
-        $this->middleware(['role:super-admin|admin']);
+        $this->middleware(['web']);
     }
 
-    public function ShowCategory(Request $request){
+    public function ShowCategory(Request $request){ 
 
         if ($request->ajax()) {
             // $data = Role::all();
@@ -31,8 +31,13 @@ class ManageCategory extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = '<button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->kattndnama.'" data-id="'.$row->kattndid.'">edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->kattndid.'">del</button>';
+                    $actionBtn = '';
+                    if (auth()->user()->can('edit cat')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->kattndnama.'" data-id="'.$row->kattndid.'">edit</button>&nbsp;';
+                    }
+                    if (auth()->user()->can('delete cat')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->kattndid.'">del</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -108,12 +113,13 @@ class ManageCategory extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn =
-                                '
-                                <button type="button" class="btn btn-sm round btn-info upCa" data-id="'.$row->tndid .'">edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delCa" data-id="'.$row->tndid .'">del</button>
-                                '
-                                ;
+                    $actionBtn = '';
+                    if (auth()->user()->can('edit cataction')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upCa" data-id="'.$row->tndid .'">edit</button>&nbsp;';
+                    }
+                    if (auth()->user()->can('delete cataction')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delCa" data-id="'.$row->tndid .'">del</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

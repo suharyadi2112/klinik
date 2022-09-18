@@ -23,7 +23,7 @@ class ManageRoles extends Controller
     {
         // $this->middleware('guest'); //old middleware
         // akses users untuk super-admin dan admin
-        $this->middleware(['role:super-admin|admin']);
+        $this->middleware(['web']);
     }
 
     //dashboard role
@@ -38,9 +38,14 @@ class ManageRoles extends Controller
                     if ($row->name == 'super-admin') {
                         $actionBtn = 'this super admin role';
                     }else{
-                    $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-primary round CekPermission" data-id="'.$row->id.'">permissions</button>
-                    <!--button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button-->
-                                <button type="button" class="btn btn-sm btn-outline-danger round delRole" data-id="'.$row->id.'">del</button>';
+                        $actionBtn = '';
+                        if (auth()->user()->can('view permission')) {
+                            $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-primary round CekPermission" data-id="'.$row->id.'">permissions</button>&nbsp;';
+                        }
+                        // <!--button type="button" class="btn btn-sm round btn-info upRole" vall="'.$row->name.'" data-id="'.$row->id.'">edit</button-->
+                        if (auth()->user()->can('delete roles')) {
+                            $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delRole" data-id="'.$row->id.'">del</button>';
+                        }
                     }
                     return $actionBtn;
                 })
@@ -50,9 +55,9 @@ class ManageRoles extends Controller
 
     //param pertama subject dan kedua data request
     HelperLog::addToLog('Show data role', json_encode($request->all()));
-    //Pasang Breadcrumbs
+    //Pasang Breadcrumbs 
     $breadcrumbs = [
-      ['link' => "/category_action", 'name' => "Categorry Action"], ['link' => "/category_action", 'name' => "List Category Action"], ['name' => "Dashboard Category Action"],
+      ['link' => "/users/roles", 'name' => "Roles"], ['link' => "/users/roles", 'name' => "List Roles"], ['name' => "Dashboard Roles"],
     ];
     return view("/auth/users/roles",['breadcrumbs' => $breadcrumbs]);
   }
@@ -76,26 +81,26 @@ class ManageRoles extends Controller
 
   }
 
-  //update role
-  public function PutRoles(Role $role, Request $request, $id){
+  // //update role
+  // public function PutRoles(Role $role, Request $request, $id){
 
-    $role = Role::findById($id);
+  //   $role = Role::findById($id);
 
-    if ($request->NewUpdateRoles == null || empty($request->NewUpdateRoles)) {
-        return redirect()->route('/');
-    }
+  //   if ($request->NewUpdateRoles == null || empty($request->NewUpdateRoles)) {
+  //       return redirect()->route('/');
+  //   }
 
-    $cekUpdate = $role->update(['name' => strtolower($request->NewUpdateRoles)]); //update role baru
+  //   $cekUpdate = $role->update(['name' => strtolower($request->NewUpdateRoles)]); //update role baru
 
-    if ($cekUpdate) {
-      //param pertama subject dan kedua data request
-      HelperLog::addToLog('Update data role', json_encode($request->all()));
-      return response()->json(['code' =>  '1',  'value' => $request->NewUpdateRoles]);
-    }else{
-      return response()->json(['code' => '2']);
-    }
+  //   if ($cekUpdate) {
+  //     //param pertama subject dan kedua data request
+  //     HelperLog::addToLog('Update data role', json_encode($request->all()));
+  //     return response()->json(['code' =>  '1',  'value' => $request->NewUpdateRoles]);
+  //   }else{
+  //     return response()->json(['code' => '2']);
+  //   }
 
-  }
+  // }
 
   //del role
   //test
