@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
@@ -52,7 +53,7 @@ class RegisterController extends Controller
   {
     // $this->middleware('guest'); //old middleware
     // akses users untuk super-admin dan admin
-    $this->middleware(['role:super-admin|admin']);
+    $this->middleware(['web']);
   }
 
 
@@ -84,6 +85,40 @@ class RegisterController extends Controller
       'email' => $data['email'],
       'password' => Hash::make($data['password']),
     ]);
+  }
+
+  //change password
+  public function ChangePass(Request $request){
+
+    $User = User::find(auth()->user()->id)->makeVisible(['password']);//field yang hidden untuk tampil
+ 
+    $validator = Validator::make($request->all(), [
+        'current_password' => 'required|max:50',
+        'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+    }else{
+
+      if (Hash::check($request->current_password, $User->password)) {
+
+          $SetNewPassword = Hash::make($request->password_confirmation);
+
+          $User->password = $SetNewPassword;
+          $User->updated_at = date('Y-m-d H:i:s');
+          $Res = $User->save();
+
+          if ($Res) {
+            HelperLog::addToLog('Reset Password user', json_encode($request->except(['current_password']))); 
+            Auth::logout();//instan logout
+            return response()->json(['code' => '2'], 200);
+          }
+
+      }else{
+          return response()->json(['code' => '3'], 200);
+      }
+    }
   }
 
   //reset pass
@@ -127,16 +162,26 @@ class RegisterController extends Controller
               return $showr;
           })
          ->addColumn('action', function($row){
-                  $actionBtn = '
+                  $actionBtn = '';
+                  $actionBtn .= '
                   <div class="dropdown">
                     <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>
-                      <a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>
-                      <a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>
-                      <a class="dropdown-item ResetPassword" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-reset mr-1"></i> Reset Pass</a>
-                    </div>
+                    ';
+                    if (auth()->user()->can('edit users')) {
+                      $actionBtn .= '<a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>';
+                    }
+                    if (auth()->user()->can('delete users')) {
+                      $actionBtn .= '<a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>';
+                    }
+                    if (auth()->user()->can('change_status users')) {
+                      $actionBtn .= '<a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>';
+                    }
+                    if (auth()->user()->can('reset users')) {
+                      $actionBtn .= '<a class="dropdown-item ResetPassword" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-reset mr-1"></i> Reset Pass</a>';
+                    }
+                    $actionBtn .= '</div>
                   </div>';
                   return $actionBtn;
           })
@@ -148,7 +193,12 @@ class RegisterController extends Controller
     //param pertama subject dan kedua data request
     HelperLog::addToLog('Show data user', json_encode($request->all())); 
 
-    return view('/auth/users/users-list', ["roless" => $getRole]);
+    //Pasang Breadcrumbs
+    $breadcrumbs = [
+      ['link' => "/users", 'name' => "Users"], ['link' => "/users", 'name' => "List Users"], ['name' => "Dashboard Users"],
+    ];
+
+    return view('/auth/users/users-list', ["roless" => $getRole, 'breadcrumbs'=>$breadcrumbs]);
 
   }
 

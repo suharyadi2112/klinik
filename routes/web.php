@@ -41,43 +41,44 @@ Route::get('/sk-layout-static', [StarterKitController::class, 'static_layout'])-
 Route::get('/', [StarterKitController::class, 'index'])->name('dashboard')->middleware('auth');
 
 // users Routes dengan spatie role and permission
-Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses untuk super-admin dan admin
+Route::group(['middleware' => ['web']], function () {//akses untuk super-admin dan admin
 	//role
-	Route::get('/users/roles', [ManageRoles::class, 'ShowRolesUsers'])->name('ShowRolesUsers');
-	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles');
-	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles');
-	Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles');
+	Route::get('/users/roles', [ManageRoles::class, 'ShowRolesUsers'])->name('ShowRolesUsers')->middleware(['can:view users']);
+	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles')->middleware(['can:create roles']);
+	Route::delete('/users/del/roles/{id}', [ManageRoles::class, 'DelRoles'])->name('DelRoles')->middleware(['can:delete roles']);
+	// Route::post('/users/put/roles/{id}', [ManageRoles::class, 'PutRoles'])->name('PutRoles')->middleware(['can:delete roles']);
 
 	//permission
-	Route::post('/permission/roles/', [ManagePermissions::class, 'ShowModalPermission'])->name('ShowModalPermission');
-	Route::post('/permission/update/', [ManagePermissions::class, 'UpdatePermission'])->name('UpdatePermission');
+	Route::post('/permission/roles/', [ManagePermissions::class, 'ShowModalPermission'])->name('ShowModalPermission')->middleware(['can:view permission']);
+	Route::post('/permission/update/', [ManagePermissions::class, 'UpdatePermission'])->name('UpdatePermission')->middleware(['can:update permission']);
 
 	//users
-	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers');
-	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers');
-	Route::post('/post/users', [RegisterController::class, 'PostUsers'])->name('PostUsers');
-	Route::post('/del/users', [RegisterController::class, 'DeleteUser'])->name('DeleteUser');
-	Route::post('/modaledit/users', [RegisterController::class, 'ModalEdit'])->name('ModalEdit');
-	Route::post('/update/users', [RegisterController::class, 'UpdateUsers'])->name('UpdateUsers');
-	Route::post('/statuschange/users', [RegisterController::class, 'StatusChange'])->name('StatusChange');
-	Route::post('/reset/pass/users', [RegisterController::class, 'ResetPass'])->name('ResetPass');
+	Route::get('/users', [RegisterController::class, 'ShowUsers'])->name('ShowDashboardUsers')->middleware(['can:view users']);
+	Route::get('/getlist/users', [RegisterController::class, 'ShowUsers'])->name('GetListUsers')->middleware(['can:view users']);
+	Route::post('/post/users', [RegisterController::class, 'PostUsers'])->name('PostUsers')->middleware(['can:create users']);
+	Route::post('/del/users', [RegisterController::class, 'DeleteUser'])->name('DeleteUser')->middleware(['can:delete users']);
+	Route::post('/modaledit/users', [RegisterController::class, 'ModalEdit'])->name('ModalEdit')->middleware(['can:edit users']);
+	Route::post('/update/users', [RegisterController::class, 'UpdateUsers'])->name('UpdateUsers')->middleware(['can:edit users']);
+	Route::post('/statuschange/users', [RegisterController::class, 'StatusChange'])->name('StatusChange')->middleware(['can:change_status users']);
+	Route::post('/reset/pass/users', [RegisterController::class, 'ResetPass'])->name('ResetPass')->middleware(['can:reset users']);
+	Route::post('/changepass/users', [RegisterController::class, 'ChangePass'])->name('ChangePass')->middleware(['can:change_pass users']);
 	
 
 	//category
-	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory');
-	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory');
-	Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory');
-	Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory');
+	Route::get('/category', [ManageCategory::class, 'ShowCategory'])->name('ShowCategory')->middleware(['can:view cat']);
+	Route::post('/category/store', [ManageCategory::class, 'StoreCategory'])->name('StoreCategory')->middleware(['can:create cat']);
+	Route::delete('/category/delelete/{id}', [ManageCategory::class, 'DelCategory'])->name('DelCategory')->middleware(['can:delete cat']);
+	Route::post('/category/put/{id}', [ManageCategory::class, 'PutCategory'])->name('PutCategory')->middleware(['can:edit cat']);
 
     //category_action
-	Route::get('/category_action', [ManageCategory::class, 'ShowCategoryAction'])->name('ShowCategoryAction');
-	Route::post('/category_action/post', [ManageCategory::class, 'PostCa'])->name('PostCa');
-	Route::delete('/category_action/delete/{id}', [ManageCategory::class, 'DelCa'])->name('DelCa');
-	Route::post('/category_action/modaledit', [ManageCategory::class, 'ModalEditCa'])->name('ModalEditCa');
-	Route::post('/category_action/update', [ManageCategory::class, 'UpdateCa'])->name('UpdateCa');
+	Route::get('/category_action', [ManageCategory::class, 'ShowCategoryAction'])->name('ShowCategoryAction')->middleware(['can:view cataction']);
+	Route::post('/category_action/post', [ManageCategory::class, 'PostCa'])->name('PostCa')->middleware(['can:create cataction']);
+	Route::delete('/category_action/delete/{id}', [ManageCategory::class, 'DelCa'])->name('DelCa')->middleware(['can:delete cataction']);
+	Route::post('/category_action/modaledit', [ManageCategory::class, 'ModalEditCa'])->name('ModalEditCa')->middleware(['can:edit cataction']);
+	Route::post('/category_action/update', [ManageCategory::class, 'UpdateCa'])->name('UpdateCa')->middleware(['can:edit cataction']);
 
 	//action
-	Route::get('/action', [ManageCategory::class, 'ShowAction'])->name('ShowAction');
+	Route::get('/action', [ManageCategory::class, 'ShowAction'])->name('ShowAction')->middleware(['can:view action_main']);
 	Route::post('/action/post', [ManageCategory::class, 'PostC'])->name('PostC');
 	Route::delete('/action/delete/{id}', [ManageCategory::class, 'DelC'])->name('DelC');
 	Route::post('/action/modaledit', [ManageCategory::class, 'ModalEditC'])->name('ModalEditC');

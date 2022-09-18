@@ -18,12 +18,12 @@ class ManageCategory extends Controller
     {
         // $this->middleware('guest'); //old middleware
         // akses users untuk super-admin dan admin
-        $this->middleware(['role:super-admin|admin']);
+        $this->middleware(['web']);
     }
 
 
     //SHOW CATEGORY DATA//
-    public function ShowCategory(Request $request){
+    public function ShowCategory(Request $request){ 
 
         if ($request->ajax()) {
            $data = DB::table('kategoritindakan')
@@ -32,15 +32,24 @@ class ManageCategory extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = '<button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->kattndnama.'" data-id="'.$row->kattndid.'">edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->kattndid.'">del</button>';
+                    $actionBtn = '';
+                    if (auth()->user()->can('edit cat')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upCategory" vall="'.$row->kattndnama.'" data-id="'.$row->kattndid.'">edit</button>&nbsp;';
+                    }
+                    if (auth()->user()->can('delete cat')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delCategory" data-id="'.$row->kattndid.'">del</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
 	    }
         HelperLog::addToLog('Show data Category', json_encode($request->all()));
-	    return view("/pages/category");
+        //add bredcum
+        $breadcrumbs = [
+          ['link' => "/category", 'name' => "Category"], ['link' => "/category", 'name' => "List Category"], ['name' => "Dashboard Category"],
+        ];
+	    return view("/pages/category", ['breadcrumbs' => $breadcrumbs]);
   	}
 
     // ADD CATEGORY DATA//
@@ -104,12 +113,13 @@ class ManageCategory extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn =
-                                '
-                                <button type="button" class="btn btn-sm round btn-info upCa" data-id="'.$row->tndid .'">edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delCa" data-id="'.$row->tndid .'">del</button>
-                                '
-                                ;
+                    $actionBtn = '';
+                    if (auth()->user()->can('edit cataction')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upCa" data-id="'.$row->tndid .'">edit</button>&nbsp;';
+                    }
+                    if (auth()->user()->can('delete cataction')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delCa" data-id="'.$row->tndid .'">del</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -120,7 +130,10 @@ class ManageCategory extends Controller
         $count    = DB::table('tindakan')->count();
 
         HelperLog::addToLog('Show data Category Action', json_encode($request->all()));
-        return view("/pages/category_action", ['category' => $category, 'count' => $count]);
+        $breadcrumbs = [
+          ['link' => "/category", 'name' => "Category"], ['link' => "/category", 'name' => "List Category"], ['name' => "Dashboard Category"],
+        ];
+        return view("/pages/category_action", ['category' => $category, 'count' => $count, 'breadcrumbs' => $breadcrumbs]);
     }
 
     // ADD TBL TINDAKAN //
@@ -261,6 +274,11 @@ class ManageCategory extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
+        //Pasang Breadcrumbs
+        $breadcrumbs = [
+          ['link' => "/action", 'name' => "Action"], ['link' => "/action", 'name' => "List Action"], ['name' => "Dashboard Action"],
+        ];
         
         $tindakan = DB::table('tindakan')->get();  
         return view("/pages/action", ['tindakan' => $tindakan]);
@@ -377,7 +395,6 @@ class ManageCategory extends Controller
         HelperLog::addToLog('Update data Action', json_encode($request->all()));
         return response()->json(['code' => '2'], 200);
         }
-
     }
     
 
