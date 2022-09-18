@@ -23,6 +23,7 @@
 
 @section('content')
 
+@if(auth()->user()->can('view cataction')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Category Action</h4>
@@ -31,9 +32,11 @@
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
+        @if(auth()->user()->can('create cataction')/* && $some_other_condition*/)
             <button type="button" class="btn btn-primary round addca"><i class="bx bx-plus-circle"></i> 
               Create Category Action
             </button>
+        @endif
         <hr>
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
@@ -55,6 +58,21 @@
         </div>
     </div>
 </section>
+@else
+<div class="col-xl-7 col-md-8 col-12">
+  <div class="card bg-transparent shadow-none">
+    <div class="card-body text-center">
+      <img src="{{asset('images/pages/not-authorized.png')}}" class="img-fluid" alt="not authorized" width="400">
+      <h1 class="my-2 error-title">You are not authorized!</h1>
+      <p>
+          You do not have permission to view this directory or page using
+          the credentials that you supplied.
+      </p>
+      <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO MAIN DASHBOARD</a>
+    </div>
+  </div>
+</div>
+@endif
 <!--/ Description -->
 
 <!--/ HTML Markup -->
@@ -175,7 +193,10 @@
               // orderable: true, 
               // searchable: true
             },
-        ]
+        ],
+        createdRow:function(row,data,index){
+            $('td',row).eq(6).attr("nowrap","nowrap");
+        }
     });
 
     // delete category action

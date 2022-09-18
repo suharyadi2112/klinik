@@ -162,16 +162,26 @@ class RegisterController extends Controller
               return $showr;
           })
          ->addColumn('action', function($row){
-                  $actionBtn = '
+                  $actionBtn = '';
+                  $actionBtn .= '
                   <div class="dropdown">
                     <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>
-                      <a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>
-                      <a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>
-                      <a class="dropdown-item ResetPassword" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-reset mr-1"></i> Reset Pass</a>
-                    </div>
+                    ';
+                    if (auth()->user()->can('edit users')) {
+                      $actionBtn .= '<a class="dropdown-item UpUsers" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-edit-alt mr-1"></i> edit</a>';
+                    }
+                    if (auth()->user()->can('delete users')) {
+                      $actionBtn .= '<a class="dropdown-item DeleteUser" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-trash-alt mr-1"></i> delete</a>';
+                    }
+                    if (auth()->user()->can('change_status users')) {
+                      $actionBtn .= '<a class="dropdown-item Status" data-id="'.$row->id.'" data-status="'.$row->status.'" href="javascript:;"><i class="bx bx-user-check mr-1"></i> status</a>';
+                    }
+                    if (auth()->user()->can('reset users')) {
+                      $actionBtn .= '<a class="dropdown-item ResetPassword" data-id="'.$row->id.'" href="javascript:;"><i class="bx bx-reset mr-1"></i> Reset Pass</a>';
+                    }
+                    $actionBtn .= '</div>
                   </div>';
                   return $actionBtn;
           })

@@ -20,13 +20,16 @@
 @endsection
 @section('content')
 <!-- users list start -->
+@if(auth()->user()->can('view users')/* && $some_other_condition*/)
 <section class="users-list-wrapper">
   <div class="users-list-table">
     <div class="card">
       <div class="card-body">
         <!-- datatable start -->
         <div class="table-responsive">
-        <button type="button" class="btn btn-primary round addusers"><i class="bx bx-plus-circle"></i> Create users</button>
+        @if(auth()->user()->can('create users')/* && $some_other_condition*/)
+        	<button type="button" class="btn btn-primary round addusers"><i class="bx bx-plus-circle"></i> Create users</button>
+        @endif
         <hr>
           <table id="users-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
@@ -46,7 +49,21 @@
     </div>
   </div>
 </section>
-
+@else
+<div class="col-xl-7 col-md-8 col-12">
+	<div class="card bg-transparent shadow-none">
+	  <div class="card-body text-center">
+	    <img src="{{asset('images/pages/not-authorized.png')}}" class="img-fluid" alt="not authorized" width="400">
+	    <h1 class="my-2 error-title">You are not authorized!</h1>
+	    <p>
+	        You do not have permission to view this directory or page using
+	        the credentials that you supplied.
+	    </p>
+	    <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO MAIN DASHBOARD</a>
+	  </div>
+	</div>
+</div>
+@endif
 <!-- users list ends -->
 @endsection
 

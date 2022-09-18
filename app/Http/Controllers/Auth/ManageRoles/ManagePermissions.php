@@ -76,6 +76,8 @@ class ManagePermissions extends Controller
 
     protected function GetModal($rolesid){
 
+        if (auth()->user()->can('update permission')) { $dis = ''; }else{ $dis = 'disabled';}
+
         $modal = '';
         $modal .= '<div class="modal-body" >
                     <div class="form-group">
@@ -85,16 +87,17 @@ class ManagePermissions extends Controller
 
         $GroupPermission = DB::table("permissions")->select('group')->groupBy('group')->orderBy('group','DESC')->get();
         foreach ($GroupPermission as $keyGroup => $allGroup) {
-        $allPermission = DB::table("permissions")->where('group','=',$allGroup->group)->get();
+        $allPermission = DB::table("permissions")->where('group','=',$allGroup->group)->orderBy('name','DESC')->get();
             
             $modal .=   '<tr>';
-            $modal .=   '<td style="border-style : hidden!important; vertical-align:middle;" nowrap><h5><b>'.strtoupper($allGroup->group).' :</b></h5></td>';
+            $modal .=   '<td style="border-style : hidden!important; vertical-align:middle;" nowrap><h5><b>'.strtoupper($allGroup->group).'</b></h5></td>';
+            $modal .=   '<td style="border-style : hidden!important; vertical-align:middle; width:1px;" nowrap><h5><b>:</b></h5></td>';
                     foreach ($allPermission as $key => $value) {
                     $CekPunya = DB::table('role_has_permissions')->where([['role_id','=',$rolesid],['permission_id','=',$value->id]])->count();
                     $resPermission = explode(" ",$value->name);
                         $modal .=   '<td scope="row" style="border-style : hidden!important;" ><fieldset>
                                             <div class="checkbox checkbox-info checkbox-glow" >
-                                                <input type="checkbox" value="'.$value->id.'" name="permission_id[]" id="checkboxGlow1'.$value->id.'" 
+                                                <input type="checkbox" '.$dis.' value="'.$value->id.'" name="permission_id[]" id="checkboxGlow1'.$value->id.'" 
                                                 '.((0 < $CekPunya)?'checked':"").'
                                                 >
                                                 <label for="checkboxGlow1'.$value->id.'" style="cursor: pointer;">'.$resPermission[0].'</label>
@@ -110,7 +113,8 @@ class ManagePermissions extends Controller
                     </div>
                   </div>
                 </div>';
-         return $modal;
+     
+        return $modal;
     }
 
 }
