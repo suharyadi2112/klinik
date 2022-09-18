@@ -14,7 +14,8 @@ class LogActivity extends Model
      *
      * @var array
      */
+    public $timestamps = false;
     protected $fillable = [
-        'subject', 'url', 'method', 'ip', 'agent', 'user_id','data'
+        'subject', 'url', 'method', 'ip', 'agent', 'user_id','data','created_at','updated_at'
     ];
 }

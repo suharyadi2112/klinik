@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 use App\Models\User;
+use App\Models\LogActivity;
 
 use Spatie\Permission\models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -353,6 +354,19 @@ class RegisterController extends Controller
 
     }
 
+  }
+
+  //log
+  public function Log(Request $request){
+    if ($request->ajax()) {
+        return DataTables::of(LogActivity::orderBy('created_at','DESC')->get())->addIndexColumn()->make(true);
+    }
+    //Pasang Breadcrumbs
+    $breadcrumbs = [
+          ['link' => "/users/log", 'name' => "Log"], ['link' => "/users/log", 'name' => "List Log"], ['name' => "Dashboard Log"],
+        ];
+    
+    return view('/auth/users/log',['breadcrumbs'=>$breadcrumbs]);
   }
 
   // Register old

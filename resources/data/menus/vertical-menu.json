@@ -196,6 +196,12 @@
             "nameRoute" : "testPage",
             "name": "Roles",
             "slug": "role"
+          },
+          {
+            "url": "users/log",
+            "nameRoute" : "log",
+            "name": "Log",
+            "slug": "log"
           }
       ]
     },
