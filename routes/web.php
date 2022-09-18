@@ -41,7 +41,7 @@ Route::get('/sk-layout-static', [StarterKitController::class, 'static_layout'])-
 Route::get('/', [StarterKitController::class, 'index'])->name('dashboard')->middleware('auth');
 
 // users Routes dengan spatie role and permission
-Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses untuk super-admin dan admin
+Route::group(['middleware' => ['web']], function () {//akses untuk super-admin dan admin
 	//role
 	Route::get('/users/roles', [ManageRoles::class, 'ShowRolesUsers'])->name('ShowRolesUsers');
 	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles');

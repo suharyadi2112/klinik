@@ -23,7 +23,7 @@ class ManageRoles extends Controller
     {
         // $this->middleware('guest'); //old middleware
         // akses users untuk super-admin dan admin
-        $this->middleware(['role:super-admin|admin']);
+        $this->middleware(['web']);
     }
 
     //dashboard role
@@ -50,9 +50,9 @@ class ManageRoles extends Controller
 
     //param pertama subject dan kedua data request
     HelperLog::addToLog('Show data role', json_encode($request->all()));
-    //Pasang Breadcrumbs
+    //Pasang Breadcrumbs 
     $breadcrumbs = [
-      ['link' => "/category_action", 'name' => "Categorry Action"], ['link' => "/category_action", 'name' => "List Category Action"], ['name' => "Dashboard Category Action"],
+      ['link' => "/users/roles", 'name' => "Roles"], ['link' => "/users/roles", 'name' => "List Roles"], ['name' => "Dashboard Roles"],
     ];
     return view("/auth/users/roles",['breadcrumbs' => $breadcrumbs]);
   }

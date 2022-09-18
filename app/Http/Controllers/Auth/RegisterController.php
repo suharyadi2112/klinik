@@ -53,7 +53,7 @@ class RegisterController extends Controller
   {
     // $this->middleware('guest'); //old middleware
     // akses users untuk super-admin dan admin
-    $this->middleware(['role:super-admin|admin']);
+    $this->middleware(['web']);
   }
 
 
