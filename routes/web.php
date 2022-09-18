@@ -78,6 +78,10 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {//akses 
 
 	//action
 	Route::get('/action', [ManageCategory::class, 'ShowAction'])->name('ShowAction');
+	Route::post('/action/post', [ManageCategory::class, 'PostC'])->name('PostC');
+	Route::delete('/action/delete/{id}', [ManageCategory::class, 'DelC'])->name('DelC');
+	Route::post('/action/modaledit', [ManageCategory::class, 'ModalEditC'])->name('ModalEditC');
+	Route::post('/action/update', [ManageCategory::class, 'UpdateC'])->name('UpdateC');
 
 	//permission
 	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
