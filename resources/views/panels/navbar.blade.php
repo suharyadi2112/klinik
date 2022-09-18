@@ -203,10 +203,12 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <i class="bx bx-user mr-50"></i> Edit Profile
               </a>
              
-              @if(auth()->user()->can('change_pass users')/* && $some_other_condition*/)
-                <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
-                  <i class="bx bx-key mr-50"></i> Change Password
-                </a>
+              @if(Auth::user())
+                @if(auth()->user()->can('change_pass users')/* && $some_other_condition*/)
+                  <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
+                    <i class="bx bx-key mr-50"></i> Change Password
+                  </a>
+                @endif
               @endif
              
                 <div class="dropdown-divider mb-0"></div>
