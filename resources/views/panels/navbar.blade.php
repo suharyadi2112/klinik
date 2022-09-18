@@ -205,7 +205,12 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
               </a>
              
               <div class="dropdown-divider mb-0"></div>
-              <a class="dropdown-item" href="{{ Route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off mr-50"></i> Logout</a>
+              <a class="dropdown-item" href="{{ Route('logout') }}" onclick="
+                event.preventDefault(); 
+                var result = confirm('Want to Logout ?');
+              if (result) {
+                document.getElementById('logout-form').submit();
+              }"><i class="bx bx-power-off mr-50"></i> Logout</a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   {{ csrf_field() }}
               </form>
