@@ -39,7 +39,11 @@ class ManageCategory extends Controller
                 ->make(true);
 	    }
         HelperLog::addToLog('Show data Category', json_encode($request->all()));
-	    return view("/pages/category");
+        //add bredcum
+        $breadcrumbs = [
+          ['link' => "/category", 'name' => "Category"], ['link' => "/category", 'name' => "List Category"], ['name' => "Dashboard Category"],
+        ];
+	    return view("/pages/category", ['breadcrumbs' => $breadcrumbs]);
   	}
 
     public function StoreCategory(Request $request){
@@ -120,7 +124,10 @@ class ManageCategory extends Controller
         $count    = DB::table('tindakan')->count();
 
         HelperLog::addToLog('Show data Category Action', json_encode($request->all()));
-        return view("/pages/category_action", ['category' => $category, 'count' => $count]);
+        $breadcrumbs = [
+          ['link' => "/category", 'name' => "Category"], ['link' => "/category", 'name' => "List Category"], ['name' => "Dashboard Category"],
+        ];
+        return view("/pages/category_action", ['category' => $category, 'count' => $count, 'breadcrumbs' => $breadcrumbs]);
     }
 
     // INSERT TBL TINDAKAN //
@@ -262,8 +269,13 @@ class ManageCategory extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
+        //Pasang Breadcrumbs
+        $breadcrumbs = [
+          ['link' => "/action", 'name' => "Action"], ['link' => "/action", 'name' => "List Action"], ['name' => "Dashboard Action"],
+        ];
         
-        return view("/pages/action");
+        return view("/pages/action", ['breadcrumbs' => $breadcrumbs]);
     }
     
 

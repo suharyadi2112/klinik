@@ -50,7 +50,11 @@ class ManageRoles extends Controller
 
     //param pertama subject dan kedua data request
     HelperLog::addToLog('Show data role', json_encode($request->all()));
-    return view("/auth/users/roles");
+    //Pasang Breadcrumbs
+    $breadcrumbs = [
+      ['link' => "/category_action", 'name' => "Categorry Action"], ['link' => "/category_action", 'name' => "List Category Action"], ['name' => "Dashboard Category Action"],
+    ];
+    return view("/auth/users/roles",['breadcrumbs' => $breadcrumbs]);
   }
 
   //insert role baru
