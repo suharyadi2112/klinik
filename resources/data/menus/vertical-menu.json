@@ -75,8 +75,8 @@
       "icon": "shoppingcart-in",
       "submenu": [
         {
-          "url": "#",
-          "name": "Registration",
+          "url": "transaction/registration",
+          "name": "Registration Action",
           "slug": "registration",
           "icon": "bx bx-right-arrow-alt"
         },
