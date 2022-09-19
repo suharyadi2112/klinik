@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ManageRoles\ManageRoles;
 use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
 use App\Http\Controllers\ManageCategory\ManageCategory;
 use App\Http\Controllers\Transaction\ManageTransaction;
+use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,12 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 
 	//transaction
 	Route::get('transaction/registration', [ManageTransaction::class, 'index'])->name('IndexRegistration');
+
+	//billng type
+	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
+	Route::post('/pasien/billing/store', [ManagePasienBilling::class, 'StoreBilling'])->name('StoreBilling');
+	Route::delete('/pasien/billing/delete/{id}', [ManagePasienBilling::class, 'DelBilling'])->name('DelBilling');
+	Route::post('/pasien/billing/update/{id}', [ManagePasienBilling::class, 'UpdateBilling'])->name('UpdateBilling');
 	
 });
 
