@@ -67,6 +67,39 @@
         }
       ]
     },
+
+    {
+      "url": "#",
+      "name": "Pasien",
+      "slug": "pasien",
+      "icon": "users",
+      "submenu": [
+        {
+          "url": "#",
+          "name": "Data Pasien",
+          "slug": "data_pasien",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Partner",
+          "slug": "partner",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Partner Category",
+          "slug": "partner_category",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "#",
+          "name": "Billing Type",
+          "slug": "billing_type",
+          "icon": "bx bx-right-arrow-alt"
+        }
+      ]
+    },
       
     {
       "url": "#",
