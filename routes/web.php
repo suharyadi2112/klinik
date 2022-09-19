@@ -93,6 +93,8 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	//transaction
 	Route::get('/transaction/registration', [ManageTransaction::class, 'index'])->name('IndexRegistration');
 	Route::get('/add/registration', [ManageTransaction::class, 'AddRegistration'])->name('AddRegistration');
+	Route::post('/modal/patient', [ManageTransaction::class, 'ShowModalPatient'])->name('ShowModalPatient');
+	Route::get('/modal/getlistpatient', [ManageTransaction::class, 'GetListPatient'])->name('GetListPatient');
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
