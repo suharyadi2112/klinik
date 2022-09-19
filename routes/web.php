@@ -90,7 +90,8 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/users/permission', [ManagePermissions::class, 'GetPermission'])->name('GetPermission');
 
 	//transaction
-	Route::get('transaction/registration', [ManageTransaction::class, 'index'])->name('IndexRegistration');
+	Route::get('/transaction/registration', [ManageTransaction::class, 'index'])->name('IndexRegistration');
+	Route::get('/add/registration', [ManageTransaction::class, 'AddRegistration'])->name('AddRegistration');
 	
 });
 
