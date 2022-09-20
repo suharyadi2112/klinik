@@ -28,7 +28,25 @@ class ManageTransaction extends Controller
         $this->AllModalTransaction = $AllModalTransaction;
     }
 
-    public function index(){
+    public function index(Request $request){
+
+        if ($request->ajax()) {
+            $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->orderBy('penid', 'desc')
+            ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '';
+                    $actionBtn .= '<button type="button" class="btn btn-sm round btn-info ActionRegistration" idRegis="'.$row->penid.'" >action</button>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
         //param pertama subject dan kedua data request
         HelperLog::addToLog('Show data transaction registration', json_encode(auth()->user()->id));
