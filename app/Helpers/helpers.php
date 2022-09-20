@@ -22,6 +22,8 @@ class Helper
     $log['agent'] = Request::header('user-agent');
     $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
     $log['data'] = $data;
+    $log['created_at'] = date('Y-m-d H:i:s');
+    $log['updated_at'] = date('Y-m-d H:i:s');
     LogActivityModel::create($log);
   }
 

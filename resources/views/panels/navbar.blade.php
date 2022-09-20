@@ -69,6 +69,9 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
               <ul class="search-list"></ul>
             </div>
           </li> -->
+          
+          
+
           <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
               <li class="dropdown-menu-header">
@@ -200,10 +203,12 @@ data-bgcolor="@if(isset($configData['navbarBgColor'])){{$configData['navbarBgCol
                 <i class="bx bx-user mr-50"></i> Edit Profile
               </a>
              
-              @if(auth()->user()->can('change_pass users')/* && $some_other_condition*/)
-                <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
-                  <i class="bx bx-key mr-50"></i> Change Password
-                </a>
+              @if(Auth::user())
+                @if(auth()->user()->can('change_pass users')/* && $some_other_condition*/)
+                  <a class="dropdown-item" href="#" @if(Auth::user()) onclick="ModalChangePassword('{{ auth()->user()->id; }}')" @endif>
+                    <i class="bx bx-key mr-50"></i> Change Password
+                  </a>
+                @endif
               @endif
              
                 <div class="dropdown-divider mb-0"></div>
