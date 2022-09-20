@@ -25,7 +25,7 @@
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
-            <button type="button" class="btn btn-primary round addc"><i class="bx bx-plus-circle"></i> 
+            <button type="button" class="btn btn-primary round addpa"><i class="bx bx-plus-circle"></i> 
               Create Partner
             </button>
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
@@ -80,7 +80,7 @@
 <script src="{{asset('vendors/js/tables/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{asset('vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
 
-<div class="modal fade" id="ModalInsertC" data-keyboard="false" data-backdrop="static">  
+<div class="modal fade" id="ModalInsertPA" data-keyboard="false" data-backdrop="static">  
   <div class="modal-dialog ">
     <div class="modal-content" id="modal-content">
       <div class="row">
@@ -95,11 +95,46 @@
           <div class="modal-body" >
 
               <div class="form-group">
-                  <label for="select-country">Category Action</label>
-                  <select class="form-control" id="action" name="action">
+                  <label class="form-label" for="basic-default-name">Partner Name</label>
+                  <input type="text" class="form-control" id="basic-default-name" name="nama" placeholder="Partner Name" />
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-alamat">Partner Address</label>
+                  <textarea class="form-control" id="basic-default-alamat" name="alamat"></textarea>
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-hp">Partner Phone</label>
+                  <input type="text" class="form-control" id="basic-default-hp" name="nohp" placeholder="Partner Phone" />
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-cp">Contact Person</label>
+                  <input type="text" class="form-control" id="basic-default-cp" name="cp" placeholder="Contact Person" />
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-cpn">Contact Person Number</label>
+                  <input type="text" class="form-control" id="basic-default-cpn" name="cpn" placeholder="Contact Person Number" />
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-fe">First Email</label>
+                  <input type="text" class="form-control" id="basic-default-fe" name="emailf" placeholder="First Email" />
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label" for="basic-default-se">Second Email</label>
+                  <input type="text" class="form-control" id="basic-default-se" name="emails" placeholder="Second Email" />
+              </div>
+
+              <div class="form-group">
+                  <label for="select-country">Partner Category</label>
+                  <select class="form-control" id="cp" name="cp">
                     <option value="">Select Category</option>
-                      @forelse($tindakan as $key => $valtindakan)
-                        <option value="{{ $valtindakan->tndid }}">{{ $valtindakan->tndnama }}</option>
+                      @forelse($kategoripa as $key => $valpa)
+                        <option value="{{ $valpa->katpengirimid }}">{{ $valpa->katpengirimnama }}</option>
                       @empty
                         <option value="">Data not found</option>
                       @endforelse
@@ -107,17 +142,13 @@
               </div>
 
               <div class="form-group">
-                  <label class="form-label" for="basic-default-name">Name</label>
-                  <input type="text" class="form-control" id="basic-default-name" name="nama" placeholder="Name" />
+                  <label class="form-label" for="basic-default-mou">MOU Date</label>
+                  <input type="date" class="form-control" id="basic-default-mou" name="mou" placeholder="MOU Date" />
               </div>
   
               <div class="form-group">
-                  <label class="form-label" for="basic-default-unit">Unit</label>
-                  <input type="text" class="form-control" id="basic-default-unit" name="unit" placeholder="Unit" />
-              </div>    
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-value">Value</label>
-                  <input type="text" class="form-control" id="basic-default-value" name="value" placeholder="value" />
+                  <label class="form-label" for="basic-default-moux">MOU Expired Date</label>
+                  <input type="date" class="form-control" id="basic-default-moux" name="moux" placeholder="OU Expired Date" />
               </div>   
                         
           </div>
@@ -176,8 +207,8 @@
   })
 
     /*---------------------insert action------------------------*/
-  $(document).on("click", ".addc", function () {
-    $("#ModalInsertC").modal("show");
+  $(document).on("click", ".addpa", function () {
+    $("#ModalInsertPA").modal("show");
   });
 
   $(document).on('submit', '#FormInsertC', function(e) {
@@ -213,7 +244,7 @@
         complete: function() {
             $('.yajra-datatable').DataTable().ajax.reload();
             $('.insertca').prop('disabled', false);
-            $("#ModalInsertC").modal("hide");
+            $("#ModalInsertPA").modal("hide");
         },
         error: function(data,xhr) {
           alert("Failed response")

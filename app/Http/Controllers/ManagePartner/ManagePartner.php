@@ -43,7 +43,7 @@ class ManagePartner extends Controller
           ['link' => "/partner", 'name' => "Partner"], ['link' => "/partner", 'name' => "List Partner"], ['name' => "Dashboard Partner"],
         ];
         
-        $tindakan = DB::table('tindakan')->get();  
-        return view("/partner/partner", ['tindakan' => $tindakan]);
+        $kategoripa = DB::table('kategoripengirim')->get();  
+        return view("/partner/partner", ['kategoripa' => $kategoripa]);
     }
 }
