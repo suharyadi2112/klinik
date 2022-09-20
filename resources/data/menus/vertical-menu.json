@@ -87,7 +87,7 @@
           "icon": "bx bx-right-arrow-alt"
         },
         {
-          "url": "#",
+          "url": "partner/category",
           "name": "Partner Category",
           "slug": "partner_category",
           "icon": "bx bx-right-arrow-alt"
