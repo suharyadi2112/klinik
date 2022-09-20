@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 use App\Models\User;
+use App\Models\TypeOfBilling;
 use Spatie\Permission\models\Role;
 
 use App\Helpers\Helper as HelperLog;
@@ -67,5 +68,36 @@ class ManageTransaction extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    //list partner
+    public function ShowModalPartner(){
+        return response()->json(['code' => '1', 'modal' => $this->AllModalTransaction->ModalPartner()]);
+    }
+
+    public function GetListPartner(Request $request){
+        if ($request->ajax()) {
+            $data = DB::table('pengirim')->orderBy('pennama', 'desc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '';
+                    $actionBtn .= '<button type="button" class="btn btn-sm round btn-info PickPartner" val_id_partner="'.$row->pengid.'" val_name_partner="'.$row->pennama.'" ><i class="bx bxs-check-circle"></i></button>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function ListTypeOfBilling(Request $request){
+        $data = [];
+        if($request->q){
+            $search = $request->q;
+            $data = TypeOfBilling::select("pemid","pemnama")->where('pemnama','LIKE',"%$search%")->get();
+        }else{
+            $data = TypeOfBilling::select("pemid","pemnama")->get();
+        }
+        return response()->json($data);
     }
 }

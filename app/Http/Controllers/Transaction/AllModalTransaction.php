@@ -35,4 +35,24 @@ class AllModalTransaction extends Controller
 
         return $modal;
     }
+
+    public function ModalPartner(){
+
+        $modal = '';
+        $modal .=   '<div class="modal-body p-1">
+                        <div class="table-responsive">
+                          <table id="partner-list" class="table table-striped table-sm table-hover" width="100%">
+                            <thead>
+                              <tr>
+                                <th>Partner Name</th>
+                                <th>Partner Alamat</th>
+                                <th>#</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                    </div>';
+
+        return $modal;
+    }
 }
