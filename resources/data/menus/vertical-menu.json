@@ -112,24 +112,6 @@
           "name": "Registration Action",
           "slug": "registration",
           "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Action Input",
-          "slug": "action_input",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Laboratorium",
-          "slug": "laboratorium",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Billing",
-          "slug": "billing",
-          "icon": "bx bx-right-arrow-alt"
         }
       ]
     },
