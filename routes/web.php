@@ -13,6 +13,7 @@ use App\Http\Controllers\Transaction\ManageTransaction;
 use App\Http\Controllers\Transaction\ProcessTransaction;
 use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
+use App\Http\Controllers\ManagePartner\ManagePartner;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,11 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::post('/partner/category/store', [ManagePartnerCategory::class, 'StorePC'])->name('StorePC');
 	Route::post('/partner/category/update/{id}', [ManagePartnerCategory::class, 'UpdatePC'])->name('UpdatePC');
 	Route::delete('/partner/category/delete/{id}', [ManagePartnerCategory::class, 'DelPC'])->name('DelPC');
+
+	//partner
+	Route::get('/partner', [ManagePartner::class, 'ShowPartner'])->name('ShowPartner');
+
+
 	
 });
 

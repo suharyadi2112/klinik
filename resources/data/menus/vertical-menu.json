@@ -14,22 +14,6 @@
     },
 
     {
-      "url": "/",
-      "name": "Action",
-      "slug": "action",
-      "icon": "pen",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
-    },
-
-    {
-      "url": "/",
-      "name": "Partner",
-      "slug": "partner",
-      "icon": "pen",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
-    },
-
-    {
       "url": "#",
       "name": "Starter kit",
       "slug": "starter-kit",
@@ -81,7 +65,7 @@
           "icon": "bx bx-right-arrow-alt"
         },
         {
-          "url": "#",
+          "url": "partner",
           "name": "Partner",
           "slug": "partner",
           "icon": "bx bx-right-arrow-alt"
