@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ManageRoles\ManageRoles;
 use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
 use App\Http\Controllers\ManageCategory\ManageCategory;
 use App\Http\Controllers\Transaction\ManageTransaction;
+use App\Http\Controllers\Transaction\ProcessTransaction;
 use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 
 /*
@@ -95,6 +96,10 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/add/registration', [ManageTransaction::class, 'AddRegistration'])->name('AddRegistration');
 	Route::post('/modal/patient', [ManageTransaction::class, 'ShowModalPatient'])->name('ShowModalPatient');
 	Route::get('/modal/getlistpatient', [ManageTransaction::class, 'GetListPatient'])->name('GetListPatient');
+	Route::post('/modal/partner', [ManageTransaction::class, 'ShowModalPartner'])->name('ShowModalPartner');
+	Route::get('/modal/getlistpartner', [ManageTransaction::class, 'GetListPartner'])->name('GetListPartner');
+	Route::get('/list/typeofbilling', [ManageTransaction::class, 'ListTypeOfBilling'])->name('ListTypeOfBilling');
+	Route::post('/insert/registration', [ProcessTransaction::class, 'InsertRegistration'])->name('InsertRegistration');
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
