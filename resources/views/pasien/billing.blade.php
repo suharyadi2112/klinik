@@ -26,7 +26,7 @@
         <div class="table-responsive">
 
         @if(auth()->user()->can('create cat')/* && $some_other_condition*/)
-            <button type="button" class="btn btn-primary round addbilling"><i class="bx bx-plus-circle"></i> Create Category</button>
+            <button type="button" class="btn btn-primary round addbilling"><i class="bx bx-plus-circle"></i> Create Type Of Billing</button>
         @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
