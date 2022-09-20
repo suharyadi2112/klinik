@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
 use App\Http\Controllers\ManageCategory\ManageCategory;
 use App\Http\Controllers\Transaction\ManageTransaction;
 use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
+use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +103,11 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::delete('/pasien/billing/delete/{id}', [ManagePasienBilling::class, 'DelBilling'])->name('DelBilling');
 	Route::post('/pasien/billing/update/{id}', [ManagePasienBilling::class, 'UpdateBilling'])->name('UpdateBilling');
 
+	//billng type
+	Route::get('/partner/category', [ManagePartnerCategory::class, 'ShowPartnerCategory'])->name('ShowPartnerCategory');
+	Route::post('/partner/category/store', [ManagePartnerCategory::class, 'StorePC'])->name('StorePC');
+	Route::post('/partner/category/update/{id}', [ManagePartnerCategory::class, 'UpdatePC'])->name('UpdatePC');
+	Route::delete('/partner/category/delete/{id}', [ManagePartnerCategory::class, 'DelPC'])->name('DelPC');
 	
 });
 
