@@ -25,6 +25,11 @@
     <div class="card">
       <div class="card-body">
         <!-- datatable start -->
+        @if (session('error'))
+		    <div class="alert alert-danger">
+		        {{ session('error') }}
+		    </div>
+		@endif
         <div class="table-responsive">
         	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
         <hr>
@@ -87,7 +92,8 @@
 		        {data: 'action', name: 'action'},
 		    ],
 		    createdRow:function(row,data,index){
-		    	$('td',row).eq(3).attr("nowrap","nowrap");
+		    	$('td',row).eq(1).attr("nowrap","nowrap");
+		    	$('td',row).eq(2).attr("nowrap","nowrap");
 			}
 		});
 	});
