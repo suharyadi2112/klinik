@@ -216,7 +216,7 @@ class ManageCategory extends Controller
 
                       <div class="form-group">
                           <label class="form-label" for="basic-default-note">Note</label>
-                          <textarea class="form-control" id="basic-default-note" name="note">"'.$ct->tndnote.'"</textarea>
+                          <textarea class="form-control" id="basic-default-note" name="note">'.$ct->tndnote.'</textarea>
                       </div> 
 
 
