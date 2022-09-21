@@ -128,7 +128,7 @@
     });
 
 
-    // delete action
+    // delete partner
     $(document).on('click', '.delPA', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
