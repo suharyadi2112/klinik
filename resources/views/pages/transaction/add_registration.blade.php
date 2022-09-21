@@ -39,7 +39,7 @@
                                   <div class="col-md-6 col-12">
                                   	<label for="registration-date">Registration Date</label>
                                   		<div class="position-relative has-icon-left">
-                                          <input type="date" value="{{ date('Y-m-d') }}" name="date_registration" id="" class="form-control" name="fname-icon" placeholder="Registration Data" readonly>
+                                          <input type="date" value="{{ date('Y-m-d') }}" name="date_registration" id="" class="form-control" placeholder="Registration Data" readonly>
                                           <div class="form-control-position">
                                               <i class="bx bx-calendar"></i>
                                           </div>
