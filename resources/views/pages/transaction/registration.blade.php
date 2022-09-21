@@ -38,7 +38,7 @@
                 	<th>NIK</th>
                 	<th>Partner</th>
                 	<th>Type Of Billing</th>
-                	<th><th><i class="bx bx-cog"></i></th></th>
+                	<th style="text-align: center;"><i class="bx bx-cog"></i></th>
             	</tr>
             </thead>
           </table>
@@ -79,7 +79,6 @@
 		    columns: [
 		    	{data: 'DT_RowIndex', name: 'DT_RowIndex'},
 		        {data: 'pentgl', name: 'pentgl'},
-		        {data: 'pentglrujukan', name: 'pentglrujukan'},
 		        {data: 'pentglrujukan', name: 'pentglrujukan'},
 		        {data: 'pasnama', name: 'pasnama'},
 		        {data: 'pasnik', name: 'pasnik'},
