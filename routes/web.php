@@ -103,9 +103,10 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/list/typeofbilling', [ManageTransaction::class, 'ListTypeOfBilling'])->name('ListTypeOfBilling');
 	Route::post('/insert/registration', [ProcessTransaction::class, 'InsertRegistration'])->name('InsertRegistration');
 	Route::get('/action/registration/{id_registration}', [ManageTransaction::class, 'RegistrationAction'])->name('RegistrationAction');
-	Route::get('/insert/action/registration', [ManageTransaction::class, 'InsertRegistrationAction'])->name('InsertRegistrationAction');
+	Route::post('/insert/action/registration', [ManageTransaction::class, 'InsertRegistrationAction'])->name('InsertRegistrationAction');
 	Route::post('/modal/action/code', [ManageTransaction::class, 'ShowModalActionCode'])->name('ShowModalActionCode');
 	Route::get('/list/action/code', [ManageTransaction::class, 'GetListActionCode'])->name('GetListActionCode');
+	Route::get('/get/tindakan/keluar/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluar'])->name('TableTindakanKeluar');
 
 
 	//billng type
