@@ -25,9 +25,11 @@
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
-            <button type="button" class="btn btn-primary round addpa"><i class="bx bx-plus-circle"></i> 
-              Create Partner
-            </button>
+            <a href="{{ route('AddPartner') }}">
+              <button type="button" class="btn btn-primary round"><i class="bx bx-plus-circle"></i> 
+                Create Partner
+              </button>
+            </a>
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>
@@ -80,120 +82,8 @@
 <script src="{{asset('vendors/js/tables/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{asset('vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
 
-<div class="modal fade" id="ModalInsertPA" data-keyboard="false" data-backdrop="static">  
-  <div class="modal-dialog ">
-    <div class="modal-content" id="modal-content">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="modal-header bg-info p-2">
-            <h5 class="modal-title white" id="staticBackdropLabel">Insert Partner</h5> 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
-              <span aria-hidden="true">&times;</span> 
-            </button>
-          </div>
-          <form id="FormInsertC" data-route="{{ route('PostC') }}" role="form" method="POST" accept-charset="utf-8">
-          <div class="modal-body" >
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-name">Partner Name</label>
-                  <input type="text" class="form-control" id="basic-default-name" name="nama" placeholder="Partner Name" />
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-alamat">Partner Address</label>
-                  <textarea class="form-control" id="basic-default-alamat" name="alamat"></textarea>
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-hp">Partner Phone</label>
-                  <input type="text" class="form-control" id="basic-default-hp" name="nohp" placeholder="Partner Phone" />
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-cp">Contact Person</label>
-                  <input type="text" class="form-control" id="basic-default-cp" name="cp" placeholder="Contact Person" />
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-cpn">Contact Person Number</label>
-                  <input type="text" class="form-control" id="basic-default-cpn" name="cpn" placeholder="Contact Person Number" />
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-fe">First Email</label>
-                  <input type="text" class="form-control" id="basic-default-fe" name="emailf" placeholder="First Email" />
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-se">Second Email</label>
-                  <input type="text" class="form-control" id="basic-default-se" name="emails" placeholder="Second Email" />
-              </div>
-
-              <div class="form-group">
-                  <label for="select-country">Partner Category</label>
-                  <select class="form-control" id="cp" name="cp">
-                    <option value="">Select Category</option>
-                      @forelse($kategoripa as $key => $valpa)
-                        <option value="{{ $valpa->katpengirimid }}">{{ $valpa->katpengirimnama }}</option>
-                      @empty
-                        <option value="">Data not found</option>
-                      @endforelse
-                  </select>
-              </div>
-
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-mou">MOU Date</label>
-                  <input type="date" class="form-control" id="basic-default-mou" name="mou" placeholder="MOU Date" />
-              </div>
-  
-              <div class="form-group">
-                  <label class="form-label" for="basic-default-moux">MOU Expired Date</label>
-                  <input type="date" class="form-control" id="basic-default-moux" name="moux" placeholder="OU Expired Date" />
-              </div>   
-                        
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="insertca btn btn-primary"><i class='bx bx-upload' ></i> Insert</button>
-          </div>
-
-          </form>
-          {{-- tutup form --}}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="ModalUpdateC" data-keyboard="false" data-backdrop="static">  
-  <div class="modal-dialog">
-    <div class="modal-content" id="modal-content">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="modal-header bg-primary p-2">
-            <h5 class="modal-title white" id="staticBackdropLabel">Update Partner</h5> 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
-              <span aria-hidden="true">&times;</span> 
-            </button>
-          </div>
-          <form id="FormUpdateC" data-route="{{ route('UpdateC') }}" role="form" method="POST" accept-charset="utf-8">    
-            {{-- render modal --}}
-            <div id="RenderFormUpdateC"></div>
-
-            <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="updateus btn btn-primary"><i class='bx bx-pencil' ></i> Update</button>
-                </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script type="text/javascript">
 
-   //top end notif
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -205,109 +95,6 @@
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
   })
-
-    /*---------------------insert action------------------------*/
-  $(document).on("click", ".addpa", function () {
-    $("#ModalInsertPA").modal("show");
-  });
-
-  $(document).on('submit', '#FormInsertC', function(e) {
-    e.preventDefault();
-    var route = $('#FormInsertC').data('route');
-    var form_data = $(this);
-    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
-    $.ajax({
-        type: 'POST',
-        url: route,
-        data: form_data.serialize(),
-        beforeSend: function() {
-          $('.insertca').prop('disabled', true);
-        },
-        success: function(data) {
-        switch (data.code) {
-                case "1":
-          Toast.fire({
-            icon: 'error',
-            title: data.fail
-          })
-        break;
-        case "2":
-          Toast.fire({
-            icon: 'success',
-            title: 'Insert Success'
-          })
-        break;
-                default:
-                break;
-        }
-        },
-        complete: function() {
-            $('.yajra-datatable').DataTable().ajax.reload();
-            $('.insertca').prop('disabled', false);
-            $("#ModalInsertPA").modal("hide");
-        },
-        error: function(data,xhr) {
-          alert("Failed response")
-        },
-    });
-  });
-
-  /*---------------------get modal edit action------------------------*/
-  $(document).on("click", ".upC", function () {
-    var id = $(this).attr('data-id')
-    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
-    Pace.track(function(){
-      $.post( '{{ route('ModalEditC') }}', { id1 : id })
-        .done(function( data ) {
-          $("#RenderFormUpdateC").html(data.modalUpdateaction);
-          $("#ModalUpdateC").modal("show");
-        })
-        .fail(function() { alert( "error" );})
-    });
-  });
-
-    $(document).on('submit', '#FormUpdateC', function(e) {
-      e.preventDefault();
-      var route = $('#FormUpdateC').data('route');
-      var form_data = $(this);
-      $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
-      Pace.track(function(){
-        $.ajax({
-            type: 'POST',
-            url: route,
-            data: form_data.serialize(),
-            beforeSend: function() {
-              $('.updateus').prop('disabled', true);
-            },
-            success: function(data) {
-            switch (data.code) {
-                    case "1":
-              Toast.fire({
-                icon: 'error',
-                title: data.fail
-              })
-            break;
-            case "2":
-              Toast.fire({
-                icon: 'success',
-                title: 'Update Success'
-              })
-            break;
-                    default:
-                    break;
-                }
-            },
-            complete: function() {
-                $('.yajra-datatable').DataTable().ajax.reload();
-                $('.updateus').prop('disabled', false);
-                $("#ModalUpdateC").modal("hide");
-            },
-            error: function(data,xhr) {
-              alert("Failed response")
-            },
-        });
-    });
-  });
 
 </script>
 
@@ -342,7 +129,7 @@
 
 
     // delete action
-    $(document).on('click', '.delC', function () {
+    $(document).on('click', '.delPA', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
           title: 'Are you sure delete this data ?',
@@ -351,7 +138,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
               if (id) {
-                return fetch('{{route("DelC", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("delPA", ":id")}}'.replace(":id", id),{
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
