@@ -120,6 +120,8 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/partner/add', [ManagePartner::class, 'AddPartner'])->name('AddPartner');
 	Route::post('/partner/registrasi', [ManagePartner::class, 'InsertPartner'])->name('InsertPartner');
 	Route::delete('/partner/delete/{id}', [ManagePartner::class, 'delPA'])->name('delPA');
+	Route::get('/partner/update/{id}', [ManagePartner::class, 'PatnerEdit'])->name('PatnerEdit');
+	Route::post('/partner/put', [ManagePartner::class, 'UpdatePartner'])->name('UpdatePartner');
 
 });
 
