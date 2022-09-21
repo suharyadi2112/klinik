@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- title --}}
-@section('title','Type Of Billing')
+@section('title','Partner Category')
 
 {{-- vendor styles --}}
 @section('vendor-styles')
@@ -18,7 +18,7 @@
 
 <section id="description" class="card">
     <div class="card-header">
-        <h4 class="card-title">Dashboard Type Of Billing</h4>
+        <h4 class="card-title">Dashboard Partner Category</h4>
     </div>
     <div class="card-body">
         <div class="card-text">
@@ -26,13 +26,13 @@
         <div class="table-responsive">
 
         @if(auth()->user()->can('create cat')/* && $some_other_condition*/)
-            <button type="button" class="btn btn-primary round addbilling"><i class="bx bx-plus-circle"></i> Create Type Of Billing</button>
+            <button type="button" class="btn btn-primary round addPC"><i class="bx bx-plus-circle"></i> Create Partner Category</button>
         @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Type Of Billing Name</th>
+                  <th>Partner Category Name</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -63,10 +63,10 @@
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowBillingType') }}",
+        ajax: "{{ route('ShowPartnerCategory') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'pemnama', name: 'pemnama'},
+            {data: 'katpengirimnama', name: 'katpengirimnama'},
             {
               data: 'action', 
               name: 'action'
@@ -74,10 +74,9 @@
         ]
     });
 
-    //ADD PASIEN BILLING//
-    $(document).on('click', '.addbilling', function () {
+    $(document).on('click', '.addPC', function () {
         Swal.fire({
-          title: 'New Type Of Billing',
+          title: 'New Partner Category',
           input: 'text',
           inputAttributes: {
             autocapitalize: 'off'
@@ -88,13 +87,13 @@
           allowOutsideClick: false,
           preConfirm: (data) => {
             if (data) {
-                return fetch(`{{ Route('StoreBilling') }}`,{
+                return fetch(`{{ Route('StorePC') }}`,{
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({namebilling: data})
+                    body: JSON.stringify({namepc: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();
@@ -118,8 +117,7 @@
         })
     }); 
 
-    // DELETE PASIEN BILLING//
-    $(document).on('click', '.delBil', function () {
+    $(document).on('click', '.delPC', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
           title: 'Are you sure delete this data ?',
@@ -128,7 +126,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
               if (id) {
-                return fetch('{{route("DelBilling", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("DelPC", ":id")}}'.replace(":id", id),{
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
@@ -149,14 +147,13 @@
         })
     });
 
-    //UPDATE CATEGORY//
-    $(document).on('click', '.upBil', function () {
+    $(document).on('click', '.upPC', function () {
         var id = $(this).attr('data-id')
-        var nameBil = $(this).attr('vall')
+        var namePC = $(this).attr('vall')
         Swal.fire({
-          title: 'Update Type of Billing',
+          title: 'Update Partner Category',
           input: 'text',
-          inputValue: nameBil,
+          inputValue: namePC,
           inputAttributes: {
             autocapitalize: 'off'
           },
@@ -166,13 +163,13 @@
           allowOutsideClick: false,
           preConfirm: (data) => {
             if (data) {
-                return fetch('{{route("UpdateBilling", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("UpdatePC", ":id")}}'.replace(":id", id),{
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({NewUpdateBilling: data})
+                    body: JSON.stringify({NewUpdatePC: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();

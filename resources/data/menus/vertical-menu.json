@@ -14,22 +14,6 @@
     },
 
     {
-      "url": "/",
-      "name": "Action",
-      "slug": "action",
-      "icon": "pen",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
-    },
-
-    {
-      "url": "/",
-      "name": "Partner",
-      "slug": "partner",
-      "icon": "pen",
-      "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
-    },
-
-    {
       "url": "#",
       "name": "Starter kit",
       "slug": "starter-kit",
@@ -81,13 +65,13 @@
           "icon": "bx bx-right-arrow-alt"
         },
         {
-          "url": "#",
+          "url": "partner",
           "name": "Partner",
           "slug": "partner",
           "icon": "bx bx-right-arrow-alt"
         },
         {
-          "url": "#",
+          "url": "partner/category",
           "name": "Partner Category",
           "slug": "partner_category",
           "icon": "bx bx-right-arrow-alt"
@@ -111,24 +95,6 @@
           "url": "transaction/registration",
           "name": "Registration Action",
           "slug": "registration",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Action Input",
-          "slug": "action_input",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Laboratorium",
-          "slug": "laboratorium",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "#",
-          "name": "Billing",
-          "slug": "billing",
           "icon": "bx bx-right-arrow-alt"
         }
       ]

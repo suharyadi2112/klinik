@@ -30,8 +30,16 @@
         <hr>
           <table id="registration-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
-              <tr>
-                <th>action input</th>
+             	<tr>
+                	<th>No</th>
+                	<th>Registration Date</th>
+                	<th>Reference Date</th>
+                	<th>Patient Name</th>
+                	<th>NIK</th>
+                	<th>Partner</th>
+                	<th>Type Of Billing</th>
+                	<th><th><i class="bx bx-cog"></i></th></th>
+            	</tr>
             </thead>
           </table>
         </div>
@@ -62,7 +70,28 @@
 @section('page-scripts')
 
 <script type="text/javascript">
-
+	$(document).ready(function(){
+		var table = $('#registration-list-datatable').DataTable({
+		    processing: true,
+		    ordering: false,
+		    // serverSide: true,
+		    ajax: "{{ route('IndexRegistration') }}",
+		    columns: [
+		    	{data: 'DT_RowIndex', name: 'DT_RowIndex'},
+		        {data: 'pentgl', name: 'pentgl'},
+		        {data: 'pentglrujukan', name: 'pentglrujukan'},
+		        {data: 'pentglrujukan', name: 'pentglrujukan'},
+		        {data: 'pasnama', name: 'pasnama'},
+		        {data: 'pasnik', name: 'pasnik'},
+		        {data: 'pennama', name: 'pennama'},
+		        {data: 'pemnama', name: 'pemnama'},
+		        {data: 'action', name: 'action'},
+		    ],
+		    createdRow:function(row,data,index){
+		    	$('td',row).eq(3).attr("nowrap","nowrap");
+			}
+		});
+	});
 
 </script>
 @endsection
