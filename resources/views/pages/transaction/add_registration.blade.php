@@ -318,6 +318,7 @@ didOpen: (toast) => {
 								break;
 								case "2":
 									ToastToB.fire({icon: 'success',title: 'Insert Registration Success, page will redirect to Registration Dashboard'})
+									setInterval(function () {window.location.href = "{{ route('IndexRegistration')}}";}, 3000);
 								break;
 								case "3":
 									ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'})
@@ -327,7 +328,7 @@ didOpen: (toast) => {
 				      }
 			       },
 		        complete: function() {
-		        	setInterval(function () {window.location.href = "{{ route('IndexRegistration')}}";}, 3000);
+		        	
 		        },
 		        error: function(data,xhr) {
 		        	alert("Failed response")
