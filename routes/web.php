@@ -102,6 +102,12 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/modal/getlistpartner', [ManageTransaction::class, 'GetListPartner'])->name('GetListPartner');
 	Route::get('/list/typeofbilling', [ManageTransaction::class, 'ListTypeOfBilling'])->name('ListTypeOfBilling');
 	Route::post('/insert/registration', [ProcessTransaction::class, 'InsertRegistration'])->name('InsertRegistration');
+	Route::get('/action/registration/{id_registration}', [ManageTransaction::class, 'RegistrationAction'])->name('RegistrationAction');
+	Route::post('/insert/action/registration', [ManageTransaction::class, 'InsertRegistrationAction'])->name('InsertRegistrationAction');
+	Route::post('/modal/action/code', [ManageTransaction::class, 'ShowModalActionCode'])->name('ShowModalActionCode');
+	Route::get('/list/action/code', [ManageTransaction::class, 'GetListActionCode'])->name('GetListActionCode');
+	Route::get('/get/tindakan/keluar/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluar'])->name('TableTindakanKeluar');
+
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
@@ -117,9 +123,12 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 
 	//partner
 	Route::get('/partner', [ManagePartner::class, 'ShowPartner'])->name('ShowPartner');
+	Route::get('/partner/add', [ManagePartner::class, 'AddPartner'])->name('AddPartner');
+	Route::post('/partner/registrasi', [ManagePartner::class, 'InsertPartner'])->name('InsertPartner');
+	Route::delete('/partner/delete/{id}', [ManagePartner::class, 'delPA'])->name('delPA');
+	Route::get('/partner/update/{id}', [ManagePartner::class, 'PatnerEdit'])->name('PatnerEdit');
+	Route::post('/partner/put', [ManagePartner::class, 'UpdatePartner'])->name('UpdatePartner');
 
-
-	
 });
 
 // locale Route

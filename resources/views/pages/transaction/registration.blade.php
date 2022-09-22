@@ -25,6 +25,11 @@
     <div class="card">
       <div class="card-body">
         <!-- datatable start -->
+        @if (session('error'))
+		    <div class="alert alert-danger">
+		        {{ session('error') }}
+		    </div>
+		@endif
         <div class="table-responsive">
         	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
         <hr>
@@ -38,7 +43,7 @@
                 	<th>NIK</th>
                 	<th>Partner</th>
                 	<th>Type Of Billing</th>
-                	<th><th><i class="bx bx-cog"></i></th></th>
+                	<th style="text-align: center;"><i class="bx bx-cog"></i></th>
             	</tr>
             </thead>
           </table>
@@ -80,7 +85,6 @@
 		    	{data: 'DT_RowIndex', name: 'DT_RowIndex'},
 		        {data: 'pentgl', name: 'pentgl'},
 		        {data: 'pentglrujukan', name: 'pentglrujukan'},
-		        {data: 'pentglrujukan', name: 'pentglrujukan'},
 		        {data: 'pasnama', name: 'pasnama'},
 		        {data: 'pasnik', name: 'pasnik'},
 		        {data: 'pennama', name: 'pennama'},
@@ -88,7 +92,8 @@
 		        {data: 'action', name: 'action'},
 		    ],
 		    createdRow:function(row,data,index){
-		    	$('td',row).eq(3).attr("nowrap","nowrap");
+		    	$('td',row).eq(1).attr("nowrap","nowrap");
+		    	$('td',row).eq(2).attr("nowrap","nowrap");
 			}
 		});
 	});
