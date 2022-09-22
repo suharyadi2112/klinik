@@ -96,18 +96,27 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	//transaction
 	Route::get('/transaction/registration', [ManageTransaction::class, 'index'])->name('IndexRegistration');
 	Route::get('/add/registration', [ManageTransaction::class, 'AddRegistration'])->name('AddRegistration');
+	Route::get('/add/registrationwithaction', [ManageTransaction::class, 'AddRegistrationWithAction'])->name('AddRegistrationWithAction');
+	Route::get('/get/basic/{idpen}', [ManageTransaction::class, 'GetBasicRegistration'])->name('GetBasicRegistration');
 	Route::post('/modal/patient', [ManageTransaction::class, 'ShowModalPatient'])->name('ShowModalPatient');
 	Route::get('/modal/getlistpatient', [ManageTransaction::class, 'GetListPatient'])->name('GetListPatient');
 	Route::post('/modal/partner', [ManageTransaction::class, 'ShowModalPartner'])->name('ShowModalPartner');
 	Route::get('/modal/getlistpartner', [ManageTransaction::class, 'GetListPartner'])->name('GetListPartner');
 	Route::get('/list/typeofbilling', [ManageTransaction::class, 'ListTypeOfBilling'])->name('ListTypeOfBilling');
 	Route::post('/insert/registration', [ProcessTransaction::class, 'InsertRegistration'])->name('InsertRegistration');
+	Route::post('/insert/registration/lead', [ProcessTransaction::class, 'InsertRegistrationLead'])->name('InsertRegistrationLead');
 	Route::get('/action/registration/{id_registration}', [ManageTransaction::class, 'RegistrationAction'])->name('RegistrationAction');
-	Route::post('/insert/action/registration', [ManageTransaction::class, 'InsertRegistrationAction'])->name('InsertRegistrationAction');
+	Route::post('/insert/action/registration', [ProcessTransaction::class, 'InsertRegistrationAction'])->name('InsertRegistrationAction');
+	Route::post('/insert/action/registration/lead', [ProcessTransaction::class, 'InsertRegistrationActionLeads'])->name('InsertRegistrationActionLeads');
 	Route::post('/modal/action/code', [ManageTransaction::class, 'ShowModalActionCode'])->name('ShowModalActionCode');
 	Route::get('/list/action/code', [ManageTransaction::class, 'GetListActionCode'])->name('GetListActionCode');
+	Route::get('/list/action/code/{id}', [ManageTransaction::class, 'GetListActionCodeV2'])->name('GetListActionCodeV2');
 	Route::get('/get/tindakan/keluar/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluar'])->name('TableTindakanKeluar');
+	Route::get('/get/tindakan/keluar/v2/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluarV2'])->name('TableTindakanKeluarV2');
+	Route::post('/delete/tindakan/action', [ProcessTransaction::class, 'DelTindakanKeluar'])->name('DelTindakanKeluar');
 
+	Route::post('/insert/finish/regisaction', [ProcessTransaction::class, 'InsertRegisActionFinish'])->name('InsertRegisActionFinish');
+	
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
