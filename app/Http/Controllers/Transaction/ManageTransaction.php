@@ -17,7 +17,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\User;
 use App\Models\TypeOfBilling;
 use App\Models\Action;
-use Spatie\Permission\models\Role;
+use Spatie\Permission\Models\Role;
 
 use App\Helpers\Helper as HelperLog;
 use App\Http\Controllers\Transaction\AllModalTransaction;

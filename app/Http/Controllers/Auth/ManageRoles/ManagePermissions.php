@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 use App\Models\User;
-use Spatie\Permission\models\Role;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 use App\Helpers\Helper as HelperLog;
 

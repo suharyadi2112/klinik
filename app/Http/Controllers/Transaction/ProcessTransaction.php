@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\TypeOfBilling;
-use Spatie\Permission\models\Role;
+use Spatie\Permission\Models\Role;
 
 use App\Helpers\Helper as HelperLog;
 

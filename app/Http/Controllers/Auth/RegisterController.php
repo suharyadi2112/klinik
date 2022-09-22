@@ -16,7 +16,6 @@ use Yajra\Datatables\Datatables;
 use App\Models\User;
 use App\Models\LogActivity;
 
-// use Spatie\Permission\models\Role;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
