@@ -63,13 +63,38 @@ class ManageTransaction extends Controller
     //show form registration
     public function AddRegistration(){
 
-         //param pertama subject dan kedua data request
+        //param pertama subject dan kedua data request
         HelperLog::addToLog('Show add form registration', json_encode(auth()->user()->id));
         //Pasang Breadcrumbs 
         $breadcrumbs = [
           ['link' => "/transaction/registration", 'name' => "Dashboard registration"], ['link' => "/add/registration", 'name' => "Form Registration"], ['name' => "Form Registration"],
         ];
         return view("/pages/transaction/add_registration",['breadcrumbs' => $breadcrumbs]);
+    }
+
+    public function AddRegistrationWithAction(){
+        //param pertama subject dan kedua data request
+        HelperLog::addToLog('Show add form registration and action', json_encode(auth()->user()->id));
+        //Pasang Breadcrumbs 
+        $breadcrumbs = [
+          ['link' => "/transaction/registration", 'name' => "Dashboard registration"], ['link' => "/add/registrationwithaction", 'name' => "Form Registration Action"], ['name' => "Form Registration Action"],
+        ];
+        return view("/pages/transaction/add_regisandaction",['breadcrumbs' => $breadcrumbs]);
+    }
+
+    //get basic registration informasi
+    public function GetBasicRegistration($idpen){
+
+        //get data temporary pendaftaran
+        $data = DB::table('pendaftaran_leads')
+            ->join('pasien','pasien.pasid','=','pendaftaran_leads.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran_leads.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran_leads.penpemid')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran_leads.penid','=',$idpen)
+            ->first();
+
+        return response()->json(['code' => '1' , 'databasic' => $data]);
     }
 
     public function ShowModalPatient(){
@@ -165,12 +190,40 @@ class ManageTransaction extends Controller
                 ->addColumn('action', function($row){
                     $actionBtn = '';
                     $actionBtn .= '<button type="button" class="btn btn-sm round btn-info PickActionCode"
+                                data-tndid="'.$row->tndid.'"
+                                data-tndnama="'.$row->tndnama.'"
+                                data-tndkattndid="'.$row->tndkattndid.'"
+                                data-kattndnama="'.$row->kattndnama.'"
+                                data-tndharga="'.$row->tndharga.'"
+                                ><i class="bx bxs-check-circle"></i> '.$row->tndklrtndid.'</button>';                    
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+    //get list action code V2 lead(temporary)
+    public function GetListActionCodeV2(Request $request, $id){
+        if ($request->ajax()) {
+            $data = Action::orderBy('tndid','asc')->join('kategoritindakan', 'tindakan.tndkattndid', '=', 'kategoritindakan.kattndid')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) use ($id){
+
+                    $actionBtn = '';
+                    $checkExits = DB::table("tindakankeluar_leads")->where([['tndklrtndid','=',$row->tndid],['tndklrpenid','=',$id]])->count();
+                    
+                    if ($checkExits > 0) {
+                       $actionBtn .= '<button type="button" class="btn btn-sm round btn-secondary"><i class="bx bxs-check-circle"></i></button>';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info PickActionCode"
                                     data-tndid="'.$row->tndid.'"
                                     data-tndnama="'.$row->tndnama.'"
                                     data-tndkattndid="'.$row->tndkattndid.'"
                                     data-kattndnama="'.$row->kattndnama.'"
                                     data-tndharga="'.$row->tndharga.'"
-                                    ><i class="bx bxs-check-circle"></i></button>';
+                                    ><i class="bx bxs-check-circle"></i> '.$row->tndklrtndid.'</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -178,7 +231,7 @@ class ManageTransaction extends Controller
         }
     }
 
-    //insert action registration
+    //get list table action registration
     public function TableTindakanKeluar(Request $request, $id){
 
         $dec_penid = Crypt::decryptString($id);
@@ -190,39 +243,22 @@ class ManageTransaction extends Controller
                     ->where('tndklrpenid','=',$dec_penid)->orderBy('tndklrid','DESC')->get();
 
         if ($request->ajax()) {
-            return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($dec_penid, $restndkel)]);
+            return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($dec_penid, $restndkel, "ori")]);
         }
 
     }
 
-    public function InsertRegistrationAction(Request $request){
+    //get list table action registration code V2 lead(temporary)
+    public function TableTindakanKeluarV2(Request $request, $id){
+    
+        $restndkel = DB::table('tindakankeluar_leads')
+                    ->join('tindakan','tindakan.tndid','=','tindakankeluar_leads.tndklrtndid')
+                    ->join('pendaftaran_leads','pendaftaran_leads.penid','=','tindakankeluar_leads.tndklrpenid')
+                    ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+                    ->where('tndklrpenid','=',$id)->orderBy('tndklrid','DESC')->get();
 
-        $validator = Validator::make($request->all(), [
-            'pendaftaran_id' => 'required|max:50',
-            'form_pick_action_code_id' => 'required|max:100',
-            'price' => 'required|max:100',
-            'discount_price' => 'required|max:100',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
-        }else{
-            $res = DB::table('tindakankeluar')->insert([
-                        'tndklrtndid' => $request->form_pick_action_code_id,
-                        'tndklrpenid' => $request->pendaftaran_id,
-                        'tndklrharga' => $request->price,
-                        // 'tndklrdiskon' => $request->pendaftaran_id,
-                        'tndklrdiskonprice' => $request->discount_price,
-                    ]);
-
-            if ($res) {
-                //param pertama subject dan kedua data request
-                HelperLog::addToLog('Insert action registration', json_encode($request->all()));
-                return response()->json(['code' => '2']);
-            }else{
-                return response()->json(['code' => '3']);
-            }
-            
+        if ($request->ajax()) {
+            return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($id, $restndkel, "leads")]);
         }
     }
 

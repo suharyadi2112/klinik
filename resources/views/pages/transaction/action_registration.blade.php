@@ -269,6 +269,41 @@
 	function GetTableActionRegister(){
 		$.get("{{ route('TableTindakanKeluar',['id_registration' => $id]) }}", function(data, status){
 		    $("#RenderTindakanKeluar").html(data.tabel);
+	    	$(document).on("click", ".DelTindakanKeluar", function () {
+				Swal.fire({
+				  title: 'Are you sure?',
+				  text: "You won't be able to revert this!",
+				  icon: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+				  if (result.isConfirmed) {
+			  		var data_id = $(this).attr('data_id');
+						var data_type = $(this).attr('data_type');
+						$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+						Pace.track(function(){
+							$.post( '{{ route('DelTindakanKeluar') }}',  { id: data_id, type: data_type }).done(function( data ) {
+									switch (data.code) {
+						        case "1":
+											ToastToB.fire({icon: 'error',title: data.fail})
+										break;
+										case "2":
+											ToastToB.fire({icon: 'success',title: 'Delete Success'})
+											GetTableActionRegister();
+										break;
+										case "3":
+											ToastToB.fire({icon: 'error',title: 'Delete Failed'})
+										break;
+				            default:
+				            break;
+						      }
+							});
+						});
+				  }
+				})
+			});
 		});
 	}
 

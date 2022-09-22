@@ -32,6 +32,7 @@
 		@endif
         <div class="table-responsive">
         	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
+        	<a href="{{ route('AddRegistrationWithAction') }}" title="add registration with action"><button type="button" class="btn btn-outline-primary round"><i class="bx bx-plus-circle"></i> Regis With Action</button></a>
         <hr>
           <table id="registration-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
