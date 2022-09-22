@@ -14,6 +14,7 @@ use App\Http\Controllers\Transaction\ProcessTransaction;
 use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 use App\Http\Controllers\ManagePartner\ManagePartner;
+use App\Http\Controllers\ManagePasien\ManagePasien;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +129,15 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::delete('/partner/delete/{id}', [ManagePartner::class, 'delPA'])->name('delPA');
 	Route::get('/partner/update/{id}', [ManagePartner::class, 'PatnerEdit'])->name('PatnerEdit');
 	Route::post('/partner/put', [ManagePartner::class, 'UpdatePartner'])->name('UpdatePartner');
+
+
+	//pasien
+	Route::get('/patient', [ManagePasien::class, 'ShowPatient'])->name('ShowPatient');
+	Route::delete('/patient/delete/{id}', [ManagePasien::class, 'delPatient'])->name('delPatient');
+	Route::get('/patient/registration', [ManagePasien::class, 'AddPatient'])->name('AddPatient');
+	Route::post('/patient/create', [ManagePasien::class, 'InsertPatient'])->name('InsertPatient');
+	Route::get('/patient/update/{id}', [ManagePasien::class, 'PatientEdit'])->name('PatientEdit');
+	Route::post('/patient/put', [ManagePasien::class, 'UpdatePatient'])->name('UpdatePatient');
 
 });
 
