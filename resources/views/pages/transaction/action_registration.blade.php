@@ -19,9 +19,9 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/pages/app-users.css')}}">
 @endsection
 @section('content')
-<!-- registration list start -->
-<section class="add_registration-list-wrapper">
-  <div class="add_registration-list-table">
+<!-- action registration list start -->
+<section class="action_registration-list-wrapper">
+  <div class="action_registration-list-table">
     <div class="card">
       <div class="card-body">
       	{{-- start form --}}
@@ -156,9 +156,9 @@
 
   </div>
 </section>
-<!-- registration list ends -->
+<!-- action registration list ends -->
 
-{{-- list patient --}}
+{{-- list action code --}}
 <div class="modal fade" id="ModalListActionCode" data-keyboard="false" data-backdrop="static">  
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content" id="modal-content">
@@ -190,9 +190,7 @@
 <script src="{{asset('vendors/js/tables/datatable/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('vendors/js/tables/datatable/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('vendors/js/tables/datatable/buttons.bootstrap4.min.js')}}"></script>
-<script src="{{asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
 @endsection
-
 {{-- page scripts --}}
 @section('page-scripts')
 
@@ -239,11 +237,10 @@
 						    	}
 						    });
 						    $(document).on("click", ".PickActionCode", function () {
-
 						    	var tndid = $(this).attr('data-tndid');
 						    	var tndnama = $(this).attr('data-tndnama');
 						    	var tndkattndid = $(this).attr('data-tndkattndid');
-						    	var kattndnama = $(this).attr('data-kattndnama');form_pick_action_code_id
+						    	var kattndnama = $(this).attr('data-kattndnama');
 						    	var tndharga = $(this).attr('data-tndharga');
 
 						    	$("#form_pick_action_code_id").val(tndid);
@@ -264,7 +261,7 @@
 		});
 	});
 
-	/*--------------------get tabal tindakan keluar------------------------*/
+	/*--------------------get tabel tindakan keluar------------------------*/
 	$(document).ready(function(){
 		GetTableActionRegister();
 	});
@@ -275,7 +272,7 @@
 		});
 	}
 
-	/*---------------------post insert registration------------------------*/
+	/*---------------------post insert action registration------------------------*/
 	$(document).on('submit', '#InsertRegistrationAction', function(e) {
 	    e.preventDefault();
 	    var route = $('#InsertRegistrationAction').data('route');
