@@ -11,7 +11,7 @@ use App\Models\LogActivity as LogActivityModel;
 class Helper
 { 
     
-
+	
   public static function addToLog($subject, $data)
   {
     $log = [];
@@ -32,7 +32,13 @@ class Helper
   {
     return LogActivityModel::latest()->get();
   }
-
+	
+  //tanggal indo
+  public static function tanggal_indo($tanggal) {
+      $bulan = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+      $split = explode('-', $tanggal);
+      return $split[2] . ' ' . $bulan[(int) $split[1]] . ' ' . $split[0];
+  }
 
   public static function applClasses()
   {
