@@ -328,7 +328,7 @@ didOpen: (toast) => {
 				      }
 			       },
 		        complete: function() {
-		        	
+		        	$('.btn_insert_registration').prop('disabled', false);
 		        },
 		        error: function(data,xhr) {
 		        	alert("Failed response")

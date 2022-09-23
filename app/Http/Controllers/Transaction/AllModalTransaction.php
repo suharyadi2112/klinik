@@ -77,7 +77,7 @@ class AllModalTransaction extends Controller
         return $modal;
     }
 
-    public function TabelActionRegistration($id, $restndkel){
+    public function TabelActionRegistration($id, $restndkel, $type){
 
         $table = '';
         $table .=   '<div class="table-responsive">
@@ -110,7 +110,7 @@ class AllModalTransaction extends Controller
                             <td>'.$value->tndnote.'</td>
                             <td>
 
-                              <button class="btn btn-xs btn-outline-danger p-0"><i class="bx bx-trash"></i></button>
+                              <button class="btn btn-xs btn-outline-danger p-0 DelTindakanKeluar" data_id="'.$value->tndklrid.'" data_type="'.$type.'"><i class="bx bx-trash"></i></button>
 
                             </td>
                           </tr>';

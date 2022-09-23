@@ -54,13 +54,13 @@
 
     {
       "url": "#",
-      "name": "Pasien",
-      "slug": "pasien",
+      "name": "Patient",
+      "slug": "patient",
       "icon": "users",
       "submenu": [
         {
-          "url": "#",
-          "name": "Data Pasien",
+          "url": "patient",
+          "name": "Patient Data",
           "slug": "data_pasien",
           "icon": "bx bx-right-arrow-alt"
         },
