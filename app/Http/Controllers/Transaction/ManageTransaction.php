@@ -43,8 +43,16 @@ class ManageTransaction extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
+                    $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$row->penid)->get();
                     $actionBtn = '';
-                    $actionBtn .= '<a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'"><button type="button" class="btn btn-sm round btn-info" idRegis="'.$row->penid.'" >action</button>';
+                    if($CekDataRindakanLeads->isEmpty()){
+                        $claasss = "btn-warning";
+                        $titlee = "need action";
+                    }else{
+                        $claasss = "btn-info";
+                        $titlee = "have action";
+                    }
+                    $actionBtn .= '<a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'"><button type="button" class="btn '.$claasss.' btn-icon glow" data-toggle="tooltip" data-placement="top" title="'.$titlee.'" idRegis="'.$row->penid.'" ><i class="bx bx-cog"></i></button>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

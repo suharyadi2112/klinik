@@ -390,10 +390,10 @@ function SetBasicPatient(lastinsertidregis){
 
 	$(document).on("click", ".SubmitFinishing", function () {
 			$('.SubmitFinishing').prop('disabled', true);
-			var data_idpen = $(this).attr('data_idpen');
+			var data_idpendftr = $(this).attr('data_idpen');
 			$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
 				Pace.track(function(){
-					$.post( '{{ route('InsertRegisActionFinish') }}',  { id_pen: data_idpen }).done(function( data ) {
+					$.post( '{{ route('InsertRegisActionFinish') }}',  { id_pendftr: data_idpendftr }).done(function( data ) {
 							switch (data.code) {
 				      	case "2":
 									ToastToB.fire({icon: 'success',title: 'Insert Success'})
@@ -604,6 +604,7 @@ function SetBasicPatient(lastinsertidregis){
 									localStorage.setItem('idPendaftar', data.LastIdInsertPendaftaran);//set terbaru
 
 									SetBasicPatient(data.LastIdInsertPendaftaran)
+									GetTableActionRegister();
 								
 								break;
 								case "3":
