@@ -139,7 +139,7 @@ class ProcessTransaction extends Controller
                     ]);
                 }
             }
-            $CekDataRindakanLeads = DB::table('tindakankeluar_leads')->where('tindakankeluar_leads.tndklrpenid','=',$request->id_pen)->get();
+            $CekDataRindakanLeads = DB::table('tindakankeluar_leads')->where('tindakankeluar_leads.tndklrpenid','=',$request->id_pendftr)->get();
             if($CekDataRindakanLeads->isEmpty()){
                 return response()->json(['code' => '31'], 200);
             }else{
