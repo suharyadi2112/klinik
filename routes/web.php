@@ -116,6 +116,7 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::get('/get/tindakan/keluar/v2/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluarV2'])->name('TableTindakanKeluarV2');
 	Route::post('/delete/tindakan/action', [ProcessTransaction::class, 'DelTindakanKeluar'])->name('DelTindakanKeluar');
 	Route::post('/insert/finish/regisaction', [ProcessTransaction::class, 'InsertRegisActionFinish'])->name('InsertRegisActionFinish');
+	Route::post('/delete/registration', [ProcessTransaction::class, 'DeleteRegistrationMain'])->name('DeleteRegistrationMain');
 	
 	//focusprosesstatusregistratrion
 	Route::post('/send/request', [ProcessTransaction::class, 'SendRequestStatus'])->name('SendRequestStatus');

@@ -60,13 +60,13 @@ class ProcessTransaction extends Controller
 
         if ($request->status == "request") {
             //check request akses
-            if ($user->can('request create')) {//akses user yang bisa send request
+            if ($this->CheckAcc()->can('request create')) {//akses user yang bisa send request
                 return $this->changeStatus($request, $request->status,"");
             }else{
                 return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
             }
         }elseif($request->status == "requested"){
-            if ($user->can('approved create') || $user->can('rejected create')) {//akses user yang bisa aprove and reject
+            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create')) {//akses user yang bisa aprove and reject
                 return $this->changeStatus($request, $request->status, $request->statusPilihan);
             }else{
                 return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
@@ -273,6 +273,51 @@ class ProcessTransaction extends Controller
             }   
         }
 
+    }
+
+    //Delete registration main
+    public function DeleteRegistrationMain(Request $request){
+        if ($this->CheckAcc()->can('delete registration')) {//akses user yang bisa send request
+            $validator = Validator::make($request->all(), [
+                'status' => 'required|max:50',
+                'id' => 'required|max:50',
+            ]);
+
+            if ($validator->fails()) {
+                HelperLog::addToLog('Fail VALIDATOR Delete data registration', json_encode($request->all())); 
+                return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+            }else{
+
+                if ($request->status == "request") {
+
+                    $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$request->id)->get();
+                     
+                    if($CekDataRindakanLeads->isEmpty()){
+                        $deleted = DB::table('pendaftaran')->where('penid', '=', $request->id)->delete();
+                    }else{
+                        $deleted_tindakankeluar = DB::table('tindakankeluar')->where('tndklrpenid', '=', $request->id)->delete();
+                        $deleted = DB::table('pendaftaran')->where('penid', '=', $request->id)->delete();
+                    }
+
+                    HelperLog::addToLog('Delete data registration', json_encode($request->all())); 
+                    
+                    if ($deleted) {
+                        return response()->json(['code' => '2']);
+                    }else{
+                        return response()->json(['code' => '1', 'fail' => 'Failed to delete']);
+                    }
+                    
+                }
+            }
+        }else{
+            return response()->json(['code' => '1', 'fail' => 'Sorry you no have access'], 200);
+        }
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
     }
 
 }

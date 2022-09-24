@@ -92,7 +92,7 @@ didOpen: (toast) => {
 function format ( d ) {
     return '<div class="slider">'+
     				'<div class="card-body"><div class="row shadow-lg p-1 bg-white rounded">'+
-    				'<div class="col-sm-6 col-12">'+
+    				'<div class="col-sm-4 col-12">'+
           		'<h6><small class="text-muted">NIK</small></h6>'+
           		'<p><b>'+d.pasnik+'</b></p>'+
       			'</div>'+
@@ -103,6 +103,9 @@ function format ( d ) {
             '<div class="col-sm-4 col-12">'+
                 '<h6><small class="text-muted">Type of Billing</small></h6>'+
                 '<p><b>'+d.pemnama+'</b></p>'+
+            '</div><div class="col-sm-4 col-12">'+
+                '<h6><small class="text-muted">Description Send Request</small></h6>'+
+                '<p><b>'+d.ket_request+'</b></p>'+
             '</div>'+
             '</div>'+
             '</div>'+
@@ -147,9 +150,9 @@ function format ( d ) {
 	            		}else if(data.status_request == "requested"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-info mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Approved or Reject this Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}else if(data.status_request == "approved"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bxs-right-arrow-circle"></i></button>';
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
 	            		}else if(data.status_request == "rejected"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-right-arrow-circle"></i></button>';
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button>';
 	            		}else{
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}
@@ -195,7 +198,6 @@ function format ( d ) {
 	});
 
 	//send request status
-
 	function UpdateStatuss(Keterangan, idpennnnn, status, statusPilihan){
 		$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
 			Pace.track(function(){
@@ -204,11 +206,11 @@ function format ( d ) {
 			        type: 'POST',
 			        url: '{{ route('SendRequestStatus') }}',
 			       	data: {
-										  pendaftaran_id : idpennnnn,
-										  keterangan : Keterangan,
-										  status : status,
-										  statusPilihan : statusPilihan,
-										},
+							  pendaftaran_id : idpennnnn,
+							  keterangan : Keterangan,
+							  status : status,
+							  statusPilihan : statusPilihan,
+							},
 			        beforeSend: function() {
 			       		$('.SendRequest').prop('disabled', true);
 			        },
@@ -243,6 +245,7 @@ function format ( d ) {
 			});
 	}
 
+	//send request status
 	$(document).on("click", ".SendRequest", async function () {
 
 			var idpennnnn = $(this).attr("data_idpen");
@@ -262,8 +265,8 @@ function format ( d ) {
 				const { value: statusPilihan } = await Swal.fire({
 				  title: 'Confirm Status',
 				  input: 'radio',
-	      	allowOutsideClick: false,
-	      	showCancelButton: true,
+			      allowOutsideClick: false,
+			      showCancelButton: true,
 				  inputOptions: inputOptions,
 				  inputValidator: (value) => {
 				    if (!value) {
@@ -290,8 +293,50 @@ function format ( d ) {
 			   	UpdateStatuss(Keterangan, idpennnnn, status,"");//proses
 			  },
 			})
-	  }
+	  	}
 	});		
+
+	//Delete Registratioin
+	$(document).on("click", ".DeleteRegistration", function () {
+		var data_idPen = $(this).attr('data_idPendaftar');
+		var status_request = $(this).attr('status_request');
+		console.log(status_request);
+		if (status_request == "rejected" || status_request == "approved") {
+			ToastToB.fire({icon: 'error',title: 'Cant delete with status Approved or Rejected'})
+		}else{
+			Swal.fire({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+			  if (result.isConfirmed) {
+		  			$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+					Pace.track(function(){
+						Pace.restart();
+						$.post( '{{ route('DeleteRegistrationMain') }}',  { id: data_idPen, status: status_request }).done(function( data ) {
+							switch (data.code) {
+							case "1":
+								ToastToB.fire({icon: 'error',title: data.fail})
+							break;
+							case "2":
+								ToastToB.fire({icon: 'success',title: 'Delete Success'})
+								$('#registration-list-datatable').DataTable().ajax.reload();
+							break;
+						default:
+			            break;
+					      }
+						});
+					});
+			  	}
+			})
+		}
+	});
+	
+
 
 
 </script>
