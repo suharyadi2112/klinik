@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class AllModalTransaction extends Controller
 {
@@ -79,6 +81,8 @@ class AllModalTransaction extends Controller
 
     public function TabelActionRegistration($id, $restndkel, $type){
 
+        $user = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        
         $table = '';
         $table .=   '<div class="table-responsive">
                       <table class="table table-striped table-sm table-hover" width="100%">
@@ -87,11 +91,13 @@ class AllModalTransaction extends Controller
                               <th>No</th>
                               <th>Action Code</th>
                               <th>Action Category</th>
-                              <th>Action</th>
-                              <th>Price</th>
-                              <th>Discount (%)</th>
-                              <th>Discount Price</th>
-                              <th>Description</th>
+                              <th>Action</th>';
+                              if ($user->can('view price')) {
+          $table .=             '<th>Price</th>
+                                <th>Discount (%)</th>
+                                <th>Discount Price</th>';
+                              }
+          $table .=           '<th>Description</th>
                               <th style="text-align: center;"><i class="bx bx-cog"></i></th>
                           </tr>
                         </thead>
@@ -103,11 +109,14 @@ class AllModalTransaction extends Controller
                             <td>'.$no.'</td>
                             <td>'.$value->tndklrtndid.'</td>
                             <td>'.$value->kattndnama.'</td>
-                            <td>'.$value->tndnama.'</td>
-                            <td>'.$value->tndklrharga.'</td>
-                            <td>'.$value->tndklrdiskon.'</td>
-                            <td>'.$value->tndklrdiskonprice.'</td>
-                            <td>'.$value->tndnote.'</td>
+                            <td>'.$value->tndnama.'</td>';
+                            if ($user->can('view price')) {
+        $table .=             '<td>'.$value->tndklrharga.'</td>
+                              <td>'.$value->tndklrdiskon.'</td>
+                              <td>'.$value->tndklrdiskonprice.'</td>';
+                            }
+                            
+        $table .=           '<td>'.$value->tndnote.'</td>
                             <td>
 
                               <button class="btn btn-xs btn-outline-danger p-0 DelTindakanKeluar" data_id="'.$value->tndklrid.'" data_type="'.$type.'"><i class="bx bx-trash"></i></button>

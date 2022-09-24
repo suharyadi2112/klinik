@@ -52,7 +52,22 @@ class ManageTransaction extends Controller
                         $claasss = "btn-info";
                         $titlee = "have action";
                     }
-                    $actionBtn .= '<a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'"><button type="button" class="btn '.$claasss.' btn-icon glow" data-toggle="tooltip" data-placement="top" title="'.$titlee.'" idRegis="'.$row->penid.'" ><i class="bx bx-cog"></i></button>';
+                    $actionBtn .= '<div class="btn-group dropup dropdown-icon-wrapper">
+                                        <a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'" type="button" class="btn btn-icon '.$claasss.' glow" data-toggle="tooltip" data-placement="top" title="'.$titlee.'" idRegis="'.$row->penid.'" >
+                                            <i class="bx bx-first-aid"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-primary btn-icon dropdown-toggle glow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-cog dropdown-icon"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <span class="dropdown-item">
+                                                <i class="bx bx-edit"></i>
+                                            </span>
+                                            <span class="dropdown-item DeleteRegistration" data_idPendaftar="'.$row->penid.'" status_request="'.$row->status_request.'">
+                                                <i class="bx bxs-trash"></i>
+                                            </span>
+                                        </div>
+                                    </div>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -170,14 +185,17 @@ class ManageTransaction extends Controller
             ->first();
 
         if ($data) {
-
-            //param pertama subject dan kedua data request
-            HelperLog::addToLog('Show action registration', json_encode(auth()->user()->id));
-            //Pasang Breadcrumbs 
-            $breadcrumbs = [
-              ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/action/registration/".$id."", 'name' => "action Registration"], ['name' => "action registration"],
-            ];
-            return view("/pages/transaction/action_registration",['breadcrumbs' => $breadcrumbs, 'dataregistration' => $data, 'id' => $id]);
+            if ($data->status_request == "request") {//hanya untuk berstatus request
+                //param pertama subject dan kedua data request
+                HelperLog::addToLog('Show action registration', json_encode(auth()->user()->id));
+                //Pasang Breadcrumbs 
+                $breadcrumbs = [
+                  ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/action/registration/".$id."", 'name' => "action Registration"], ['name' => "action registration"],
+                ];
+                return view("/pages/transaction/action_registration",['breadcrumbs' => $breadcrumbs, 'dataregistration' => $data, 'id' => $id]);
+            }else{
+                return redirect()->route('IndexRegistration')->with('error', 'Action Registration only for request status !');
+            }
         }else{
             return redirect()->route('IndexRegistration')->with('error', 'Data Registration Not Found !');
         }
