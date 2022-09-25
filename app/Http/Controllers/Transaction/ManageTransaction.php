@@ -31,6 +31,10 @@ class ManageTransaction extends Controller
         $this->AllModalTransaction = $AllModalTransaction;
     }
 
+    protected function GetInfoTindakanKeluar($id_pen){
+        $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$id_pen)->get();
+        return $CekDataRindakanLeads;
+    }
     public function index(Request $request){
 
         if ($request->ajax()) {
@@ -43,9 +47,8 @@ class ManageTransaction extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$row->penid)->get();
                     $actionBtn = '';
-                    if($CekDataRindakanLeads->isEmpty()){
+                    if($this->GetInfoTindakanKeluar($row->penid)->isEmpty()){
                         $claasss = "btn-warning";
                         $titlee = "need action";
                     }else{
@@ -69,6 +72,10 @@ class ManageTransaction extends Controller
                                         </div>
                                     </div>';
                     return $actionBtn;
+                })
+                ->addColumn('list_tindakankeluar', function($row){
+                    $actionBtnn= $this->getlisttindakankeluarwithrelasi($row->penid);
+                    return ['data' => $actionBtnn];
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -251,17 +258,20 @@ class ManageTransaction extends Controller
         }
     }
 
-    //get list table action registration
-    public function TableTindakanKeluar(Request $request, $id){
-
-        $dec_penid = Crypt::decryptString($id);
-
+    protected function getlisttindakankeluarwithrelasi($id_pen){
         $restndkel = DB::table('tindakankeluar')
                     ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
                     ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
                     ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
-                    ->where('tndklrpenid','=',$dec_penid)->orderBy('tndklrid','DESC')->get();
+                    ->where('tndklrpenid','=',$id_pen)->orderBy('tndklrid','DESC')->get();
+        return $restndkel;
+    }
 
+    //get list table action registration
+    public function TableTindakanKeluar(Request $request, $id){
+
+        $dec_penid = Crypt::decryptString($id);
+        $restndkel = $this->getlisttindakankeluarwithrelasi($dec_penid);
         if ($request->ajax()) {
             return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($dec_penid, $restndkel, "ori")]);
         }

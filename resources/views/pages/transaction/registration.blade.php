@@ -89,10 +89,41 @@ didOpen: (toast) => {
 	}
 })
 
+function tablechild(val){
+	var table = '<div class="table table-responsive"><table class="table">'+
+              '<thead class="thead-dark">'+
+                '<tr>'+
+                  '<th scope="col">action code</th>'+
+                  '<th scope="col">action category</th>'+
+                  '<th scope="col">action</th>'+
+                  '<th scope="col">description</th>'+
+                '</tr>'+
+              '</thead>'+
+              '<tbody>';
+              if (val.data.length) {
+              	for (var i = 0; i < val.data.length; i++) {
+	table +=   '<tr>'+
+	              '<td nowrap>'+val.data[i].tndid+'</td>'+
+	              '<td nowrap>'+val.data[i].kattndnama+'</td>'+
+	              '<td nowrap>'+val.data[i].tndnama+'</td>'+
+	              '<td>'+val.data[i].tndnote+'</td>'+
+	            '</tr>';
+             	}
+             }else{
+    table +=   '<tr>'+
+	              '<td colspan="10" style="text-align:center;">no have action registration</td>'+
+	            '</tr>';
+             }
+    table += '</tbody>'+
+            '</table></div>';
+
+    return table;
+}
+
 function format ( d ) {
     return '<div class="slider">'+
-    				'<div class="card-body"><div class="row shadow-lg p-1 bg-white rounded">'+
-    				'<div class="col-sm-4 col-12">'+
+				'<div class="card-body"><div class="row shadow-lg p-1 bg-white rounded">'+
+				'<div class="col-sm-4 col-12">'+
           		'<h6><small class="text-muted">NIK</small></h6>'+
           		'<p><b>'+d.pasnik+'</b></p>'+
       			'</div>'+
@@ -107,7 +138,8 @@ function format ( d ) {
                 '<h6><small class="text-muted">Description Send Request</small></h6>'+
                 '<p><b>'+d.ket_request+'</b></p>'+
             '</div>'+
-            '</div>'+
+            '<div class="table table-responsive">'+tablechild(d.list_tindakankeluar)+'</div>'
+			'</div>'+
             '</div>'+
             '</div>';
 }
