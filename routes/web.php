@@ -120,6 +120,11 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/edit/registration', [ProcessTransaction::class, 'EditRegistrationMain'])->name('EditRegistrationMain');
 	Route::get('/view/edit/registration/{idpen}', [ManageTransaction::class, 'ViewEditRegistrationMain'])->name('ViewEditRegistrationMain');
 	
+	// laboratorium
+	Route::get('/view/laboratorium', [ManageTransaction::class, 'ViewLaboratorium'])->name('ViewLaboratorium');
+	Route::get('/insert/result/laboratorium/{id_registration}', [ManageTransaction::class, 'InputResultLaboratorium'])->name('InputResultLaboratorium');
+	Route::post('/insert/result/laboratorium/proses', [ProcessTransaction::class, 'InsertResultLaboratorium'])->name('InsertResultLaboratorium');
+
 	//focusprosesstatusregistratrion
 	Route::post('/send/request', [ProcessTransaction::class, 'SendRequestStatus'])->name('SendRequestStatus');
 

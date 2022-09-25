@@ -93,8 +93,14 @@
       "submenu": [
         {
           "url": "transaction/registration",
-          "name": "Registration Action",
+          "name": "Registration",
           "slug": "registration",
+          "icon": "bx bx-right-arrow-alt"
+        },
+        {
+          "url": "view/laboratorium",
+          "name": "Laboratorium",
+          "slug": "laboratorium",
           "icon": "bx bx-right-arrow-alt"
         }
       ]

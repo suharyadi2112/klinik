@@ -349,6 +349,11 @@ class ProcessTransaction extends Controller
         }
     }
 
+    //insert result laboratorium
+    public function InsertResultLaboratorium(Request $request){
+        return response()->json(['code' => '1', 'data' => $request->all()], 200);
+    }
+
     //cek akses
     protected function CheckAcc(){
         $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user

@@ -311,6 +311,58 @@ class ManageTransaction extends Controller
         }
     }
 
+    //--------------------------LABORATORIUM----------------------------//
+    public function ViewLaboratorium(Request $request){
+
+        if ($request->ajax()) {
+            $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->where('pendaftaran.status_request','=','approved')
+            ->orderBy('penid', 'desc')
+            ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '';
+                    $actionBtn .=   '<div class="btn-group dropup dropdown-icon-wrapper">
+                                        <a href="'.route('InputResultLaboratorium',['id_registration' => Crypt::encryptString($row->penid)]).'"><button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Input Result"><i class="bx bx-book-add"></i></button></a>
+                                    </div>
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
+                                    </div>
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
+                                    </div>';
+                    return $actionBtn;
+                })
+                ->addColumn('list_tindakankeluar', function($row){
+                    $actionBtnn= $this->getlisttindakankeluarwithrelasi($row->penid);
+                    return ['data' => $actionBtnn];
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['name' => "view laboratorium"],
+        ];
+        return view("/pages/transaction/laboratorium",['breadcrumbs' => $breadcrumbs]);
+    }
+
+    public function InputResultLaboratorium($id_pen){
+        $dec_penid = Crypt::decryptString($id_pen);//decrypt id
+
+        $ResBasic = $this->GetInfoRegistration($dec_penid);
+        $Res = $this->GetInfoLaboratorium($dec_penid);
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/insert/result/laboratorium/".$id_pen."", 'name' => "insert result laboratorium"], ['name' => "view result laboratorium"],
+        ];
+        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_pen' => $dec_penid, 'data' => $Res, 'databasic' => $ResBasic]);
+    }
+
     //cek akses
     protected function CheckAcc(){
         $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
@@ -325,6 +377,21 @@ class ManageTransaction extends Controller
             ->orderBy('penid', 'desc')
             ->where('pendaftaran.penid','=',$id_pen)
             ->first();
+        return $data;
+    }
+
+    protected function GetInfoLaboratorium($id_pen){
+        $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->join('tindakankeluar','tindakankeluar.tndklrpenid','=','pendaftaran.penid')
+            ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
+            ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+            ->join('katlab', 'katlab.katlabtndid','=','tindakankeluar.tndklrtndid')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran.penid','=',$id_pen)
+            ->get();
         return $data;
     }
 
