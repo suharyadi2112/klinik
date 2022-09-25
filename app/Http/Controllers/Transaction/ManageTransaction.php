@@ -60,9 +60,9 @@ class ManageTransaction extends Controller
                                             <i class="bx bx-cog dropdown-icon"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <span class="dropdown-item">
+                                            <a href="'.route('ViewEditRegistrationMain',['idpen' => Crypt::encryptString($row->penid)]).'"><span class="dropdown-item">
                                                 <i class="bx bx-edit"></i>
-                                            </span>
+                                            </span></a>
                                             <span class="dropdown-item DeleteRegistration" data_idPendaftar="'.$row->penid.'" status_request="'.$row->status_request.'">
                                                 <i class="bx bxs-trash"></i>
                                             </span>
@@ -176,13 +176,7 @@ class ManageTransaction extends Controller
 
         $dec_penid = Crypt::decryptString($id);//decrypt id
 
-        $data = DB::table('pendaftaran')
-            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
-            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
-            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
-            ->orderBy('penid', 'desc')
-            ->where('pendaftaran.penid','=',$dec_penid)
-            ->first();
+        $data = $this->GetInfoRegistration($dec_penid);
 
         if ($data) {
             if ($data->status_request == "request") {//hanya untuk berstatus request
@@ -286,6 +280,42 @@ class ManageTransaction extends Controller
         if ($request->ajax()) {
             return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($id, $restndkel, "leads")]);
         }
+    }
+
+    //view edit registration
+    public function ViewEditRegistrationMain($id_pen){
+        $decid = Crypt::decryptString($id_pen);
+        $data = $this->GetInfoRegistration($decid);
+        //edit hanya untuk status request(belum requested atau selebihnya)
+        if ($data->status_request == "request") {
+            if ($this->CheckAcc()->can('edit registration')) {
+                $breadcrumbs = [
+                      ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/view/edit/registration/".$id_pen."", 'name' => "edit registration"], ['name' => "edit registration"],
+                ];
+                return view("/pages/transaction/edit_registration",['breadcrumbs' => $breadcrumbs,  'id_pen' => $decid, 'id_enc' => $id_pen, 'data' => $data]);
+            }else{
+                return redirect()->route('IndexRegistration')->with('error', 'Sorry, you no have access !');
+            }
+        }else{
+            return redirect()->route('IndexRegistration')->with('error', 'Action Registration only for request status !');
+        }
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
+    }
+
+    protected function GetInfoRegistration($id_pen){
+        $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran.penid','=',$id_pen)
+            ->first();
+        return $data;
     }
 
 }

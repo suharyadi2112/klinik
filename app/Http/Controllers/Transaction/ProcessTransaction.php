@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 use Illuminate\Http\Request;
 
@@ -311,6 +313,39 @@ class ProcessTransaction extends Controller
             }
         }else{
             return response()->json(['code' => '1', 'fail' => 'Sorry you no have access'], 200);
+        }
+    }
+
+    public function EditRegistrationMain(Request $request){
+
+        $decid = Crypt::decryptString($request->id_pennn);
+        $validator = Validator::make($request->all(), [
+            'id_pennn' => 'required',
+            'patient' => 'required|max:50',
+            'reference_date' => 'required|date_format:Y-m-d',
+            'partner' => 'required|max:50',
+            'billing_of_type' => 'required|max:50',
+        ]);
+        if ($validator->fails()) {
+                HelperLog::addToLog('Fail VALIDATOR Edit data registration', json_encode($request->all())); 
+                return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+        }else{
+            if ($this->CheckAcc()->can('edit registration')) {
+                $Update =   DB::table('pendaftaran')->where('penid', $decid)->update([
+                                'penpasid' => $request->patient,
+                                'pentglrujukan' => $request->reference_date,
+                                'penpengid' => $request->partner,
+                                'penpemid' => $request->billing_of_type,
+                            ]);
+                if ($Update) {
+                    HelperLog::addToLog('Edit data registration', json_encode([ 'data' => $request->all(), 'update user' => auth()->user()->id])); 
+                    return response()->json(['code' => '2'], 200);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'Update failed'], 200);
+                }
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'Sorry you no have access'], 200);
+            }
         }
     }
 
