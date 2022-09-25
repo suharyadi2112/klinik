@@ -290,7 +290,7 @@ class ProcessTransaction extends Controller
                 return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
             }else{
 
-                if ($request->status == "request") {
+                if ($request->status == "request" || $request->status == "requested") {
 
                     $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$request->id)->get();
                      
@@ -309,6 +309,8 @@ class ProcessTransaction extends Controller
                         return response()->json(['code' => '1', 'fail' => 'Failed to delete']);
                     }
                     
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'Delete only for request status or requested'], 200);
                 }
             }
         }else{
