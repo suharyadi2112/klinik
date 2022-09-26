@@ -390,10 +390,10 @@ function SetBasicPatient(lastinsertidregis){
 
 	$(document).on("click", ".SubmitFinishing", function () {
 			$('.SubmitFinishing').prop('disabled', true);
-			var data_idpen = $(this).attr('data_idpen');
+			var data_idpendftr = $(this).attr('data_idpen');
 			$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
 				Pace.track(function(){
-					$.post( '{{ route('InsertRegisActionFinish') }}',  { id_pen: data_idpen }).done(function( data ) {
+					$.post( '{{ route('InsertRegisActionFinish') }}',  { id_pendftr: data_idpendftr }).done(function( data ) {
 							switch (data.code) {
 				      	case "2":
 									ToastToB.fire({icon: 'success',title: 'Insert Success'})
@@ -497,64 +497,64 @@ function SetBasicPatient(lastinsertidregis){
 						        	$('td',row).eq(3).css("text-align","center");
 						    	}
 						    });
-						    $(document).on("click", ".PickActionCode", function () {
-
-					    				var tndid = $(this).attr('data-tndid');
-								    	var tndnama = $(this).attr('data-tndnama');
-								    	var tndkattndid = $(this).attr('data-tndkattndid');
-								    	var kattndnama = $(this).attr('data-kattndnama');
-								    	var tndharga = $(this).attr('data-tndharga');
-						    	/*---------------------post insert action registration------------------------*/
-						    			var idpenn = localStorage.getItem('idPendaftar')
-									    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
-									  	Pace.track(function(){
-										  	$.ajax({
-										        type: 'POST',
-										        url: '{{ route('InsertRegistrationActionLeads') }}',
-										       	data: {
-																	  pendaftaran_id : idpenn,
-										        				form_pick_action_code_id: tndid,
-										        				action_category_id: tndkattndid,
-										        				action_category: kattndnama,
-										        				action: tndnama,
-										        				price: tndharga, 
-																	},
-										        beforeSend: function() {
-										        	$('.insertact').prop('disabled', true);
-										        },
-										        success: function(data) {
-													   	switch (data.code) {
-												        case "1":
-																ToastToB.fire({icon: 'error',title: data.fail})
-																break;
-																case "2":
-																	ToastToB.fire({icon: 'success',title: 'Insert Registration Success'})
-																	GetTableActionRegister();
-																	$('#action-code-list').DataTable().ajax.reload();
-																break;
-																case "3":
-																	ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'})
-																break;
-										            default:
-										            break;
-													      }
-											       },
-										        complete: function() {
-										        	$('.insertact').prop('disabled', false);
-										        },
-										        error: function(data,xhr) {
-										        	alert("Failed response")
-										        },
-										    });
-										});
-						    });
 						break;
-					  default:
-	          break;
-	        }
+					  	default:
+		         	 	break;
+		        }
 			  })
 			  .fail(function() { alert( "error" );})
 		});
+	});
+	//event saat pick action
+	$(document).on("click", ".PickActionCode", function () {
+			var tndid = $(this).attr('data-tndid');
+	    	var tndnama = $(this).attr('data-tndnama');
+	    	var tndkattndid = $(this).attr('data-tndkattndid');
+	    	var kattndnama = $(this).attr('data-kattndnama');
+	    	var tndharga = $(this).attr('data-tndharga');
+	/*---------------------post insert action registration------------------------*/
+			var idpenn = localStorage.getItem('idPendaftar')
+		    $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+		  	Pace.track(function(){
+			  	$.ajax({
+			        type: 'POST',
+			        url: '{{ route('InsertRegistrationActionLeads') }}',
+			       	data: {
+							pendaftaran_id : idpenn,
+	        				form_pick_action_code_id: tndid,
+	        				action_category_id: tndkattndid,
+	        				action_category: kattndnama,
+	        				action: tndnama,
+	        				price: tndharga, 
+						},
+			        beforeSend: function() {
+			        	$('.insertact').prop('disabled', true);
+			        },
+			        success: function(data) {
+						   	switch (data.code) {
+						        case "1":
+								ToastToB.fire({icon: 'error',title: data.fail})
+								break;
+								case "2":
+									ToastToB.fire({icon: 'success',title: 'Insert Registration Success'})
+									GetTableActionRegister();
+									$('#action-code-list').DataTable().ajax.reload();
+								break;
+								case "3":
+									ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'})
+								break;
+					            default:
+					            break;
+						    }
+				       },
+			        complete: function() {
+			        	$('.insertact').prop('disabled', false);
+			        },
+			        error: function(data,xhr) {
+			        	alert("Failed response")
+			        },
+			    });
+			});
 	});
 
 	// list type of billing
@@ -604,6 +604,7 @@ function SetBasicPatient(lastinsertidregis){
 									localStorage.setItem('idPendaftar', data.LastIdInsertPendaftaran);//set terbaru
 
 									SetBasicPatient(data.LastIdInsertPendaftaran)
+									GetTableActionRegister();
 								
 								break;
 								case "3":

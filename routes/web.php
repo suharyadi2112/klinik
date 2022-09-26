@@ -47,7 +47,7 @@ Route::get('/sk-layout-static', [StarterKitController::class, 'static_layout'])-
 Route::get('/', [StarterKitController::class, 'index'])->name('dashboard')->middleware('auth');
 
 // users Routes dengan spatie role and permission
-Route::group(['middleware' => ['web']], function () {//akses untuk super-admin dan admin
+Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan admin
 	//role
 	Route::get('/users/roles', [ManageRoles::class, 'ShowRolesUsers'])->name('ShowRolesUsers');
 	Route::post('/users/store/roles', [ManageRoles::class, 'StoreRoles'])->name('StoreRoles')->middleware(['can:create roles']);
@@ -115,9 +115,19 @@ Route::group(['middleware' => ['web']], function () {//akses untuk super-admin d
 	Route::get('/get/tindakan/keluar/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluar'])->name('TableTindakanKeluar');
 	Route::get('/get/tindakan/keluar/v2/{id_registration}', [ManageTransaction::class, 'TableTindakanKeluarV2'])->name('TableTindakanKeluarV2');
 	Route::post('/delete/tindakan/action', [ProcessTransaction::class, 'DelTindakanKeluar'])->name('DelTindakanKeluar');
-
 	Route::post('/insert/finish/regisaction', [ProcessTransaction::class, 'InsertRegisActionFinish'])->name('InsertRegisActionFinish');
+	Route::post('/delete/registration', [ProcessTransaction::class, 'DeleteRegistrationMain'])->name('DeleteRegistrationMain');
+	Route::post('/edit/registration', [ProcessTransaction::class, 'EditRegistrationMain'])->name('EditRegistrationMain');
+	Route::get('/view/edit/registration/{idpen}', [ManageTransaction::class, 'ViewEditRegistrationMain'])->name('ViewEditRegistrationMain');
 	
+	// laboratorium
+	Route::get('/view/laboratorium', [ManageTransaction::class, 'ViewLaboratorium'])->name('ViewLaboratorium');
+	Route::get('/insert/result/laboratorium/{id_registration}', [ManageTransaction::class, 'InputResultLaboratorium'])->name('InputResultLaboratorium');
+	Route::post('/insert/result/laboratorium/proses', [ProcessTransaction::class, 'InsertResultLaboratorium'])->name('InsertResultLaboratorium');
+
+	//focusprosesstatusregistratrion
+	Route::post('/send/request', [ProcessTransaction::class, 'SendRequestStatus'])->name('SendRequestStatus');
+
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');

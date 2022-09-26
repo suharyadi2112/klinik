@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- page title --}}
-@section('title','Registration')
+@section('title','Laboratorium')
 {{-- vendor styles --}}
 @section('vendor-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/tables/datatable/dataTables.bootstrap4.min.css')}}">
@@ -31,19 +31,14 @@
 		    </div>
 		@endif
         <div class="table-responsive">
-        	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
-        	<a href="{{ route('AddRegistrationWithAction') }}" title="add registration with action"><button type="button" class="btn btn-outline-primary round"><i class="bx bx-plus-circle"></i> Regis With Action</button></a>
-        <hr>
           <table id="registration-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
              	<tr>
-             			<th style="text-align:center;"><i class='bx bx-expand'></i></th>
+             		<th style="text-align:center;"><i class='bx bx-expand'></i></th>
                 	<th>Registration Date</th>
                 	<th>Reference Date</th>
                 	<th>Patient Name</th>
                 	<th>Partner</th>
-                	<th>Status</th>
-                	<th style="text-align: center;"><i class='bx bx-cloud-upload'></i></th>
                 	<th style="text-align: center;"><i class="bx bx-cog"></i></th>
             	</tr>
             </thead>
@@ -149,7 +144,7 @@ function format ( d ) {
 		    processing: true,
 		    ordering: false,
 		    serverSide: true,
-		    ajax: "{{ route('IndexRegistration') }}",
+		    ajax: "{{ route('ViewLaboratorium') }}",
 		    columns: [
 		    		{
                 "class":          "details-control",
@@ -160,42 +155,12 @@ function format ( d ) {
 		        {data: 'pentglrujukan', name: 'pentglrujukan'},
 		        {data: 'pasnama', name: 'pasnama'},
 		        {data: 'pennama', name: 'pennama'},
-		        {data: 'status_request', name: 'status_request', 
-	            	render: function(type, row, data){
-	            		if(data.status_request == "request"){
-	            			return '<span class="badge badge-light-warning" data-toggle="tooltip" data-placement="top" title="status is '+data.status_request+'" style="width:100px;">Request</span>';
-	            		}else if(data.status_request == "requested"){
-	            			return '<span class="badge badge-light-info" data-toggle="tooltip" data-placement="top" title="status is '+data.status_request+'" style="width:100px;">Requested</span>';
-	            		}else if(data.status_request == "approved"){
-	            			return '<span class="badge badge-light-success" data-toggle="tooltip" data-placement="top" title="status is '+data.status_request+'" style="width:100px;">Approved</span>';
-	            		}else if(data.status_request == "rejected"){
-	            			return '<span class="badge badge-light-danger" data-toggle="tooltip" data-placement="top" title="status is '+data.status_request+'" style="width:100px;">Rejected</span>';
-	            		}else{
-	            			return '<span class="badge badge-light-secondary" data-toggle="tooltip" data-placement="top" title="status is '+data.status_request+'" style="width:100px;">null</span>';
-	            		}
-		            }
-		        },
-		        {data: 'status_request', name: 'status_request', 
-	            	render: function(type, row, data){
-	            		if(data.status_request == "request"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-warning mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Send Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
-	            		}else if(data.status_request == "requested"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-info mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Approved or Reject this Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
-	            		}else if(data.status_request == "approved"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
-	            		}else if(data.status_request == "rejected"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button>';
-	            		}else{
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
-	            		}
-		            }
-		        },
 		        {data: 'action', name: 'action'},
 		    ],
 		    createdRow:function(row,data,index){
 		    	$('td',row).eq(1).attr("nowrap","nowrap");
-		    	$('td',row).eq(2).attr("nowrap","nowrap");
-		    	$('td',row).eq(6).css("text-align","center");
+		    	$('td',row).eq(5).attr("nowrap","nowrap");
+		    	$('td',row).eq(5).css("text-align","center");
 			}
 		});
 

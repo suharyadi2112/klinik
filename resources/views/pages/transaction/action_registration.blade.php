@@ -95,8 +95,8 @@
 	                                      </div>
 	                                  </div>
 	                              	</div>
-
-	                              	<div class="col-md-3 col-12">
+                            
+	                              	<div class="col-md-3 col-12" @if(auth()->user()->can('view price')) @else style="display:none;" @endif>
 	                              	<label for="price">Price</label>
 	                              		<div class="position-relative has-icon-left">
 	                                      <input type="text" name="price" id="price" class="form-control" placeholder="price" readonly>
@@ -106,7 +106,7 @@
 	                                  </div>
 	                              	</div>
 
-	                              	<div class="col-md-3 col-12">
+	                              	<div class="col-md-3 col-12" @if(auth()->user()->can('view price')) @else style="display:none;" @endif>
 	                              	<label for="discount">Discount (%)</label>
 	                              		<div class="position-relative has-icon-left">
 	                                      <input type="text" name="discount" id="" class="form-control"  placeholder="discount" readonly>
@@ -116,7 +116,7 @@
 	                                  </div>
 	                              	</div>
 	                              	
-	                              	<div class="col-md-3 col-12">
+	                              	<div class="col-md-3 col-12" @if(auth()->user()->can('view price')) @else style="display:none;" @endif>
 	                              	<label for="discount-price">Discount Price</label>
 	                              		<div class="position-relative has-icon-left">
 	                                      <input type="text" name="discount_price" id="discount_price" class="form-control" placeholder="discount price" readonly>
@@ -229,7 +229,7 @@
 						            {data: 'tndid', name: 'tndid'},
 						            {data: 'kattndnama', name: 'kattndnama'},
 						            {data: 'tndnama', name: 'tndnama'},
-							        {data: 'action', name: 'action'},
+							        	{data: 'action', name: 'action'},
 						        ],
 						        createdRow:function(row,data,index){
 						        	$('td',row).eq(0).attr("nowrap","nowrap");

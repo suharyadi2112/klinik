@@ -31,6 +31,10 @@ class ManageTransaction extends Controller
         $this->AllModalTransaction = $AllModalTransaction;
     }
 
+    protected function GetInfoTindakanKeluar($id_pen){
+        $CekDataRindakanLeads = DB::table('tindakankeluar')->where('tindakankeluar.tndklrpenid','=',$id_pen)->get();
+        return $CekDataRindakanLeads;
+    }
     public function index(Request $request){
 
         if ($request->ajax()) {
@@ -44,8 +48,34 @@ class ManageTransaction extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $actionBtn = '';
-                    $actionBtn .= '<a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'"><button type="button" class="btn btn-sm round btn-info" idRegis="'.$row->penid.'" >action</button>';
+                    if($this->GetInfoTindakanKeluar($row->penid)->isEmpty()){
+                        $claasss = "btn-warning";
+                        $titlee = "need action";
+                    }else{
+                        $claasss = "btn-info";
+                        $titlee = "have action";
+                    }
+                    $actionBtn .= '<div class="btn-group dropup dropdown-icon-wrapper">
+                                        <a href="'.route('RegistrationAction', ['id_registration' => Crypt::encryptString($row->penid)]) .'" type="button" class="btn btn-icon '.$claasss.' glow" data-toggle="tooltip" data-placement="top" title="'.$titlee.'" idRegis="'.$row->penid.'" >
+                                            <i class="bx bx-first-aid"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-primary btn-icon dropdown-toggle glow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-cog dropdown-icon"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a href="'.route('ViewEditRegistrationMain',['idpen' => Crypt::encryptString($row->penid)]).'"><span class="dropdown-item">
+                                                <i class="bx bx-edit"></i>
+                                            </span></a>
+                                            <span class="dropdown-item DeleteRegistration" data_idPendaftar="'.$row->penid.'" status_request="'.$row->status_request.'">
+                                                <i class="bx bxs-trash"></i>
+                                            </span>
+                                        </div>
+                                    </div>';
                     return $actionBtn;
+                })
+                ->addColumn('list_tindakankeluar', function($row){
+                    $actionBtnn= $this->getlisttindakankeluarwithrelasi($row->penid);
+                    return ['data' => $actionBtnn];
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -153,23 +183,20 @@ class ManageTransaction extends Controller
 
         $dec_penid = Crypt::decryptString($id);//decrypt id
 
-        $data = DB::table('pendaftaran')
-            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
-            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
-            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
-            ->orderBy('penid', 'desc')
-            ->where('pendaftaran.penid','=',$dec_penid)
-            ->first();
+        $data = $this->GetInfoRegistration($dec_penid);
 
         if ($data) {
-
-            //param pertama subject dan kedua data request
-            HelperLog::addToLog('Show action registration', json_encode(auth()->user()->id));
-            //Pasang Breadcrumbs 
-            $breadcrumbs = [
-              ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/action/registration/".$id."", 'name' => "action Registration"], ['name' => "action registration"],
-            ];
-            return view("/pages/transaction/action_registration",['breadcrumbs' => $breadcrumbs, 'dataregistration' => $data, 'id' => $id]);
+            if ($data->status_request == "request") {//hanya untuk berstatus request
+                //param pertama subject dan kedua data request
+                HelperLog::addToLog('Show action registration', json_encode(auth()->user()->id));
+                //Pasang Breadcrumbs 
+                $breadcrumbs = [
+                  ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/action/registration/".$id."", 'name' => "action Registration"], ['name' => "action registration"],
+                ];
+                return view("/pages/transaction/action_registration",['breadcrumbs' => $breadcrumbs, 'dataregistration' => $data, 'id' => $id]);
+            }else{
+                return redirect()->route('IndexRegistration')->with('error', 'Action Registration only for request status !');
+            }
         }else{
             return redirect()->route('IndexRegistration')->with('error', 'Data Registration Not Found !');
         }
@@ -231,17 +258,20 @@ class ManageTransaction extends Controller
         }
     }
 
-    //get list table action registration
-    public function TableTindakanKeluar(Request $request, $id){
-
-        $dec_penid = Crypt::decryptString($id);
-
+    protected function getlisttindakankeluarwithrelasi($id_pen){
         $restndkel = DB::table('tindakankeluar')
                     ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
                     ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
                     ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
-                    ->where('tndklrpenid','=',$dec_penid)->orderBy('tndklrid','DESC')->get();
+                    ->where('tndklrpenid','=',$id_pen)->orderBy('tndklrid','DESC')->get();
+        return $restndkel;
+    }
 
+    //get list table action registration
+    public function TableTindakanKeluar(Request $request, $id){
+
+        $dec_penid = Crypt::decryptString($id);
+        $restndkel = $this->getlisttindakankeluarwithrelasi($dec_penid);
         if ($request->ajax()) {
             return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($dec_penid, $restndkel, "ori")]);
         }
@@ -260,6 +290,109 @@ class ManageTransaction extends Controller
         if ($request->ajax()) {
             return response()->json(['code' => '1','data' => $restndkel, 'tabel' => $this->AllModalTransaction->TabelActionRegistration($id, $restndkel, "leads")]);
         }
+    }
+
+    //view edit registration
+    public function ViewEditRegistrationMain($id_pen){
+        $decid = Crypt::decryptString($id_pen);
+        $data = $this->GetInfoRegistration($decid);
+        //edit hanya untuk status request(belum requested atau selebihnya)
+        if ($data->status_request == "request") {
+            if ($this->CheckAcc()->can('edit registration')) {
+                $breadcrumbs = [
+                      ['link' => "/transaction/registration/", 'name' => "registration"], ['link' => "/view/edit/registration/".$id_pen."", 'name' => "edit registration"], ['name' => "edit registration"],
+                ];
+                return view("/pages/transaction/edit_registration",['breadcrumbs' => $breadcrumbs,  'id_pen' => $decid, 'id_enc' => $id_pen, 'data' => $data]);
+            }else{
+                return redirect()->route('IndexRegistration')->with('error', 'Sorry, you no have access !');
+            }
+        }else{
+            return redirect()->route('IndexRegistration')->with('error', 'Action Registration only for request status !');
+        }
+    }
+
+    //--------------------------LABORATORIUM----------------------------//
+    public function ViewLaboratorium(Request $request){
+
+        if ($request->ajax()) {
+            $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->where('pendaftaran.status_request','=','approved')
+            ->orderBy('penid', 'desc')
+            ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '';
+                    $actionBtn .=   '<div class="btn-group dropup dropdown-icon-wrapper">
+                                        <a href="'.route('InputResultLaboratorium',['id_registration' => Crypt::encryptString($row->penid)]).'"><button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Input Result"><i class="bx bx-book-add"></i></button></a>
+                                    </div>
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
+                                    </div>
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
+                                    </div>';
+                    return $actionBtn;
+                })
+                ->addColumn('list_tindakankeluar', function($row){
+                    $actionBtnn= $this->getlisttindakankeluarwithrelasi($row->penid);
+                    return ['data' => $actionBtnn];
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['name' => "view laboratorium"],
+        ];
+        return view("/pages/transaction/laboratorium",['breadcrumbs' => $breadcrumbs]);
+    }
+
+    public function InputResultLaboratorium($id_pen){
+        $dec_penid = Crypt::decryptString($id_pen);//decrypt id
+
+        $ResBasic = $this->GetInfoRegistration($dec_penid);
+        $Res = $this->GetInfoLaboratorium($dec_penid);
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/insert/result/laboratorium/".$id_pen."", 'name' => "insert result laboratorium"], ['name' => "view result laboratorium"],
+        ];
+        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_pen' => $dec_penid, 'data' => $Res, 'databasic' => $ResBasic]);
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
+    }
+
+    protected function GetInfoRegistration($id_pen){
+        $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran.penid','=',$id_pen)
+            ->first();
+        return $data;
+    }
+
+    protected function GetInfoLaboratorium($id_pen){
+        $data = DB::table('pendaftaran')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->join('tindakankeluar','tindakankeluar.tndklrpenid','=','pendaftaran.penid')
+            ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
+            ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+            ->join('katlab', 'katlab.katlabtndid','=','tindakankeluar.tndklrtndid')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran.penid','=',$id_pen)
+            ->get();
+        return $data;
     }
 
 }
