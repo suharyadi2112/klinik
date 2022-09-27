@@ -351,16 +351,32 @@ class ManageTransaction extends Controller
         return view("/pages/transaction/laboratorium",['breadcrumbs' => $breadcrumbs]);
     }
 
-    public function InputResultLaboratorium($id_pen){
+    public function InputResultLaboratorium(Request $request, $id_pen){
         $dec_penid = Crypt::decryptString($id_pen);//decrypt id
 
         $ResBasic = $this->GetInfoRegistration($dec_penid);
         $Res = $this->GetInfoLaboratorium($dec_penid);
 
+        if ($request->ajax()) {
+            return DataTables::of($Res)->addIndexColumn()
+            ->addColumn('action', function($row){
+
+              $ress = DB::table('result')->where([['resultkatlabid','=',$row->katlabid],['resultpenid','=',$row->penid]])->first();
+              if ($ress) {
+                return ''.$ress->result.' - <button type="button" data_idresult="'.$ress->resultid.'" data_katlabid="'.$row->katlabid.'" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bx-sync"></i></button>';
+              }else{
+                return '<button type="button" data_idresult="kosong" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
+              }
+
+                
+            })
+            ->rawColumns(['action'])->make(true);
+        }
+
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/insert/result/laboratorium/".$id_pen."", 'name' => "insert result laboratorium"], ['name' => "view result laboratorium"],
         ];
-        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_pen' => $dec_penid, 'data' => $Res, 'databasic' => $ResBasic]);
+        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_pen' => $dec_penid ,'id_pen' => $id_pen, 'databasic' => $ResBasic]);
     }
 
     //cek akses
