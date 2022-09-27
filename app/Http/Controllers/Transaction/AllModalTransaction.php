@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 
+use App\Helpers\Helper as FormatRupiah;
+
 class AllModalTransaction extends Controller
 {
     public function __construct()
@@ -85,7 +87,7 @@ class AllModalTransaction extends Controller
         
         $table = '';
         $table .=   '<div class="table-responsive">
-                      <table class="table table-striped table-sm table-hover" width="100%">
+                      <table class="table table-bordered table-sm table-hover" width="100%">
                         <thead>
                           <tr>
                               <th>No</th>
@@ -103,8 +105,8 @@ class AllModalTransaction extends Controller
                         </thead>
                         <tbody>';
                         $no = 1;
+                        $total = 0;
                         foreach ($restndkel as $key => $value) {
-                     
         $table .=   '     <tr>
                             <td>'.$no.'</td>
                             <td>'.$value->tndklrtndid.'</td>
@@ -118,19 +120,24 @@ class AllModalTransaction extends Controller
                             
         $table .=           '<td>'.$value->tndnote.'</td>
                             <td>
-
                               <button class="btn btn-xs btn-outline-danger p-0 DelTindakanKeluar" data_id="'.$value->tndklrid.'" data_type="'.$type.'"><i class="bx bx-trash"></i></button>
-
                             </td>
                           </tr>';
-
+                        $total += $value->tndklrdiskonprice;
                         $no++;
                         }
-
-        $table .=   '   </tbody>
+                      if ($user->can('view price')) {
+        $table .=   ' <tr>
+                         <td style="text-align:center; vertical-align:middle;" colspan="4"><h2>total</h2></td>
+                         <td style="text-align:center; vertical-align:middle;" colspan="5"><h2>'.FormatRupiah::FormatRupiah($total).'</h2></td>
+                      </tr>  
+                      ';
+                    }
+        $table .=   '</tbody>
                       </table>
                     </div>';
 
         return $table;
     }
+    
 }
