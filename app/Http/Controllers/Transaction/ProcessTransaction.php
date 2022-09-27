@@ -352,8 +352,30 @@ class ProcessTransaction extends Controller
     }
 
     //insert result laboratorium
-    public function InsertResultLaboratorium(Request $request){
-        return response()->json(['code' => '1', 'data' => $request->all()], 200);
+    public function InsertResultLaboratorium(Request $request, $id_registration){
+        $validator = Validator::make($request->all(), [
+            'resultdata' => 'required|max:10',
+            'kategori_labor' => 'required|max:10',
+            'id_result' => 'required|max:10',
+        ]);
+
+        $decid = Crypt::decryptString($id_registration);
+
+        if ($validator->fails()) {
+            HelperLog::addToLog('Fail VALIDATOR Insert result', json_encode($request->all())); 
+            return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+        }else{
+            if ($request->id_result != "null") {//kiriman null dari id result, berupa string
+                $res = DB::table('result')->where('resultid','=',$request->id_result)->update(['result' => $request->resultdata]);
+            }else{
+                $res = DB::table('result')->insert(
+                    ['resultpenid' => $decid,'resultkatlabid' => $request->kategori_labor, 'result' => $request->resultdata],
+                );
+            }
+            HelperLog::addToLog('Insert result success', json_encode($request->all())); 
+            return response()->json(['code' => '2'], 200);
+        }
+        
     }
 
     //cek akses

@@ -55,64 +55,30 @@
 					            </div>
 					        </div>
 					        <hr>
-                      <form id="InsertResultLaboratorium" data-route="{{ route('InsertResultLaboratorium') }}" role="form" method="POST" accept-charset="utf-8">
-                          <div class="form-body">
-                              <div class="row">
-                              	<div class="table table-responsive">
-                                  
-                                  <table class="table table-striped table-sm" width="100%">
-																	  <thead class="thead-dark">
-																	    <tr>
-																	      <th scope="col">No</th>
-																	      <th scope="col">Action Code</th>
-																	      <th scope="col">Result</th>
-																	      <th scope="col">Action</th>
-																	      <th scope="col">Action Category</th>
-																	      <th scope="col">Lab</th>
-																	      <th scope="col">Unit</th>
-																	      <th scope="col">Normal Value</th>
-																	    </tr>
-																	  </thead>
-																	  <tbody>
-																	  	@php $no = 1; @endphp
-																	  	@forelse($data as $key => $ValRes)
-																	    <tr>
-																	      <td>{{ $no + $key}}</td>
-																	      <td>{{ $ValRes->tndklrtndid  }}</td>
-																	      <td>
-																	      		
-					                                  <div class="input-group form-label-group position-relative has-icon-left mt-1">
-					                                  		<input type="text" class="form-control" id="result" placeholder="result number" aria-label="result" name="result" readonly>
-					                                  	    <div class="form-control-position">
-					                                          <i class='bx bx-plus-medical'></i>
-					                                      </div>
-					                                      <div class="input-group-append">
-					                                          <button class="btn btn-primary" type="button"><i class="bx bx-upload"></i></button>
-					                                      </div>
-					                                  </div>
+                      <div class="form-body">
+                          <div class="row">
+                          	<div class="table table-responsive">
+                              
+                              <table id="TableForLab" class="table table-striped" width="100%">
+															  <thead class="thead-dark">
+															    <tr>
+															      <th scope="col">Action Code</th>
+															      <th scope="col">Result</th>
+															      <th scope="col">Action</th>
+															      <th scope="col">Action Category</th>
+															      <th scope="col">Lab</th>
+															      <th scope="col">Unit</th>
+															      <th scope="col">Normal Value</th>
+															    </tr>
+															  </thead>
+															</table>
+														</div>
 
-																	      </td>
-																	      <td>{{ $ValRes->kattndnama  }}</td>
-																	      <td>{{ $ValRes->tndnama  }}</td>
-																	      <td>{{ $ValRes->katlabnama }}</td>
-																	      <td>{{ $ValRes->katlabsat  }}</td>
-																	      <td>{{ $ValRes->katlabnilai }}</td>
-																	    </tr>
-																	    @empty
-																	    <tr>
-																	      <th scope="row" colspan="10">Data Not Found</th>
-																	    </tr>
-																	    @endforelse
-																	  </tbody>
-																	</table>
-																</div>
-
-                                  <div class="col-12 d-flex justify-content-end">
-                                      <a href="{{ route('ViewLaboratorium') }}"><button type="button" class="btn btn-warning mr-1"><i class='bx bx-arrow-back' ></i> Back</button></a>
-                                  </div>
+                              <div class="col-12 d-flex justify-content-end">
+                                  <a href="{{ route('ViewLaboratorium') }}"><button type="button" class="btn btn-warning mr-1"><i class='bx bx-arrow-back' ></i> Back</button></a>
                               </div>
                           </div>
-                      	</form>
+                      </div>
 	              	</div>
 		         	 </div>
 		      	{{-- endform --}}
@@ -120,7 +86,7 @@
     </div>
   </div>
 </section>
-<!-- registration list ends -->
+<!-- add result laboratorium -->
 
 @endsection
 
@@ -150,6 +116,81 @@ didOpen: (toast) => {
 		toast.addEventListener('mouseleave', Swal.resumeTimer)
 	}
 })
+
+$(document).ready(function(){
+		var dt = $('#TableForLab').DataTable({
+		    processing: true,
+		    ordering: false,
+		    lengthChange: false,
+		    searching: false,
+		    serverSide: true,
+		    ajax: "{{ route('InputResultLaboratorium',['id_registration' => $id_pen]) }}",
+		    columns: [
+		    	  {data: 'tndklrtndid', name: 'tndklrtndid'},
+		        {data: 'action', name: 'action'},
+		        {data: 'kattndnama', name: 'kattndnama'},
+		        {data: 'tndnama', name: 'tndnama'},
+		      	{data: 'katlabnama', name: 'katlabnama'},
+		      	{data: 'katlabsat', name: 'katlabsat'},
+		      	{data: 'katlabnilai', name: 'katlabnilai'},
+		    ],
+		    createdRow:function(row,data,index){
+		    	$('td',row).eq(1).attr("nowrap","nowrap");
+			}
+		});
+	});
+
+//send request status
+$(document).on("click", ".InsertUpdateResult", async function () {
+	var data_katlabid = $(this).attr("data_katlabid");
+	var data_idresult = $(this).attr("data_idresult");
+	const { value: result } = await Swal.fire({
+	  title: 'Input Result',
+	  input: 'number',
+	  inputLabel: 'Result',
+	  inputPlaceholder: 'Enter your result',
+	})
+
+	if (result) {
+	  Pace.track(function(){
+			Pace.restart();
+			$.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
+	  	$.ajax({
+	        type: 'POST',
+	        url: '{{ route('InsertResultLaboratorium',['id_registration' => $id_pen]) }}',
+	       	data: {
+					  resultdata : result,
+					  kategori_labor : data_katlabid,
+					  id_result : data_idresult,
+					},
+	        beforeSend: function() {},
+	        success: function(data) {
+				   	switch (data.code) {
+			        case "1":
+			        	ToastToB.fire({icon: 'error',title: data.fail})
+							break;
+							case "2":
+								ToastToB.fire({icon: 'success',title: 'Success insert result'})
+								$('#TableForLab').DataTable().ajax.reload();
+							break;
+							case "3":
+								ToastToB.fire({icon: 'error',title: 'insert result failed'})
+							break;
+	            default:
+	            break;
+				      }
+		       },
+	        complete: function() {
+	        	$('.SendRequest').prop('disabled', false);
+	        },
+	        error: function(data,xhr) {
+	        	alert("Failed response")
+	        },
+	    });
+		});
+	}
+
+});
 
 
 </script>
