@@ -365,14 +365,15 @@ class ProcessTransaction extends Controller
             HelperLog::addToLog('Fail VALIDATOR Insert result', json_encode($request->all())); 
             return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
         }else{
-            if ($request->id_result != "null") {//kiriman null dari id result, berupa string
-                $res = DB::table('result')->where('resultid','=',$request->id_result)->update(['result' => $request->resultdata]);
+            if ($request->id_result != "kosong") {//kiriman null dari id result, berupa string
+              $res = DB::table('result')->where('resultid','=',$request->id_result)->update(['result' => $request->resultdata]);
+              HelperLog::addToLog('Update result success', json_encode($request->all()));
             }else{
                 $res = DB::table('result')->insert(
                     ['resultpenid' => $decid,'resultkatlabid' => $request->kategori_labor, 'result' => $request->resultdata],
                 );
+                HelperLog::addToLog('Insert result success', json_encode($request->all()));
             }
-            HelperLog::addToLog('Insert result success', json_encode($request->all())); 
             return response()->json(['code' => '2'], 200);
         }
         

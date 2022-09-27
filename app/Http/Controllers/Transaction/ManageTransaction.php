@@ -361,14 +361,13 @@ class ManageTransaction extends Controller
             return DataTables::of($Res)->addIndexColumn()
             ->addColumn('action', function($row){
 
-                // $res = DB::table('result')->
+              $ress = DB::table('result')->where([['resultkatlabid','=',$row->katlabid],['resultpenid','=',$row->penid]])->first();
+              if ($ress) {
+                return ''.$ress->result.' - <button type="button" data_idresult="'.$ress->resultid.'" data_katlabid="'.$row->katlabid.'" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bx-sync"></i></button>';
+              }else{
+                return '<button type="button" data_idresult="kosong" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
+              }
 
-                // if($row->result){
-                //     return '<button type="button" data_idresult="'.$row->resultid+'" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
-
-                // }else{
-                //     return ''.$row->result.' - <button type="button" data_idresult="'.$row->resultid.'" data_katlabid="'.$row->katlabid.'" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bx-sync"></i></button>';
-                // }
                 
             })
             ->rawColumns(['action'])->make(true);

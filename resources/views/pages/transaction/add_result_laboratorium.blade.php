@@ -126,7 +126,7 @@ $(document).ready(function(){
 		    serverSide: true,
 		    ajax: "{{ route('InputResultLaboratorium',['id_registration' => $id_pen]) }}",
 		    columns: [
-		    	  {data: 'tndklrtndid', name: 'tndklrtndid'},
+		    	{data: 'tndklrtndid', name: 'tndklrtndid'},
 		        {data: 'action', name: 'action'},
 		        {data: 'kattndnama', name: 'kattndnama'},
 		        {data: 'tndnama', name: 'tndnama'},
