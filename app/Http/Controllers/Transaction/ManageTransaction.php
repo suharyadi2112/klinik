@@ -329,11 +329,11 @@ class ManageTransaction extends Controller
                     $actionBtn .=   '<div class="btn-group dropup dropdown-icon-wrapper">
                                         <a href="'.route('InputResultLaboratorium',['id_registration' => Crypt::encryptString($row->penid)]).'"><button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Input Result"><i class="bx bx-book-add"></i></button></a>
                                     </div>
-                                    <div class="btn-group dropup dropdown-icon-wrapper">
-                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
+                                    <a href="'.route('ReportPDFResult',['id_registration' => Crypt::encryptString($row->penid)]).'"><div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-info" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
                                     </div>
                                     <div class="btn-group dropup dropdown-icon-wrapper">
-                                        <button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
                                     </div>';
                     return $actionBtn;
                 })

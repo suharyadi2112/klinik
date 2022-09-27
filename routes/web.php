@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ManageRoles\ManagePermissions;
 use App\Http\Controllers\ManageCategory\ManageCategory;
 use App\Http\Controllers\Transaction\ManageTransaction;
 use App\Http\Controllers\Transaction\ProcessTransaction;
+use App\Http\Controllers\Transaction\ReportResult;
 use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 use App\Http\Controllers\ManagePartner\ManagePartner;
@@ -128,6 +129,8 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	//focusprosesstatusregistratrion
 	Route::post('/send/request', [ProcessTransaction::class, 'SendRequestStatus'])->name('SendRequestStatus');
 
+	//Report Result PDF 
+	Route::get('/report/result/{id_registration}', [ReportResult::class, 'ReportPDFResult'])->name('ReportPDFResult');
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
