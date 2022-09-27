@@ -180,11 +180,11 @@ function format ( d ) {
 	            		if(data.status_request == "request"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-warning mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Send Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}else if(data.status_request == "requested"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-info mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Approved or Reject this Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-info mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Approved or Reject this Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="ficon bx bx-bell-plus bx-tada bx-flip-horizontal"></i></button>';
 	            		}else if(data.status_request == "approved"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
 	            		}else if(data.status_request == "rejected"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button>';
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button>';
 	            		}else{
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}
@@ -283,7 +283,7 @@ function format ( d ) {
 			var idpennnnn = $(this).attr("data_idpen");
 			var status = $(this).attr("status");
 
-			if (status == "requested") {
+			if (status == "requested" || status == "approved" || status == "rejected") {
 				/* inputOptions can be an object or Promise */
 				const inputOptions = new Promise((resolve) => {
 				  setTimeout(() => {
@@ -368,8 +368,6 @@ function format ( d ) {
 		}
 	});
 	
-
-
 
 </script>
 

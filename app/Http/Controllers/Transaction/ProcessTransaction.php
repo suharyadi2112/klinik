@@ -73,6 +73,12 @@ class ProcessTransaction extends Controller
             }else{
                 return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
             }
+        }elseif($request->status == "approved" || $request->status == "rejected"){
+            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create') || $this->CheckAcc()->can('request create')){
+                return $this->changeStatus($request, $request->status, $request->statusPilihan);
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+            }
         }else{
             return response()->json(['code' => '1', 'fail' => 'sorry, we have a problem, try again later'], 200);
         }
@@ -85,18 +91,19 @@ class ProcessTransaction extends Controller
         switch ($status) {
             case 'request':
                 $var = 'requested';
-                $validator = Validator::make($req->all(), [
-                    'pendaftaran_id' => 'required|max:10',
-                    'status' => 'required|max:20',
-                ]);
+                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10','status' => 'required|max:20']);
             break;
             case 'requested':
                 $var = $statusPilihan;
-                $validator = Validator::make($req->all(), [
-                    'pendaftaran_id' => 'required|max:10',
-                    'status' => 'required|max:20',
-                    'statusPilihan' => 'required|max:20',
-                ]);
+                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10', 'status' => 'required|max:20','statusPilihan' => 'required|max:20' ]);
+            break;
+            case 'approved':
+                $var = $statusPilihan;
+                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10', 'status' => 'required|max:20','statusPilihan' => 'required|max:20' ]);
+            break;
+            case 'rejected':
+                $var = $statusPilihan;
+                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10', 'status' => 'required|max:20','statusPilihan' => 'required|max:20' ]);
             break;
             default:
             // code...
@@ -110,9 +117,17 @@ class ProcessTransaction extends Controller
             if($CekDataRindakanLeads->isEmpty()){
                 return response()->json(['code' => '1' , 'fail' => 'Action not found in this registration !', 'param' => $req->pendaftaran_id], 200);
             }else{
-                // status req to requested
+                if ($status == 'approved' || $status == 'rejected') {
+                  $ressss = DB::table('result')->where('resultpenid','=',$req->pendaftaran_id)->count();//cek ketersediaan data di result
+                  if ($ressss > 0) {
+                    return response()->json(['code' => '1', 'fail' => 'Cant change this status, because data is already in the final result'], 200);
+                  }
+                }
+                // update status
                 $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_request' => $req->keterangan]);
                 if ($affected) {
+                    //param pertama subject dan kedua data request
+                    HelperLog::addToLog('Change Status Registration', json_encode(["id user" => auth()->user()->id, "data" => $req->all()]));
                     return response()->json(['code' => '2'], 200);
                 }else{
                     return response()->json(['code' => '1', 'fail' => 'fail to send request'], 200);

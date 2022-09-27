@@ -11,7 +11,11 @@ use App\Models\LogActivity as LogActivityModel;
 class Helper
 { 
     
-	
+	public static function FormatRupiah($value){ 
+    return number_format($value,0,',','.'); 
+  }
+
+  //log
   public static function addToLog($subject, $data)
   {
     $log = [];

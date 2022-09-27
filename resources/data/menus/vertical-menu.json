@@ -210,6 +210,59 @@
           }
       ]
     },
+
+
+    {
+      "url": "#",
+      "name": "Setup",
+      "slug": "setup",
+      "icon": "wrench",
+      "submenu": [
+          {
+            "url": "#",
+            "nameRoute" : "identity_type",
+            "name": "Identity Type",
+            "slug": "identity_type"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "religion",
+            "name": "Religion",
+            "slug": "religion"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "occupation",
+            "name": "Occupation",
+            "slug": "occupation"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "blood_group",
+            "name": "Blood Group",
+            "slug": "blood_group"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "gender",
+            "name": "Gender",
+            "slug": "gender"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "nationality",
+            "name": "Nationality",
+            "slug": "nationality"
+          },
+          {
+            "url": "#",
+            "nameRoute" : "marital_status",
+            "name": "Marital Status",
+            "slug": "marital_status"
+          }
+
+      ]
+    },
    
     {
       "url": "https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation",
