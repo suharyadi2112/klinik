@@ -367,7 +367,6 @@ class ManageTransaction extends Controller
               }else{
                 return '<button type="button" data_idresult="kosong" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
               }
-
                 
             })
             ->rawColumns(['action'])->make(true);
