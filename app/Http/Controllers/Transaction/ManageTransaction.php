@@ -43,13 +43,11 @@ class ManageTransaction extends Controller
             ->join('roles','roles.id','=','model_has_roles.role_id')->where('users.id','=',auth()->user()->id)->first();
 
             $data = DB::table('pendaftaran')
+            ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*','users.name')
             ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
             ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
             ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
             ->join('users','users.id','=','pendaftaran.created_by')
-            ->join('model_has_roles','model_id','=','users.id')
-            ->join('roles','roles.id','=','model_has_roles.role_id')
-            // ->where('pendaftaran.created_by','=',auth()->user()->id)
             ->orderBy('penid', 'desc')
             ->when($cekRoles, function ($q, $cekRoles) {
                 if ($cekRoles->name != 'super-admin') {
