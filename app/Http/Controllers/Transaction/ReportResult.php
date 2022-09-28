@@ -29,8 +29,6 @@ class ReportResult extends Controller
         $age = Carbon::parse($resbasic->pastgllahir)->age;//to age
         
         $data = [
-            'title' => 'Tes untuk configurasi dompdf',
-            'date' => date('m/d/Y'),
             'id_registration' => $dec_penid,
             'data_basic' => $resbasic,
             'age' => $age,
