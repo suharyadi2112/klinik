@@ -132,6 +132,10 @@ function format ( d ) {
                 '<p><b>'+d.pasalamat+'</b></p>'+
             '</div>'+
             '<div class="col-sm-4 col-12">'+
+                '<h6><small class="text-muted">Register by</small></h6>'+
+                '<p><b>'+d.name+'</b></p>'+
+            '</div>'+
+            '<div class="col-sm-4 col-12">'+
                 '<h6><small class="text-muted">Type of Billing</small></h6>'+
                 '<p><b>'+d.pemnama+'</b></p>'+
             '</div><div class="col-sm-4 col-12">'+
