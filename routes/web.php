@@ -134,6 +134,9 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	//Report Result PDF 
 	Route::get('/report/result/{id_registration}', [ReportResult::class, 'ReportPDFResult'])->name('ReportPDFResult');
 
+	//screening
+	Route::get('/screening/{id_registration}', [ManageTransaction::class, 'Screening'])->name('Screening');
+
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
 	Route::post('/pasien/billing/store', [ManagePasienBilling::class, 'StoreBilling'])->name('StoreBilling');

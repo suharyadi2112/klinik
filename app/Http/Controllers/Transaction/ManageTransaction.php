@@ -344,9 +344,10 @@ class ManageTransaction extends Controller
                                         <button type="button" class="btn btn-xs btn-icon glow btn-info" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
                                     </div>
                                     </a>
+                                    <a href="'.route('Screening',['id_registration' => Crypt::encryptString($row->penid)]).'">
                                     <div class="btn-group dropup dropdown-icon-wrapper">
                                         <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
-                                    </div>';
+                                    </div></a>';
                     return $actionBtn;
                 })
                 ->addColumn('list_tindakankeluar', function($row){
@@ -387,8 +388,50 @@ class ManageTransaction extends Controller
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/insert/result/laboratorium/".$id_pen."", 'name' => "insert result laboratorium"], ['name' => "view result laboratorium"],
         ];
-        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_pen' => $dec_penid ,'id_pen' => $id_pen, 'databasic' => $ResBasic]);
+        return view("/pages/transaction/add_result_laboratorium",['breadcrumbs' => $breadcrumbs, 'id_penDec' => $dec_penid ,'id_pen' => $id_pen, 'databasic' => $ResBasic]);
     }
+
+
+    //--------------------------------Screening-------------------------------------//
+    public function Screening(Request $request, $id_registration){
+
+        $dec_penid = Crypt::decryptString($id_registration);//decrypt id
+
+        $Res = DB::table('pendaftaran')
+            ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->orderBy('penid', 'desc')
+            ->get();
+
+        if ($request->ajax()) {
+            return DataTables::of($Res)->addIndexColumn()
+            ->addColumn('action', function($row){
+
+                $resAction = DB::table('tindakankeluar')
+                    ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
+                    ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
+                    ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+                    ->where('tndklrpenid','=',$row->penid)->count();
+                return $resAction;
+
+            })
+            ->addColumn('bayar', function($row){
+
+                return '-';
+                
+            })
+            ->rawColumns(['bayar'])->make(true);
+        }
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_registration."", 'name' => "screening"], ['name' => "view screening"],
+        ];
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_penDec' => $dec_penid ,'id_pen' => $id_registration]);
+
+    }
+
 
     //cek akses
     protected function CheckAcc(){
