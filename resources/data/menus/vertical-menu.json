@@ -219,7 +219,7 @@
       "icon": "wrench",
       "submenu": [
           {
-            "url": "#",
+            "url": "/identity",
             "nameRoute" : "identity_type",
             "name": "Identity Type",
             "slug": "identity_type"

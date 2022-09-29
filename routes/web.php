@@ -16,6 +16,7 @@ use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 use App\Http\Controllers\ManagePartner\ManagePartner;
 use App\Http\Controllers\ManagePasien\ManagePasien;
+use App\Http\Controllers\ManageIdentity\ManageIdentity;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +161,14 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/patient/create', [ManagePasien::class, 'InsertPatient'])->name('InsertPatient');
 	Route::get('/patient/update/{id}', [ManagePasien::class, 'PatientEdit'])->name('PatientEdit');
 	Route::post('/patient/put', [ManagePasien::class, 'UpdatePatient'])->name('UpdatePatient');
+
+	//identity type
+	Route::get('/identity', [ManageIdentity::class, 'ShowIdentity'])->name('ShowIdentity');
+	Route::post('/identity/store', [ManageIdentity::class, 'StoreIdentityType'])->name('StoreIdentityType');
+	Route::post('/identity/put/{id}', [ManageIdentity::class, 'PutIdentityType'])->name('PutIdentityType');
+	Route::delete('/identity/delete/{id}', [ManageIdentity::class, 'DelidentityType'])->name('DelidentityType');
+
+
 
 });
 
