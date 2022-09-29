@@ -122,7 +122,7 @@ function tablechild(val){
 
 function format ( d ) {
     return '<div class="slider">'+
-				'<div class="card-body"><div class="row shadow-lg p-1 bg-white rounded">'+
+				'<div class="card-body pb-0"><div class="row shadow-lg p-1 bg-white rounded">'+
 				'<div class="col-sm-4 col-12">'+
           		'<h6><small class="text-muted">NIK</small></h6>'+
           		'<p><b>'+d.pasnik+'</b></p>'+
@@ -142,10 +142,26 @@ function format ( d ) {
                 '<h6><small class="text-muted">Description Send Request</small></h6>'+
                 '<p><b>'+d.ket_request+'</b></p>'+
             '</div>'+
-            '<div class="table table-responsive">'+tablechild(d.list_tindakankeluar)+'</div>'
+            '<div class="table table-responsive">'+tablechild(d.list_tindakankeluar)+'</div>'+
 			'</div>'+
-            '</div>'+
-            '</div>';
+      '</div>'+
+      '<div class="card-body pb-1"><div class="row shadow-lg p-1 bg-white rounded">'+
+        '<div class="table table-responsive"><table class="table">'+
+          '<thead class="thead-dark">'+
+              '<tr>'+
+                '<th scope="col">ket request</th>'+
+                '<th scope="col">ket rejected</th>'+
+                '<th scope="col">catatan</th>'+
+                '<th scope="col">saran</th>'+
+              '</tr>'+
+          '</thead>'+
+          '<tbody>'+
+            '<tr><td>'+d.ket_request+'</td><td>'+d.ket_rejected+'</td><td>'+d.catatan+'</td><td>'+d.saran+'</td></tr>'
+          '</tbody>'+
+          '</table>'+
+        '</div>'+
+        '</div></div>'+
+      '</div>';
 }
 
 	$(document).ready(function(){
@@ -188,7 +204,7 @@ function format ( d ) {
 	            		}else if(data.status_request == "approved"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
 	            		}else if(data.status_request == "rejected"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button>';
+                    return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-0 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button> | <button type="button" class="btn btn-xs btn-icon glow btn-dark mr-1 SendRequestAgain" data_ket_reject="'+data.ket_rejected+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="See rejected message"><i class="ficon bx bxs-message-rounded-error bx-tada bx-flip-horizontal" ></i></button>';
 	            		}else{
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}
@@ -199,6 +215,7 @@ function format ( d ) {
 		    createdRow:function(row,data,index){
 		    	$('td',row).eq(1).attr("nowrap","nowrap");
 		    	$('td',row).eq(2).attr("nowrap","nowrap");
+          $('td',row).eq(6).attr("nowrap","nowrap");
 		    	$('td',row).eq(6).css("text-align","center");
 			}
 		});
@@ -281,6 +298,32 @@ function format ( d ) {
 			});
 	}
 
+  $(document).on("click", ".SendRequestAgain", async function () {
+
+      var idpennnnn = $(this).attr("data_idpen");
+      var status = $(this).attr("status");
+      var data_ket_reject = $(this).attr("data_ket_reject");
+
+      const { value: accept } = await Swal.fire({
+        title: 'Rejected message',
+        text : data_ket_reject,
+        input: 'checkbox',
+        inputValue: 1,
+        inputPlaceholder:
+          'I agree with rejected message ',
+        confirmButtonText:
+          'Continue <i class="fa fa-arrow-right"></i>',
+        inputValidator: (result) => {
+          return !result && 'You need to agree with rejected message'
+        }
+      })
+
+      if (accept) {
+        Swal.fire('You agreed with with rejected message :)')
+      }
+  });
+
+
 	//send request status
 	$(document).on("click", ".SendRequest", async function () {
 
@@ -301,19 +344,40 @@ function format ( d ) {
 				const { value: statusPilihan } = await Swal.fire({
 				  title: 'Confirm Status',
 				  input: 'radio',
-			      allowOutsideClick: false,
-			      showCancelButton: true,
+		      allowOutsideClick: false,
+		      showCancelButton: true,
 				  inputOptions: inputOptions,
 				  inputValidator: (value) => {
 				    if (!value) {
 				      return 'You need to choose something!'
-				    }
+				    }else{
+              if (value == "rejected"){
+                  Swal.fire({
+                    title: 'leave a description why rejected',
+                    input: 'textarea',
+                    inputAttributes: {
+                      autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Send Request',
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick: false,
+                  preConfirm: (Keterangan) => {
+                    if (Keterangan == "") {
+                      Swal.showValidationMessage('First input missing')
+                    } else {
+                      UpdateStatuss(Keterangan, idpennnnn, status, value);//proses
+                    }
+                  },
+                })
+              }
+            }
 				  }
 				})
-				if (statusPilihan) {
-					Keterangan = "";
-					UpdateStatuss(Keterangan, idpennnnn, status, statusPilihan);//proses
-				}
+      if (statusPilihan) {
+				Keterangan = "";
+				UpdateStatuss(Keterangan, idpennnnn, status, statusPilihan);//proses
+			}
 			}else if (status == "request") {
 		  	Swal.fire({
 				  title: 'leave a description',
