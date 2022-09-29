@@ -204,7 +204,7 @@ function format ( d ) {
 	            		}else if(data.status_request == "approved"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
 	            		}else if(data.status_request == "rejected"){
-                    return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-0 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button> | <button type="button" class="btn btn-xs btn-icon glow btn-dark mr-1 SendRequestAgain" data_ket_reject="'+data.ket_rejected+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="See rejected message"><i class="ficon bx bxs-message-rounded-error bx-tada bx-flip-horizontal" ></i></button>';
+                    		return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-0 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button> | <button type="button" class="btn btn-xs btn-icon glow btn-dark mr-1 SendRequestAgain" data_ket_reject="'+data.ket_rejected+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="See rejected message"><i class="ficon bx bxs-message-rounded-error bx-tada bx-flip-horizontal" ></i></button>';
 	            		}else{
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}
@@ -215,7 +215,7 @@ function format ( d ) {
 		    createdRow:function(row,data,index){
 		    	$('td',row).eq(1).attr("nowrap","nowrap");
 		    	$('td',row).eq(2).attr("nowrap","nowrap");
-          $('td',row).eq(6).attr("nowrap","nowrap");
+          		$('td',row).eq(6).attr("nowrap","nowrap");
 		    	$('td',row).eq(6).css("text-align","center");
 			}
 		});
@@ -298,30 +298,41 @@ function format ( d ) {
 			});
 	}
 
-  $(document).on("click", ".SendRequestAgain", async function () {
-
-      var idpennnnn = $(this).attr("data_idpen");
-      var status = $(this).attr("status");
-      var data_ket_reject = $(this).attr("data_ket_reject");
-
-      const { value: accept } = await Swal.fire({
-        title: 'Rejected message',
-        text : data_ket_reject,
-        input: 'checkbox',
-        inputValue: 1,
-        inputPlaceholder:
-          'I agree with rejected message ',
-        confirmButtonText:
-          'Continue <i class="fa fa-arrow-right"></i>',
-        inputValidator: (result) => {
-          return !result && 'You need to agree with rejected message'
-        }
-      })
-
-      if (accept) {
-        Swal.fire('You agreed with with rejected message :)')
-      }
-  });
+	//send back after rejected
+	$(document).on("click", ".SendRequestAgain", async function () {
+	  var idpennnnn = $(this).attr("data_idpen");
+	  var status = $(this).attr("status");
+	  var data_ket_reject = $(this).attr("data_ket_reject");
+	  const { value: accept } = await Swal.fire({
+	    title: 'Rejected message',
+	    text : data_ket_reject,
+	    input: 'checkbox',
+	    inputValue: 0,
+	    inputPlaceholder:
+	      'I agree with rejected message ',
+	    confirmButtonText:
+	      'Send back requested',
+	    inputValidator: (result) => {
+	      return !result && 'You need to agree with rejected message'
+	    }
+	  })
+	  if (accept) {
+	  	Swal.fire({
+			  title: 'leave a description',
+			  input: 'textarea',
+			  inputAttributes: {
+			    autocapitalize: 'off'
+			  },
+			  showCancelButton: true,
+			  confirmButtonText: 'Send Request',
+			  showLoaderOnConfirm: true,
+	      allowOutsideClick: false,
+		  preConfirm: (Keterangan) => {
+		   	UpdateStatuss(Keterangan, idpennnnn, status,"requested");//proses back to request
+		  },
+		})
+	  }
+	});
 
 
 	//send request status
@@ -342,39 +353,39 @@ function format ( d ) {
 				  }, 1000)
 				})
 				const { value: statusPilihan } = await Swal.fire({
-				  title: 'Confirm Status',
-				  input: 'radio',
-		      allowOutsideClick: false,
-		      showCancelButton: true,
-				  inputOptions: inputOptions,
+					title: 'Confirm Status',
+					input: 'radio',
+					allowOutsideClick: false,
+					showCancelButton: true,
+					inputOptions: inputOptions,
 				  inputValidator: (value) => {
 				    if (!value) {
 				      return 'You need to choose something!'
 				    }else{
-              if (value == "rejected"){
-                  Swal.fire({
-                    title: 'leave a description why rejected',
-                    input: 'textarea',
-                    inputAttributes: {
-                      autocapitalize: 'off'
-                    },
-                    showCancelButton: true,
-                    confirmButtonText: 'Send Request',
-                    showLoaderOnConfirm: true,
-                    allowOutsideClick: false,
-                  preConfirm: (Keterangan) => {
-                    if (Keterangan == "") {
-                      Swal.showValidationMessage('First input missing')
-                    } else {
-                      UpdateStatuss(Keterangan, idpennnnn, status, value);//proses
-                    }
-                  },
-                })
-              }
-            }
+		              if (value == "rejected"){
+		                  Swal.fire({
+		                    title: 'leave a description why rejected',
+		                    input: 'textarea',
+		                    inputAttributes: {
+		                      autocapitalize: 'off'
+		                    },
+		                    showCancelButton: true,
+		                    confirmButtonText: 'Send Request',
+		                    showLoaderOnConfirm: true,
+		                    allowOutsideClick: false,
+		                  preConfirm: (Keterangan) => {
+		                    if (Keterangan == "") {
+		                      Swal.showValidationMessage('First input missing')
+		                    } else {
+		                      UpdateStatuss(Keterangan, idpennnnn, status, value);//proses
+		                    }
+		                  },
+		                })
+		              }
+		            }
 				  }
 				})
-      if (statusPilihan) {
+      		if (statusPilihan) {
 				Keterangan = "";
 				UpdateStatuss(Keterangan, idpennnnn, status, statusPilihan);//proses
 			}

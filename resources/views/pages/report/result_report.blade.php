@@ -124,17 +124,17 @@
 
             </table>
             <br>
-            <div style="margin-left: 9px; font-size: 12px;">
+            <div style="margin-left: 9px; margin-right: 12px; font-size: 12px;">
                 <table>
                     <tr>
-                        <td>Catatan</td>
-                        <td> : </td>
-                        <td>isi catatan</td>
+                        <td style="vertical-align: top;">Catatan</td>
+                        <td style="vertical-align: top;"> : </td>
+                        <td style="vertical-align: top; text-align: justify;">{{ $data_basic->catatan }}</td>
                     </tr>
                     <tr>
-                        <td>Saran</td>
-                        <td> : </td>
-                        <td>isi saran</td>
+                        <td style="vertical-align: top;">Saran</td>
+                        <td style="vertical-align: top;"> : </td>
+                        <td style="vertical-align: top; text-align: justify;">{{ $data_basic->saran }}</td>
                     </tr>
                 </table>
             </div>

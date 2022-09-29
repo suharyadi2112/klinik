@@ -118,17 +118,21 @@ class ProcessTransaction extends Controller
                 return response()->json(['code' => '1' , 'fail' => 'Action not found in this registration !', 'param' => $req->pendaftaran_id], 200);
             }else{
                 if ($status == 'rejected') {
+                 
                   $ressss = DB::table('result')->where('resultpenid','=',$req->pendaftaran_id)->count();//cek ketersediaan data di result
                   if ($ressss > 0) {
                     return response()->json(['code' => '1', 'fail' => 'Cant change this status, because data is already in the final result'], 200);
                   }
-                  if ($statusPilihan == 'rejected') {// jika dalam kondisi status rejected, lalu ingin kembali memilih rejected, keterangan rejected akan replace, dengan yang terbaru
-                    // update status untuk status saat  rejected
-                    $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => $req->keterangan]);
-                  }else{
-                    // update status untuk status saat  rejected
-                    $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => null]);
-                  }
+                      if ($statusPilihan == 'rejected') {// jika dalam kondisi status rejected, lalu ingin kembali memilih rejected, keterangan rejected akan replace, dengan yang terbaru
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => $req->keterangan]);
+                      }else if ($statusPilihan == 'requested') {
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => null, 'ket_request' => $req->keterangan]);
+                      }else{
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => null]);
+                      }
                 }elseif($status == 'approved'){
                   $ressss = DB::table('result')->where('resultpenid','=',$req->pendaftaran_id)->count();//cek ketersediaan data di result
                   if ($ressss > 0) {
