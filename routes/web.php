@@ -17,6 +17,7 @@ use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 use App\Http\Controllers\ManagePartner\ManagePartner;
 use App\Http\Controllers\ManagePasien\ManagePasien;
 use App\Http\Controllers\ManageIdentity\ManageIdentity;
+use App\Http\Controllers\ManageReligion\ManageReligion;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,6 +168,12 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/identity/store', [ManageIdentity::class, 'StoreIdentityType'])->name('StoreIdentityType');
 	Route::post('/identity/put/{id}', [ManageIdentity::class, 'PutIdentityType'])->name('PutIdentityType');
 	Route::delete('/identity/delete/{id}', [ManageIdentity::class, 'DelidentityType'])->name('DelidentityType');
+
+	//religion
+	Route::get('/religion', [ManageReligion::class, 'ShowReligion'])->name('ShowReligion');
+	Route::post('/religion/store', [ManageReligion::class, 'StoreReligion'])->name('StoreReligion');
+	Route::post('/religion/put/{id}', [ManageReligion::class, 'PutIReligion'])->name('PutIReligion');
+	Route::delete('/religion/delete/{id}', [ManageReligion::class, 'DelReligion'])->name('DelReligion');
 
 
 

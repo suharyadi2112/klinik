@@ -225,7 +225,7 @@
             "slug": "identity_type"
           },
           {
-            "url": "#",
+            "url": "/religion",
             "nameRoute" : "religion",
             "name": "Religion",
             "slug": "religion"
