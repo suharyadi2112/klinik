@@ -19,6 +19,7 @@ use App\Http\Controllers\ManagePasien\ManagePasien;
 use App\Http\Controllers\ManageIdentity\ManageIdentity;
 use App\Http\Controllers\ManageReligion\ManageReligion;
 use App\Http\Controllers\Notifyy\Notifyy;
+use App\Http\Controllers\ManageOccupation\ManageOccupation;
 
 /*
 |--------------------------------------------------------------------------
@@ -181,6 +182,13 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/religion/store', [ManageReligion::class, 'StoreReligion'])->name('StoreReligion');
 	Route::post('/religion/put/{id}', [ManageReligion::class, 'PutIReligion'])->name('PutIReligion');
 	Route::delete('/religion/delete/{id}', [ManageReligion::class, 'DelReligion'])->name('DelReligion');
+
+	//occupation
+	Route::get('/occupation', [ManageOccupation::class, 'ShowOccupation'])->name('ShowOccupation');
+	Route::post('/occupation/store', [ManageOccupation::class, 'StoreOccupation'])->name('StoreOccupation');
+	Route::post('/occupation/put/{id}', [ManageOccupation::class, 'PutOccupation'])->name('PutOccupation');
+	Route::delete('/occupation/delete/{id}', [ManageOccupation::class, 'DelOccupation'])->name('DelOccupation');
+
 
 
 

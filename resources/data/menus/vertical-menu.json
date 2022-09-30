@@ -231,7 +231,7 @@
             "slug": "religion"
           },
           {
-            "url": "#",
+            "url": "/occupation",
             "nameRoute" : "occupation",
             "name": "Occupation",
             "slug": "occupation"
