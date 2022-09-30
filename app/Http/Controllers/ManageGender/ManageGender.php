@@ -22,7 +22,7 @@ class ManageGender extends Controller
     public function ShowGender(Request $request){ 
 
         if ($request->ajax()) {
-           $data = DB::table('F_gender')
+           $data = DB::table('f_gender')
                    ->orderBy('id', 'desc')
                    ->get();
             return DataTables::of($data)
@@ -55,7 +55,7 @@ class ManageGender extends Controller
             return redirect()->route('/');
         }
 
-        $cekInsert = DB::table('F_gender')->insertGetId(
+        $cekInsert = DB::table('f_gender')->insertGetId(
             array('gender' => strtolower($request->nameGender))
         );
             
@@ -75,7 +75,7 @@ class ManageGender extends Controller
             return redirect()->route('/');
         }
 
-        $cekUpdate =DB::table('F_gender')
+        $cekUpdate =DB::table('f_gender')
                         ->where('id', $id)
                         ->update(array('Gender' => strtolower($request->NewUpdateGender)));
             
@@ -92,7 +92,7 @@ class ManageGender extends Controller
     public function DelGender($id){
 
         $res = HelperLog::addToLog('Delete Data Gender', json_encode($id));
-        DB::table('F_gender')->where('id', '=', $id)->delete();
+        DB::table('f_gender')->where('id', '=', $id)->delete();
         return response()->json(['code' =>  '1', 'res' => $res]);
 
     }
