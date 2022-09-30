@@ -22,6 +22,7 @@ use App\Http\Controllers\Notifyy\Notifyy;
 use App\Http\Controllers\ManageOccupation\ManageOccupation;
 use App\Http\Controllers\ManageBlood\ManageBlood;
 use App\Http\Controllers\ManageGender\ManageGender;
+use App\Http\Controllers\ManageNationality\ManageNationality;
 
 /*
 |--------------------------------------------------------------------------
@@ -202,6 +203,12 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/gender/store', [ManageGender::class, 'StoreGender'])->name('StoreGender');
 	Route::post('/gender/put/{id}', [ManageGender::class, 'PutGender'])->name('PutGender');
 	Route::delete('/gender/delete/{id}', [ManageGender::class, 'DelGender'])->name('DelGender');
+
+	//nationality
+	Route::get('/nationality', [ManageNationality::class, 'ShowNationality'])->name('ShowNationality');
+	Route::post('/nationality/store', [ManageNationality::class, 'StoreNationality'])->name('StoreNationality');
+	Route::post('/nationality/put/{id}', [ManageNationality::class, 'PutNationality'])->name('PutNationality');
+	Route::delete('/nationality/delete/{id}', [ManageNationality::class, 'DelNationality'])->name('DelNationality');
 
 
 
