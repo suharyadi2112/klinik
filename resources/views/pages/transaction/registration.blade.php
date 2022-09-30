@@ -12,7 +12,6 @@
 
 {{-- pace --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
-
 @endsection
 {{-- page styles --}}
 @section('page-styles')
@@ -28,8 +27,11 @@
         @if (session('error'))
 		    <div class="alert alert-danger">
 		        {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
 		    </div>
-		@endif
+		    @endif
         <div class="table-responsive">
         	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
         	<a href="{{ route('AddRegistrationWithAction') }}" title="add registration with action"><button type="button" class="btn btn-outline-primary round"><i class="bx bx-plus-circle"></i> Regis With Action</button></a>

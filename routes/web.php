@@ -18,6 +18,7 @@ use App\Http\Controllers\ManagePartner\ManagePartner;
 use App\Http\Controllers\ManagePasien\ManagePasien;
 use App\Http\Controllers\ManageIdentity\ManageIdentity;
 use App\Http\Controllers\ManageReligion\ManageReligion;
+use App\Http\Controllers\Notifyy\Notifyy;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,9 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 
 	//screening
 	Route::get('/screening/{id_registration}', [ManageTransaction::class, 'Screening'])->name('Screening');
+
+  //notif
+  Route::post('/nofif', [Notifyy::class, 'GetNotif'])->name('GetNotif');
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');

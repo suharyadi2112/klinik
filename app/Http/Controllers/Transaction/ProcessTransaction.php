@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Pusher\Pusher;
 
 use Illuminate\Http\Request;
 
@@ -34,7 +35,6 @@ class ProcessTransaction extends Controller
     public function InsertRegistration(Request $request){
 
         return $this->InsertRegisterParam("single", $request);
-
        
     }
     public function InsertRegistrationLead(Request $request){
@@ -281,6 +281,32 @@ class ProcessTransaction extends Controller
 
         if ($type == "single") {
             $db = "pendaftaran";
+
+            $options = array(
+              'cluster' => env('PUSHER_APP_CLUSTER'),
+              'encrypted' => true
+            );
+            $pusher = new Pusher(
+              env('PUSHER_APP_KEY'),
+              env('PUSHER_APP_SECRET'),
+              env('PUSHER_APP_ID'),
+              $options
+            );
+
+            $data['name'] = 'New patient registration';
+            $data['type'] = 'register';
+            $data['status'] = '0';
+            $data['created'] = date('Y-m-d H:i:s');
+
+            $res = DB::table('notify')->insert([
+                    'name_notif' => $data['name'],
+                    'type_notif' => $data['type'],
+                    'status_notif' => $data['status'],
+                    'created_at_notif' => $data['created'],
+                ]);
+
+            $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
+
         }else{
             $db = "pendaftaran_leads";
         }
@@ -372,6 +398,8 @@ class ProcessTransaction extends Controller
             'reference_date' => 'required|date_format:Y-m-d',
             'partner' => 'required|max:50',
             'billing_of_type' => 'required|max:50',
+            'saran' => 'max:500',
+            'catatan' => 'max:500',
         ]);
         if ($validator->fails()) {
                 HelperLog::addToLog('Fail VALIDATOR Edit data registration', json_encode($request->all())); 
@@ -383,6 +411,8 @@ class ProcessTransaction extends Controller
                                 'pentglrujukan' => $request->reference_date,
                                 'penpengid' => $request->partner,
                                 'penpemid' => $request->billing_of_type,
+                                'saran' => $request->saran,
+                                'catatan' => $request->catatan,
                             ]);
                 if ($Update) {
                     HelperLog::addToLog('Edit data registration', json_encode([ 'data' => $request->all(), 'update user' => auth()->user()->id])); 

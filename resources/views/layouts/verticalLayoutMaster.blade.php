@@ -11,6 +11,8 @@ light-layout
 data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-framework="laravel" id="BodyUntukThemeTod">
 {{-- sweetalert2 --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- pusher --}}
+<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
 
 <script type="text/javascript">
   if (localStorage.getItem('ThemeUsers') !== null) {
