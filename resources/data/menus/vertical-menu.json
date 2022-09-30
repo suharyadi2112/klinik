@@ -255,7 +255,7 @@
             "slug": "nationality"
           },
           {
-            "url": "#",
+            "url": "/marital_status",
             "nameRoute" : "marital_status",
             "name": "Marital Status",
             "slug": "marital_status"

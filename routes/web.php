@@ -23,6 +23,7 @@ use App\Http\Controllers\ManageOccupation\ManageOccupation;
 use App\Http\Controllers\ManageBlood\ManageBlood;
 use App\Http\Controllers\ManageGender\ManageGender;
 use App\Http\Controllers\ManageNationality\ManageNationality;
+use App\Http\Controllers\ManageMStatus\ManageMStatus;
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +211,11 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/nationality/put/{id}', [ManageNationality::class, 'PutNationality'])->name('PutNationality');
 	Route::delete('/nationality/delete/{id}', [ManageNationality::class, 'DelNationality'])->name('DelNationality');
 
+	//Marital status
+	Route::get('/marital_status', [ManageMStatus::class, 'ShowMStatus'])->name('ShowMStatus');
+	Route::post('/marital_status/store', [ManageMStatus::class, 'StoreMStatus'])->name('StoreMStatus');
+	Route::post('/marital_status/put/{id}', [ManageMStatus::class, 'PutMStatus'])->name('PutMStatus');
+	Route::delete('/marital_status/delete/{id}', [ManageMStatus::class, 'DelMStatus'])->name('DelMStatus');
 
 
 });
