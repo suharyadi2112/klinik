@@ -219,13 +219,13 @@
       "icon": "wrench",
       "submenu": [
           {
-            "url": "#",
+            "url": "/identity",
             "nameRoute" : "identity_type",
             "name": "Identity Type",
             "slug": "identity_type"
           },
           {
-            "url": "#",
+            "url": "/religion",
             "nameRoute" : "religion",
             "name": "Religion",
             "slug": "religion"

@@ -16,6 +16,8 @@ use App\Http\Controllers\ManagePasienBilling\ManagePasienBilling;
 use App\Http\Controllers\ManagePartnerCategory\ManagePartnerCategory;
 use App\Http\Controllers\ManagePartner\ManagePartner;
 use App\Http\Controllers\ManagePasien\ManagePasien;
+use App\Http\Controllers\ManageIdentity\ManageIdentity;
+use App\Http\Controllers\ManageReligion\ManageReligion;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +134,9 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	//Report Result PDF 
 	Route::get('/report/result/{id_registration}', [ReportResult::class, 'ReportPDFResult'])->name('ReportPDFResult');
 
+	//screening
+	Route::get('/screening/{id_registration}', [ManageTransaction::class, 'Screening'])->name('Screening');
+
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
 	Route::post('/pasien/billing/store', [ManagePasienBilling::class, 'StoreBilling'])->name('StoreBilling');
@@ -160,6 +165,20 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/patient/create', [ManagePasien::class, 'InsertPatient'])->name('InsertPatient');
 	Route::get('/patient/update/{id}', [ManagePasien::class, 'PatientEdit'])->name('PatientEdit');
 	Route::post('/patient/put', [ManagePasien::class, 'UpdatePatient'])->name('UpdatePatient');
+
+	//identity type
+	Route::get('/identity', [ManageIdentity::class, 'ShowIdentity'])->name('ShowIdentity');
+	Route::post('/identity/store', [ManageIdentity::class, 'StoreIdentityType'])->name('StoreIdentityType');
+	Route::post('/identity/put/{id}', [ManageIdentity::class, 'PutIdentityType'])->name('PutIdentityType');
+	Route::delete('/identity/delete/{id}', [ManageIdentity::class, 'DelidentityType'])->name('DelidentityType');
+
+	//religion
+	Route::get('/religion', [ManageReligion::class, 'ShowReligion'])->name('ShowReligion');
+	Route::post('/religion/store', [ManageReligion::class, 'StoreReligion'])->name('StoreReligion');
+	Route::post('/religion/put/{id}', [ManageReligion::class, 'PutIReligion'])->name('PutIReligion');
+	Route::delete('/religion/delete/{id}', [ManageReligion::class, 'DelReligion'])->name('DelReligion');
+
+
 
 });
 

@@ -39,9 +39,15 @@ class Helper
 	
   //tanggal indo
   public static function tanggal_indo($tanggal) {
+
+    if ($tanggal) {
       $bulan = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
       $split = explode('-', $tanggal);
       return $split[2] . ' ' . $bulan[(int) $split[1]] . ' ' . $split[0];
+    }else{
+      return "Nothing to show";
+    }
+      
   }
 
   public static function applClasses()

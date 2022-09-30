@@ -103,7 +103,7 @@ class ProcessTransaction extends Controller
             break;
             case 'rejected':
                 $var = $statusPilihan;
-                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10', 'status' => 'required|max:20','statusPilihan' => 'required|max:20' ]);
+                $validator = Validator::make($req->all(), ['pendaftaran_id' => 'required|max:10', 'status' => 'required|max:20','statusPilihan' => 'required|max:20']);
             break;
             default:
             // code...
@@ -117,14 +117,38 @@ class ProcessTransaction extends Controller
             if($CekDataRindakanLeads->isEmpty()){
                 return response()->json(['code' => '1' , 'fail' => 'Action not found in this registration !', 'param' => $req->pendaftaran_id], 200);
             }else{
-                if ($status == 'approved' || $status == 'rejected') {
+                if ($status == 'rejected') {
+                 
                   $ressss = DB::table('result')->where('resultpenid','=',$req->pendaftaran_id)->count();//cek ketersediaan data di result
                   if ($ressss > 0) {
                     return response()->json(['code' => '1', 'fail' => 'Cant change this status, because data is already in the final result'], 200);
                   }
+                      if ($statusPilihan == 'rejected') {// jika dalam kondisi status rejected, lalu ingin kembali memilih rejected, keterangan rejected akan replace, dengan yang terbaru
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => $req->keterangan]);
+                      }else if ($statusPilihan == 'requested') {
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => null, 'ket_request' => $req->keterangan]);
+                      }else{
+                        // update status untuk status saat  rejected
+                        $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => null]);
+                      }
+                }elseif($status == 'approved'){
+                  $ressss = DB::table('result')->where('resultpenid','=',$req->pendaftaran_id)->count();//cek ketersediaan data di result
+                  if ($ressss > 0) {
+                    return response()->json(['code' => '1', 'fail' => 'Cant change this status, because data is already in the final result'], 200);
+                  }
+                  // update status untuk status saat approve
+                  $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => $req->keterangan]);
+                }elseif($status == 'requested'){
+                  // update status untuk status saat requested
+                  $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_rejected' => $req->keterangan ]);
+                }elseif($status == 'request'){
+                  // update status untuk status request
+                  $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_request' => $req->keterangan]);
+                }else{
+                  return response()->json(['code' => '1', 'fail' => 'Something wrong with server !'], 200);
                 }
-                // update status
-                $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_request' => $req->keterangan]);
                 if ($affected) {
                     //param pertama subject dan kedua data request
                     HelperLog::addToLog('Change Status Registration', json_encode(["id user" => auth()->user()->id, "data" => $req->all()]));
@@ -138,7 +162,7 @@ class ProcessTransaction extends Controller
 
     public function InsertRegisActionFinish(Request $request){
 
-        $CekDataPendaftaranLeads = DB::table('pendaftaran_leads')->where('pendaftaran_leads.penid','=',$request->id_pendftr)->get();
+        $CekDataPendaftaranLeads = DB::table('pendaftaran_leads')->where('pendaftaran_leads.penid','=',$request->id_pendftr)->orderBy('penid','DESC')->get();
     
         if($CekDataPendaftaranLeads->isEmpty()){
             return response()->json(['code' => '30'], 200);
@@ -152,6 +176,8 @@ class ProcessTransaction extends Controller
                         'penpengid' => $value->penpengid,
                         'penpemid' => $value->penpemid,
                         'status_request' => 'request',
+                        'saran' => $value->saran,
+                        'catatan' => $value->catatan,
                         'created_by' => auth()->user()->id,
                     ]);
                 }
@@ -162,13 +188,13 @@ class ProcessTransaction extends Controller
             }else{
                 foreach ($CekDataRindakanLeads as $keyt => $valuet) {
                     
-                       $rest[] = [
-                                    'tndklrtndid' => $valuet->tndklrtndid,
-                                    'tndklrpenid' => $res,
-                                    'tndklrharga' => $valuet->tndklrharga,
-                                    // 'tndklrdiskon' => $valuet->pendaftaran_id,
-                                    'tndklrdiskonprice' => $valuet->tndklrharga,
-                                ];
+                   $rest[] = [
+                                'tndklrtndid' => $valuet->tndklrtndid,
+                                'tndklrpenid' => $res,
+                                'tndklrharga' => $valuet->tndklrharga,
+                                // 'tndklrdiskon' => $valuet->pendaftaran_id,
+                                'tndklrdiskonprice' => $valuet->tndklrharga,
+                            ];
                     
                 }
                 $end = DB::table('tindakankeluar')->insert($rest);
@@ -265,6 +291,8 @@ class ProcessTransaction extends Controller
             'reference_date' => 'required|date_format:Y-m-d',
             'partner' => 'required',
             'billing_of_type' => 'required|max:50',
+            'saran' => 'max:500',
+            'catatan' => 'max:500',
         ]);
 
         if ($validator->fails()) {
@@ -277,6 +305,8 @@ class ProcessTransaction extends Controller
                             'pentglrujukan' => $req->reference_date,
                             'penpengid' => $req->partner,
                             'penpemid' => $req->billing_of_type,
+                            'saran' => $req->saran,
+                            'catatan' => $req->catatan,
                             'status_request' => 'request',
                             'created_by' => auth()->user()->id,
                         ]);

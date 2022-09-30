@@ -88,6 +88,26 @@
                             	<label for="type-of-billing">Type Of Billing</label>
                               			<select class="billing_of_type form-control" name="billing_of_type"></select>
                             </div>
+
+                           <div class="col-md-6 mb-1">
+                              <label for="saran">Saran</label>
+                                <div class="position-relative has-icon-left">
+                                    <textarea class="form-control" id="saran" name="saran" placeholder="leave saran" aria-label="Saran"></textarea>
+                                    <div class="form-control-position">
+                                      <i class='bx bxs-message-dots'></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-1">
+                              <label for="catatan">Catatan</label>
+                                <div class="position-relative has-icon-left">
+                                    <textarea class="form-control" id="catatan" name="catatan" placeholder="leave catatan" aria-label="catatan"></textarea>
+                                    <div class="form-control-position">
+                                      <i class='bx bx-note'></i>
+                                    </div>
+                                </div>
+                            </div>
                             
                             {{-- <div class="col-12 d-flex justify-content-end"> --}}
                             <div class="col-12">
