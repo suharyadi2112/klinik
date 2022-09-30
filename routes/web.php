@@ -21,6 +21,7 @@ use App\Http\Controllers\ManageReligion\ManageReligion;
 use App\Http\Controllers\Notifyy\Notifyy;
 use App\Http\Controllers\ManageOccupation\ManageOccupation;
 use App\Http\Controllers\ManageBlood\ManageBlood;
+use App\Http\Controllers\ManageGender\ManageGender;
 
 /*
 |--------------------------------------------------------------------------
@@ -195,6 +196,12 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::post('/blood/store', [ManageBlood::class, 'StoreBlood'])->name('StoreBlood');
 	Route::post('/blood/put/{id}', [ManageBlood::class, 'PutBlood'])->name('PutBlood');
 	Route::delete('/blood/delete/{id}', [ManageBlood::class, 'DelBlood'])->name('DelBlood');
+
+	//gender
+	Route::get('/gender', [ManageGender::class, 'ShowGender'])->name('ShowGender');
+	Route::post('/gender/store', [ManageGender::class, 'StoreGender'])->name('StoreGender');
+	Route::post('/gender/put/{id}', [ManageGender::class, 'PutGender'])->name('PutGender');
+	Route::delete('/gender/delete/{id}', [ManageGender::class, 'DelGender'])->name('DelGender');
 
 
 
