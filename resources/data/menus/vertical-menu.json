@@ -237,7 +237,7 @@
             "slug": "occupation"
           },
           {
-            "url": "#",
+            "url": "/blood",
             "nameRoute" : "blood_group",
             "name": "Blood Group",
             "slug": "blood_group"
