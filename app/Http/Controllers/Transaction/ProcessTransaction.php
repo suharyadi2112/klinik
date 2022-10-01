@@ -306,30 +306,30 @@ class ProcessTransaction extends Controller
         if ($type == "single") {
             $db = "pendaftaran";
 
-            $options = array(
-              'cluster' => env('PUSHER_APP_CLUSTER'),
-              'encrypted' => true
-            );
-            $pusher = new Pusher(
-              env('PUSHER_APP_KEY'),
-              env('PUSHER_APP_SECRET'),
-              env('PUSHER_APP_ID'), 
-              $options
-            );
+            // $options = array(
+            //   'cluster' => env('PUSHER_APP_CLUSTER'),
+            //   'encrypted' => true
+            // );
+            // $pusher = new Pusher(
+            //   env('PUSHER_APP_KEY'),
+            //   env('PUSHER_APP_SECRET'),
+            //   env('PUSHER_APP_ID'), 
+            //   $options
+            // );
 
-            $data['name'] = 'New patient registration';
-            $data['type'] = 'register';
-            $data['status'] = '0';
-            $data['created'] = date('Y-m-d H:i:s');
+            // $data['name'] = 'New patient registration';
+            // $data['type'] = 'register';
+            // $data['status'] = '0';
+            // $data['created'] = date('Y-m-d H:i:s');
 
-            $res = DB::table('notify')->insert([
-                    'name_notif' => $data['name'],
-                    'type_notif' => $data['type'],
-                    'status_notif' => $data['status'],
-                    'created_at_notif' => $data['created'],
-                ]);
+            // $res = DB::table('notify')->insert([
+            //         'name_notif' => $data['name'],
+            //         'type_notif' => $data['type'],
+            //         'status_notif' => $data['status'],
+            //         'created_at_notif' => $data['created'],
+            //     ]);
 
-            $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
+            // $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
 
         }else{
             $db = "pendaftaran_leads";
