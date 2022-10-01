@@ -94,13 +94,13 @@ class ManagePermissions extends Controller
             $modal .=   '<td style="border-style : hidden!important; vertical-align:middle; width:1px;" nowrap><h5><b>:</b></h5></td>';
                     foreach ($allPermission as $key => $value) {
                     $CekPunya = DB::table('role_has_permissions')->where([['role_id','=',$rolesid],['permission_id','=',$value->id]])->count();
-                    $resPermission = explode(" ",$value->name);
-                        $modal .=   '<td scope="row" style="border-style : hidden!important;" ><fieldset>
+                    // $resPermission = explode(" ",$value->name);
+                        $modal .=   '<td scope="row" style="border-style : hidden!important;" nowrap><fieldset>
                                             <div class="checkbox checkbox-info checkbox-glow" >
                                                 <input type="checkbox" '.$dis.' value="'.$value->id.'" name="permission_id[]" id="checkboxGlow1'.$value->id.'" 
                                                 '.((0 < $CekPunya)?'checked':"").'
                                                 >
-                                                <label for="checkboxGlow1'.$value->id.'" style="cursor: pointer;">'.$resPermission[0].'</label>
+                                                <label for="checkboxGlow1'.$value->id.'" style="cursor: pointer;">'.$value->name.'</label>
                                             </div>
                                         </fieldset>
                                     </td>';

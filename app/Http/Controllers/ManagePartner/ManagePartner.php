@@ -9,6 +9,7 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper as HelperLog;
+use App\Models\User;
 
 class ManagePartner extends Controller
 {
@@ -28,14 +29,20 @@ class ManagePartner extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn =
+                    $actionBtn = '';
+                    $actionBtn .=
                                 '
                                 <a href="/partner/update/'.$row->pengid.'">
                                 <button type="button" class="btn btn-sm round btn-info">edit</button>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delPA" data-id="'.$row->pengid .'">del</button>
-                                '
-                                ;
+                                </a>';
+                    if ($this->CheckAcc()->can('delete partner')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delPA" data-id="'.$row->pengid .'">del</button>
+                                ';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>
+                                ';
+                    }
+                                
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -165,6 +172,12 @@ class ManagePartner extends Controller
             }   
         }
 
+    }
+
+     //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
     }
 
 

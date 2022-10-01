@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper as HelperLog;
 
+use App\Models\User;
+
 class ManagePasien extends Controller
 {
     public function __construct(){
@@ -25,14 +27,16 @@ class ManagePasien extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn =
-                                '
-                                <a href="/patient/update/'.$row->pasid.'">
+
+                    $actionBtn = '<a href="/patient/update/'.$row->pasid.'">
                                 <button type="button" class="btn btn-sm round btn-info">edit</button>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delPatient" data-id="'.$row->pasid .'">del</button>
-                                '
-                                ;
+                                </a>';
+                            if ($this->CheckAcc()->can('delete patient')) {
+                    $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delPatient" data-id="'.$row->pasid .'">del</button>';
+                            }else{
+                    $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>';
+                            }
+                    
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -217,5 +221,11 @@ class ManagePasien extends Controller
         DB::table('pasien')->where('pasid', '=', $id)->delete();
         return response()->json(['code' =>  '1', 'res' => $res]);
 
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
     }
 }

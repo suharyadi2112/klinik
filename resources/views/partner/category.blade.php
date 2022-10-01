@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-
+@if(auth()->user()->can('view category partner')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Partner Category</h4>
@@ -24,10 +24,11 @@
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
-
-        @if(auth()->user()->can('create cat')/* && $some_other_condition*/)
+            @if(auth()->user()->can('create category partner')/* && $some_other_condition*/)
             <button type="button" class="btn btn-primary round addPC"><i class="bx bx-plus-circle"></i> Create Partner Category</button>
-        @endif
+            @else
+            <button type="button" class="btn btn-primary round" onclick="return alert('You no have access !')"><i class="bx bx-plus-circle"></i> Create Partner Category</button>
+            @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>
@@ -44,6 +45,21 @@
         </div>
     </div>
 </section>
+@else
+<div class="col-xl-7 col-md-8 col-12">
+    <div class="card bg-transparent shadow-none">
+      <div class="card-body text-center">
+        <img src="{{asset('images/pages/not-authorized.png')}}" class="img-fluid" alt="not authorized" width="400">
+        <h1 class="my-2 error-title">You are not authorized!</h1>
+        <p>
+            You do not have permission to view this directory or page using
+            the credentials that you supplied.
+        </p>
+        <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO MAIN DASHBOARD</a>
+      </div>
+    </div>
+</div>
+@endif
 
 <!--/ HTML Markup -->
 @endsection

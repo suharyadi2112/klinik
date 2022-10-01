@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper as HelperLog;
 
+use App\Models\User;
+
 class ManagePasienBilling extends Controller
 {
 
@@ -28,10 +30,16 @@ class ManagePasienBilling extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $actionBtn = '';
-                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upBil" vall="'.$row->pemnama.'" data-id="'.$row->pemid .'">edit</button>&nbsp;';
-                    
-   
-                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delBil" data-id="'.$row->pemid .'">del</button>';
+                    if ($this->CheckAcc()->can('edit type of billing')) {
+                    $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upBil" vall="'.$row->pemnama.'" data-id="'.$row->pemid .'">edit</button>&nbsp;';
+                    }else{
+                    $actionBtn .= '<button type="button" class="btn btn-sm round btn-info" onclick="return alert(\'You no have access !\')">edit</button>&nbsp;';    
+                    }
+                    if ($this->CheckAcc()->can('delete type of billing')) {
+                    $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delBil" data-id="'.$row->pemid .'">del</button>';
+                    }else{
+                    $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>';
+                    }
                     
                     return $actionBtn;
                 })
@@ -94,5 +102,11 @@ class ManagePasienBilling extends Controller
         DB::table('jenispembayaran')->where('pemid', '=', $id)->delete();
         return response()->json(['code' =>  '1', 'res' => $res]);
 
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
     }
 }
