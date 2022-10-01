@@ -56,29 +56,15 @@ class ProcessTransaction extends Controller
 
     //send request
     public function SendRequestStatus(Request $request){
-        //status sementara request, requested, approve, rejected
-        $user = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
-        $CekStatus = DB::table('pendaftaran')->where([['status_request','=',$request->status],['status_request','=',null]])->get();//get status sekarang
-
+     
         if ($request->status == "request") {
-            //check request akses
-            if ($this->CheckAcc()->can('request create')) {//akses user yang bisa send request
-                return $this->changeStatus($request, $request->status,"");
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
+            return $this->ConditionStatus($request);
         }elseif($request->status == "requested"){
-            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create')) {//akses user yang bisa aprove and reject
-                return $this->changeStatus($request, $request->status, $request->statusPilihan);
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
-        }elseif($request->status == "approved" || $request->status == "rejected"){
-            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create') || $this->CheckAcc()->can('request create')){
-                return $this->changeStatus($request, $request->status, $request->statusPilihan);
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
+            return $this->ConditionStatus($request);
+        }elseif($request->status == "approved"){
+            return $this->ConditionStatus($request);
+        }elseif($request->status == "rejected"){
+            return $this->ConditionStatus($request);
         }else{
             return response()->json(['code' => '1', 'fail' => 'sorry, we have a problem, try again later'], 200);
         }
@@ -156,6 +142,44 @@ class ProcessTransaction extends Controller
                 }else{
                     return response()->json(['code' => '1', 'fail' => 'fail to send request'], 200);
                 }
+            }
+        }
+    }
+
+    protected function ConditionStatus($request){
+        if ($request->status == "request") {//pertama kali saat daftar default request
+            if ($this->CheckAcc()->can('request create')){ //balik ke request adalah cancel
+                return $this->changeStatus($request, $request->status, $request->statusPilihan);
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+            }
+        }else{
+            if ($request->statusPilihan == "rejected") {
+                if ($this->CheckAcc()->can('rejected create')){
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "approved"){
+                if ($this->CheckAcc()->can('approved create')){
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "request"){
+                if ($this->CheckAcc()->can('cancel create')){ //balik ke request adalah cancel
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "requested"){
+                if ($this->CheckAcc()->can('requested create')){ //balik ke request adalah cancel
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
             }
         }
     }
@@ -289,7 +313,7 @@ class ProcessTransaction extends Controller
             $pusher = new Pusher(
               env('PUSHER_APP_KEY'),
               env('PUSHER_APP_SECRET'),
-              env('PUSHER_APP_ID'),
+              env('PUSHER_APP_ID'), 
               $options
             );
 
