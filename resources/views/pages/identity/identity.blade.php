@@ -16,7 +16,7 @@
 
 @section('content')
 
-@if(auth()->user()->can('view cat')/* && $some_other_condition*/)
+@if(auth()->user()->can('view identity type')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Identity Type</h4>
@@ -26,7 +26,7 @@
         {{-- batas table --}}
         <div class="table-responsive">
 
-        @if(auth()->user()->can('create cat')/* && $some_other_condition*/)
+        @if(auth()->user()->can('create identity type')/* && $some_other_condition*/)
             <button type="button" class="btn btn-primary round addIT"><i class="bx bx-plus-circle"></i> Create Identity Type</button>
         @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">

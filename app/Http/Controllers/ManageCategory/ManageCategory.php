@@ -263,12 +263,20 @@ class ManageCategory extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn =
-                                '
-                                <button type="button" class="btn btn-sm round btn-info upC" data-id="'.$row->katlabid.'">edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger round delC" data-id="'.$row->katlabid .'">del</button>
-                                '
-                                ;
+                    
+                    $actionBtn = '';
+                    if (auth()->user()->can('edit action')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upC" data-id="'.$row->katlabid.'">edit</button>&nbsp;';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info" onclick="return alert(\'You no have access !\')">edit</button>&nbsp;';
+                    }
+
+                    if (auth()->user()->can('delete action')) {
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delC" data-id="'.$row->katlabid .'">del</button>';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round "onclick="return alert(\'You no have access !\')">del</button>';
+                    }
+                  
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

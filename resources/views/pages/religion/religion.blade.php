@@ -16,7 +16,7 @@
 
 @section('content')
 
-@if(auth()->user()->can('view cat')/* && $some_other_condition*/)
+@if(auth()->user()->can('view religion')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Religion</h4>
@@ -26,7 +26,7 @@
         {{-- batas table --}}
         <div class="table-responsive">
 
-        @if(auth()->user()->can('create cat')/* && $some_other_condition*/)
+        @if(auth()->user()->can('create religion')/* && $some_other_condition*/)
             <button type="button" class="btn btn-primary round addReligion"><i class="bx bx-plus-circle"></i> Create Religion</button>
         @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">

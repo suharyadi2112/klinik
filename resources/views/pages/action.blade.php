@@ -16,7 +16,7 @@
 
 @section('content')
 
-@if(auth()->user()->can('view action_main')/* && $some_other_condition*/)
+@if(auth()->user()->can('view action')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Action</h4>
@@ -25,9 +25,11 @@
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
+        @if(auth()->user()->can('create action')/* && $some_other_condition*/)
             <button type="button" class="btn btn-primary round addc"><i class="bx bx-plus-circle"></i> 
               Create Action
             </button>
+        @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>

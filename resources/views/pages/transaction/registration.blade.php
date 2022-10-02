@@ -19,6 +19,7 @@
 @endsection
 @section('content')
 <!-- registration list start -->
+@if(auth()->user()->can('view registration')/* && $some_other_condition*/)
 <section class="registration-list-wrapper">
   <div class="registration-list-table">
     <div class="card">
@@ -32,14 +33,16 @@
             </button>
 		    </div>
 		    @endif
-        <div class="table-responsive">
+		<div class="table-responsive">
+		@if(auth()->user()->can('create registration')/* && $some_other_condition*/)
         	<a href="{{ route('AddRegistration') }}" title="add registration"><button type="button" class="btn btn-primary round addregistration"><i class="bx bx-plus-circle"></i> Registration</button></a>
         	<a href="{{ route('AddRegistrationWithAction') }}" title="add registration with action"><button type="button" class="btn btn-outline-primary round"><i class="bx bx-plus-circle"></i> Regis With Action</button></a>
         <hr>
+        @endif
           <table id="registration-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
              	<tr>
-             			<th style="text-align:center;"><i class='bx bx-expand'></i></th>
+             		<th style="text-align:center;"><i class='bx bx-expand'></i></th>
                 	<th>Registration Date</th>
                 	<th>Reference Date</th>
                 	<th>Patient Name</th>
@@ -57,6 +60,21 @@
   </div>
 </section>
 <!-- registration list ends -->
+@else
+<div class="col-xl-7 col-md-8 col-12">
+    <div class="card bg-transparent shadow-none">
+      <div class="card-body text-center">
+        <img src="{{asset('images/pages/not-authorized.png')}}" class="img-fluid" alt="not authorized" width="400">
+        <h1 class="my-2 error-title">You are not authorized!</h1>
+        <p>
+            You do not have permission to view this directory or page using
+            the credentials that you supplied.
+        </p>
+        <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO MAIN DASHBOARD</a>
+      </div>
+    </div>
+</div>
+@endif
 @endsection
 
 {{-- vendor scripts --}}
@@ -78,6 +96,14 @@
 @section('page-scripts')
 
 <script type="text/javascript">
+
+//access js secara global
+var UserAccessApprove = '{{ auth()->user()->can('approved create') }}';
+var UserAccessRejected = '{{ auth()->user()->can('rejected create') }}';
+var UserAccessCancel = '{{ auth()->user()->can('cancel create') }}';
+var UserAccessRequest = '{{ auth()->user()->can('request create') }}';
+var UserAccessRequested = '{{ auth()->user()->can('requested create') }}';
+
 //top end notif
 const ToastToB = Swal.mixin({
 	toast: true,
@@ -158,7 +184,7 @@ function format ( d ) {
               '</tr>'+
           '</thead>'+
           '<tbody>'+
-            '<tr><td>'+d.ket_request+'</td><td>'+d.ket_rejected+'</td><td>'+d.catatan+'</td><td>'+d.saran+'</td></tr>'
+            '<tr><td>'+d.ket_request+'</td><td>'+d.ket_rejected+'</td><td>'+d.catatan+'</td><td>'+d.saran+'</td></tr>'+
           '</tbody>'+
           '</table>'+
         '</div>'+
@@ -199,14 +225,26 @@ function format ( d ) {
 		        },
 		        {data: 'status_request', name: 'status_request', 
 	            	render: function(type, row, data){
+
 	            		if(data.status_request == "request"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-warning mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Send Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}else if(data.status_request == "requested"){
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-info mr-1 SendRequest" data-toggle="tooltip" data-placement="top" title="Approved or Reject this Request" data_idpen="'+data.penid+'" status="'+data.status_request+'"><i class="ficon bx bx-bell-plus bx-tada bx-flip-horizontal"></i></button>';
 	            		}else if(data.status_request == "approved"){
-	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
+
+		            		if (UserAccessApprove) { var Aprv = 'SendRequest'; }else{ var Aprv = ''; }
+
+	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-success mr-1 '+Aprv+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Approved"><i class="bx bx-check-circle"></i></button>';
+
 	            		}else if(data.status_request == "rejected"){
-                    		return '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-0 SendRequest" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button> | <button type="button" class="btn btn-xs btn-icon glow btn-dark mr-1 SendRequestAgain" data_ket_reject="'+data.ket_rejected+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="See rejected message"><i class="ficon bx bxs-message-rounded-error bx-tada bx-flip-horizontal" ></i></button>';
+
+	            			if (UserAccessRejected) { var Rjtd = 'SendRequest'; }else{ var Rjtd = ''; }
+
+	            			$btn_rejected = '';
+                    		$btn_rejected += '<button type="button" class="btn btn-xs btn-icon glow btn-danger mr-0 '+Rjtd+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="Rejected"><i class="bx bxs-error-circle"></i></button> | ';
+                    		$btn_rejected += '<button type="button" class="btn btn-xs btn-icon glow btn-dark mr-1 SendRequestAgain" data_ket_reject="'+data.ket_rejected+'" data_idpen="'+data.penid+'" status="'+data.status_request+'" data-toggle="tooltip" data-placement="top" title="See rejected message"><i class="ficon bx bxs-message-rounded-error bx-tada bx-flip-horizontal" ></i></button>';
+
+                    		return $btn_rejected;
 	            		}else{
 	            			return '<button type="button" class="btn btn-xs btn-icon glow btn-secondary mr-1" data-toggle="tooltip" data-placement="top" title="Status not found"><i class="bx bxs-right-arrow-circle"></i></button>';
 	            		}
@@ -326,7 +364,7 @@ function format ( d ) {
 			    autocapitalize: 'off'
 			  },
 			  showCancelButton: true,
-			  confirmButtonText: 'Send Request',
+			  confirmButtonText: 'Send requested again',
 			  showLoaderOnConfirm: true,
 	      allowOutsideClick: false,
 		  preConfirm: (Keterangan) => {
@@ -347,11 +385,7 @@ function format ( d ) {
 				/* inputOptions can be an object or Promise */
 				const inputOptions = new Promise((resolve) => {
 				  setTimeout(() => {
-				    resolve({
-				      'approved': 'Appoved',
-				      'rejected': 'Rejected',
-				      'request': 'Request'
-				    })
+				    resolve({'approved': 'Appoved','rejected': 'Rejected','request': 'Request'})
 				  }, 1000)
 				})
 				const { value: statusPilihan } = await Swal.fire({

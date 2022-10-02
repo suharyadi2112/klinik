@@ -19,6 +19,8 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/pages/app-users.css')}}">
 @endsection
 @section('content')
+
+@if(auth()->user()->can('view action registration')/* && $some_other_condition*/)
 <!-- action registration list start -->
 <section class="action_registration-list-wrapper">
   <div class="action_registration-list-table">
@@ -157,7 +159,21 @@
   </div>
 </section>
 <!-- action registration list ends -->
-
+@else
+<div class="col-xl-7 col-md-8 col-12">
+    <div class="card bg-transparent shadow-none">
+      <div class="card-body text-center">
+        <img src="{{asset('images/pages/not-authorized.png')}}" class="img-fluid" alt="not authorized" width="400">
+        <h1 class="my-2 error-title">You are not authorized!</h1>
+        <p>
+            You do not have permission to view this directory or page using
+            the credentials that you supplied.
+        </p>
+        <a href="{{asset('/')}}" class="btn btn-primary round glow mt-2">BACK TO MAIN DASHBOARD</a>
+      </div>
+    </div>
+</div>
+@endif
 {{-- list action code --}}
 <div class="modal fade" id="ModalListActionCode" data-keyboard="false" data-backdrop="static">  
 	<div class="modal-dialog modal-lg">

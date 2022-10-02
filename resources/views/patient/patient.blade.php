@@ -16,7 +16,7 @@
 
 @section('content')
 
-@if(auth()->user()->can('view action_main')/* && $some_other_condition*/)
+@if(auth()->user()->can('view patient')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
         <h4 class="card-title">Dashboard Patient</h4>

@@ -28,11 +28,15 @@ class ManageBlood extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $actionBtn = '';
-                    if (auth()->user()->can('edit cat')) {
+                    if (auth()->user()->can('edit blood')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upBL" vall="'.$row->goldar.'" data-id="'.$row->id.'">edit</button>&nbsp;';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info" onclick="return alert(\'You no have access !\')">edit</button>&nbsp;';
                     }
-                    if (auth()->user()->can('delete cat')) {
+                    if (auth()->user()->can('delete blood')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delBL" data-id="'.$row->id.'">del</button>';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>';
                     }
                     return $actionBtn;
                 })

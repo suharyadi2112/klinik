@@ -63,7 +63,7 @@
 <!--/ Description -->
 
 <div class="modal fade" id="permissionRoles" data-keyboard="false" data-backdrop="static">  
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content" id="modal-content">
             <div class="row">
                 <div class="col-lg-12">

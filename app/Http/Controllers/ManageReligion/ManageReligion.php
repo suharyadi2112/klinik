@@ -29,11 +29,15 @@ class ManageReligion extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $actionBtn = '';
-                    if (auth()->user()->can('edit cat')) {
+                    if (auth()->user()->can('edit religion')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upReligion" vall="'.$row->agama.'" data-id="'.$row->id.'">edit</button>&nbsp;';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info" onclick="return alert(\'You no have access !\')">edit</button>&nbsp;';
                     }
-                    if (auth()->user()->can('delete cat')) {
+                    if (auth()->user()->can('delete religion')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delReligion" data-id="'.$row->id.'">del</button>';
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>';
                     }
                     return $actionBtn;
                 })
