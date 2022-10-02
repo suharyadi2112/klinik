@@ -15,45 +15,6 @@
 
     {
       "url": "#",
-      "name": "Starter kit",
-      "slug": "starter-kit",
-      "icon": "unlink",
-      "submenu": [
-        {
-          "url": "sk-layout-1-column",
-          "name": "1 column",
-          "slug": "1-column",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "sk-layout-2-columns",
-          "name": "2 columns",
-          "slug": "2-columns",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "fixed-navbar",
-          "name": "Fixed navbar",
-          "slug": "fixed-navbar",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "sk-layout-fixed",
-          "name": "Fixed layout",
-          "slug": "fixed-layout",
-          "icon": "bx bx-right-arrow-alt"
-        },
-        {
-          "url": "sk-layout-static",
-          "name": "Static layout",
-          "slug": "static-layout",
-          "icon": "bx bx-right-arrow-alt"
-        }
-      ]
-    },
-
-    {
-      "url": "#",
       "name": "Patient",
       "slug": "patient",
       "icon": "users",
@@ -262,14 +223,7 @@
           }
 
       ]
-    },
-   
-    {
-      "url": "https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation",
-      "name": "Documentation",
-      "slug": "documentation",
-      "icon": "morph-folder",
-      "newTab":"_blank"
     }
+  
   ]
 }

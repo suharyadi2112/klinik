@@ -184,7 +184,7 @@ function format ( d ) {
               '</tr>'+
           '</thead>'+
           '<tbody>'+
-            '<tr><td>'+d.ket_request+'</td><td>'+d.ket_rejected+'</td><td>'+d.catatan+'</td><td>'+d.saran+'</td></tr>'
+            '<tr><td>'+d.ket_request+'</td><td>'+d.ket_rejected+'</td><td>'+d.catatan+'</td><td>'+d.saran+'</td></tr>'+
           '</tbody>'+
           '</table>'+
         '</div>'+
