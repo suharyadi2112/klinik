@@ -416,6 +416,7 @@ class ManageTransaction extends Controller
             ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
             ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
             ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->where('pendaftaran.status_request','=','approved')
             ->orderBy('penid', 'desc')
             ->get();
 
