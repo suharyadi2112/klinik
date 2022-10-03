@@ -307,13 +307,13 @@ class ProcessTransaction extends Controller
             $db = "pendaftaran";
 
             $options = array(
-              'cluster' => env('ap1'),
+              'cluster' => env("ap1"),
               'encrypted' => true
             );
             $pusher = new Pusher(
-              env('10f32afcfa81ba361360'),
-              env('6d369cfdeb916f1a7488'),
-              env('1484100'),
+              env("10f32afcfa81ba361360"),
+              env("6d369cfdeb916f1a7488"),
+              env("1484100"),
               $options
             );
 
