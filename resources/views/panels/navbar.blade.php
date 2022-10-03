@@ -130,8 +130,7 @@ var pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
 
 var channel = pusher.subscribe('notify-channel');
 channel.bind('App\\Events\\Notify', function(data) {
-  var wadahnotif = document.getElementById('TotalCountPush');
-  wadahnotif.innerHTML = "1";
+  alert('tes')
 });
 
 RenderNotfy("0");
