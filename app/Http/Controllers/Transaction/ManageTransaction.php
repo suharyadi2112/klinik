@@ -423,12 +423,17 @@ class ManageTransaction extends Controller
             return DataTables::of($Res)->addIndexColumn()
             ->addColumn('action', function($row){
 
-                $resAction = DB::table('tindakankeluar')
-                    ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
-                    ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
-                    ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
-                    ->where('tndklrpenid','=',$row->penid)->count();
-                return $resAction;
+                return $this->TndkKlr($row->penid)->count();
+
+            })
+            ->addColumn('billing', function($row){
+
+              $reees = $this->TndkKlr($row->penid)->selectRaw('tindakankeluar.tndklrpenid, sum(tndklrdiskonprice) as TotTndKlr')->groupBy('tindakankeluar.tndklrpenid')->first();
+              if ($reees) {
+                return HelperLog::FormatRupiah($reees->TotTndKlr);
+              }else{
+                return "-";
+              }
 
             })
             ->addColumn('bayar', function($row){
@@ -446,6 +451,15 @@ class ManageTransaction extends Controller
 
     }
 
+    //cek tindkan keluar
+    protected function TndkKlr($penid){
+      $resAction = DB::table('tindakankeluar')
+                  ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
+                  ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
+                  ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+                  ->where('tndklrpenid','=',$penid);
+      return $resAction;
+    }
 
     //cek akses
     protected function CheckAcc(){

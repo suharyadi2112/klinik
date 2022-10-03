@@ -112,7 +112,7 @@ $(document).ready(function(){
 	    serverSide: true,
 	    ajax: "{{ route('Screening',['id_registration' => $id_pen]) }}",
 	    columns: [
-	    {data: 'DT_RowIndex', name: 'DT_RowIndex'}, 
+	      {data: 'DT_RowIndex', name: 'DT_RowIndex'},
         {data: 'penid', name: 'penid'},
         {data: 'pasnik', name: 'pasnik'},
         {data: 'pentgl', name: 'pentgl'},
@@ -121,7 +121,7 @@ $(document).ready(function(){
         {data: 'pentglrujukan', name: 'pentglrujukan'},
         {data: 'pemnama', name: 'pemnama'},
         {data: 'action', name: 'action'},
-        {data: 'bayar', name: 'bayar'},
+        {data: 'billing', name: 'billing'},
         {data: 'bayar', name: 'bayar'},
         {data: 'bayar', name: 'bayar'},
 	    ],
