@@ -1,6 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 {{-- title --}}
-@section('title','Type Of Billing')
+@section('title','Occupation')
 
 {{-- vendor styles --}}
 @section('vendor-styles')
@@ -16,26 +16,24 @@
 
 @section('content')
 
-@if(auth()->user()->can('view type of billing')/* && $some_other_condition*/)
+@if(auth()->user()->can('view occupation')/* && $some_other_condition*/)
 <section id="description" class="card">
     <div class="card-header">
-        <h4 class="card-title">Dashboard Type Of Billing</h4>
+        <h4 class="card-title">Dashboard Occupation</h4>
     </div>
     <div class="card-body">
         <div class="card-text">
         {{-- batas table --}}
         <div class="table-responsive">
 
-        @if(auth()->user()->can('create type of billing')/* && $some_other_condition*/)
-            <button type="button" class="btn btn-primary round addbilling"><i class="bx bx-plus-circle"></i> Create Type Of Billing</button>
-        @else
-            <button type="button" class="btn btn-primary round" onclick="return alert('You no have access !')"><i class="bx bx-plus-circle"></i> Create Type Of Billing</button>
+        @if(auth()->user()->can('create occupation')/* && $some_other_condition*/)
+            <button type="button" class="btn btn-primary round addOC"><i class="bx bx-plus-circle"></i> Create Occupation</button>
         @endif
             <table class="table yajra-datatable table-inverse table-hover" width="100%">
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Type Of Billing Name</th>
+                  <th>Occupation</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -62,6 +60,8 @@
     </div>
 </div>
 @endif
+<!--/ Description -->
+
 <!--/ HTML Markup -->
 @endsection
 
@@ -77,24 +77,29 @@
 <script type="text/javascript">
 
  $(function () {  
+
+ 	//show data
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('ShowBillingType') }}",
+        ajax: "{{ route('ShowOccupation') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'pemnama', name: 'pemnama'},
+            {data: 'pekerjaan', name: 'pekerjaan'},
             {
               data: 'action', 
-              name: 'action'
+              name: 'action' 
+              // orderable: true, 
+              // searchable: true
             },
         ]
     });
 
-    //ADD PASIEN BILLING//
-    $(document).on('click', '.addbilling', function () {
+
+    //insert
+    $(document).on('click', '.addOC', function () {
         Swal.fire({
-          title: 'New Type Of Billing',
+          title: 'New Occupation',
           input: 'text',
           inputAttributes: {
             autocapitalize: 'off'
@@ -105,13 +110,13 @@
           allowOutsideClick: false,
           preConfirm: (data) => {
             if (data) {
-                return fetch(`{{ Route('StoreBilling') }}`,{
+                return fetch(`{{ Route('StoreOccupation') }}`,{
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({namebilling: data})
+                    body: JSON.stringify({nameOccupation: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();
@@ -135,17 +140,19 @@
         })
     }); 
 
-    // DELETE PASIEN BILLING//
-    $(document).on('click', '.delBil', function () {
+
+    //delete
+    $(document).on('click', '.delOC', function () {
         var id = $(this).attr('data-id')
         Swal.fire({
           title: 'Are you sure delete this data ?',
           showCancelButton: true,
           confirmButtonText: 'Yes',
         }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
               if (id) {
-                return fetch('{{route("DelBilling", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("DelOccupation", ":id")}}'.replace(":id", id),{
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
@@ -166,14 +173,15 @@
         })
     });
 
-    //UPDATE CATEGORY//
-    $(document).on('click', '.upBil', function () {
+
+    //update
+    $(document).on('click', '.upOC', function () {
         var id = $(this).attr('data-id')
-        var nameBil = $(this).attr('vall')
+        var nameRole = $(this).attr('vall')
         Swal.fire({
-          title: 'Update Type of Billing',
+          title: 'Update Occupation',
           input: 'text',
-          inputValue: nameBil,
+          inputValue: nameRole,
           inputAttributes: {
             autocapitalize: 'off'
           },
@@ -183,13 +191,13 @@
           allowOutsideClick: false,
           preConfirm: (data) => {
             if (data) {
-                return fetch('{{route("UpdateBilling", ":id")}}'.replace(":id", id),{
+                return fetch('{{route("PutOccupation", ":id")}}'.replace(":id", id),{
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    body: JSON.stringify({NewUpdateBilling: data})
+                    body: JSON.stringify({NewUpdateOccupation: data})
                 }).then(response => {
                     
                     $('.yajra-datatable').DataTable().ajax.reload();

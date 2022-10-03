@@ -336,11 +336,17 @@ class ManageTransaction extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
+                    if ($this->CheckAcc()->can('print laboratorium')) {  
+                        $linkk = 'href="'.route('ReportPDFResult',['id_registration' => Crypt::encryptString($row->penid)]).'" target="_blank"';
+                    }else{
+                        $linkk = 'onclick="return alert(\'You no have access !\')" target="_blank"';
+                    }
                     $actionBtn = '';
                     $actionBtn .=   '<div class="btn-group dropup dropdown-icon-wrapper">
                                         <a href="'.route('InputResultLaboratorium',['id_registration' => Crypt::encryptString($row->penid)]).'"><button type="button" class="btn btn-xs btn-icon glow btn-primary" data-toggle="tooltip" data-placement="top" title="Input Result"><i class="bx bx-book-add"></i></button></a>
                                     </div>
-                                    <a href="'.route('ReportPDFResult',['id_registration' => Crypt::encryptString($row->penid)]).'" target="_blank"><div class="btn-group dropup dropdown-icon-wrapper">
+                                    <a '.$linkk.' target="_blank">
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
                                         <button type="button" class="btn btn-xs btn-icon glow btn-info" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
                                     </div>
                                     </a>
@@ -376,9 +382,17 @@ class ManageTransaction extends Controller
 
               $ress = DB::table('result')->where([['resultkatlabid','=',$row->katlabid],['resultpenid','=',$row->penid]])->first();
               if ($ress) {
-                return ''.$ress->result.' - <button type="button" data_idresult="'.$ress->resultid.'" data_katlabid="'.$row->katlabid.'" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bx-sync"></i></button>';
+                if ($this->CheckAcc()->can('edit result laboratorium')) {
+                    return ''.$ress->result.' - <button type="button" data_idresult="'.$ress->resultid.'" data_katlabid="'.$row->katlabid.'" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bx-sync"></i></button>';
+                }else{
+                    return ''.$ress->result.' - <button type="button" class="btn btn-info btn-sm mt-0 pt-0 btn-icon glow" aria-haspopup="true" aria-expanded="false" onclick="return alert(\'You no have access !\')"><i class="bx bx-sync"></i></button>';
+                }
               }else{
-                return '<button type="button" data_idresult="kosong" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
+                if ($this->CheckAcc()->can('create result laboratorium')) {
+                    return '<button type="button" data_idresult="kosong" data_katlabid="'.$row->katlabid.'" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow InsertUpdateResult" aria-haspopup="true" aria-expanded="false"><i class="bx bxs-plus-circle"></i></button>';
+                }else{
+                    return '<button type="button" class="btn btn-primary btn-sm mt-0 pt-0 btn-icon glow" aria-haspopup="true" aria-expanded="false" onclick="return alert(\'You no have access !\')"><i class="bx bxs-plus-circle"></i></button>';
+                }
               }
                 
             })

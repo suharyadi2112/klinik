@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Pusher\Pusher;
 
 use Illuminate\Http\Request;
 
@@ -34,7 +35,6 @@ class ProcessTransaction extends Controller
     public function InsertRegistration(Request $request){
 
         return $this->InsertRegisterParam("single", $request);
-
        
     }
     public function InsertRegistrationLead(Request $request){
@@ -56,29 +56,15 @@ class ProcessTransaction extends Controller
 
     //send request
     public function SendRequestStatus(Request $request){
-        //status sementara request, requested, approve, rejected
-        $user = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
-        $CekStatus = DB::table('pendaftaran')->where([['status_request','=',$request->status],['status_request','=',null]])->get();//get status sekarang
-
+     
         if ($request->status == "request") {
-            //check request akses
-            if ($this->CheckAcc()->can('request create')) {//akses user yang bisa send request
-                return $this->changeStatus($request, $request->status,"");
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
+            return $this->ConditionStatus($request);
         }elseif($request->status == "requested"){
-            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create')) {//akses user yang bisa aprove and reject
-                return $this->changeStatus($request, $request->status, $request->statusPilihan);
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
-        }elseif($request->status == "approved" || $request->status == "rejected"){
-            if ($this->CheckAcc()->can('approved create') || $this->CheckAcc()->can('rejected create') || $this->CheckAcc()->can('request create')){
-                return $this->changeStatus($request, $request->status, $request->statusPilihan);
-            }else{
-                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
-            }
+            return $this->ConditionStatus($request);
+        }elseif($request->status == "approved"){
+            return $this->ConditionStatus($request);
+        }elseif($request->status == "rejected"){
+            return $this->ConditionStatus($request);
         }else{
             return response()->json(['code' => '1', 'fail' => 'sorry, we have a problem, try again later'], 200);
         }
@@ -156,6 +142,44 @@ class ProcessTransaction extends Controller
                 }else{
                     return response()->json(['code' => '1', 'fail' => 'fail to send request'], 200);
                 }
+            }
+        }
+    }
+
+    protected function ConditionStatus($request){
+        if ($request->status == "request") {//pertama kali saat daftar default request
+            if ($this->CheckAcc()->can('request create')){ //balik ke request adalah cancel
+                return $this->changeStatus($request, $request->status, $request->statusPilihan);
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+            }
+        }else{
+            if ($request->statusPilihan == "rejected") {
+                if ($this->CheckAcc()->can('rejected create')){
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "approved"){
+                if ($this->CheckAcc()->can('approved create')){
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "request"){
+                if ($this->CheckAcc()->can('cancel create')){ //balik ke request adalah cancel
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else if ($request->statusPilihan == "requested"){
+                if ($this->CheckAcc()->can('requested create')){ //balik ke request adalah cancel
+                    return $this->changeStatus($request, $request->status, $request->statusPilihan);
+                }else{
+                    return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
+                }
+            }else{
+                return response()->json(['code' => '1', 'fail' => 'sorry, you no have access'], 200);
             }
         }
     }
@@ -281,6 +305,32 @@ class ProcessTransaction extends Controller
 
         if ($type == "single") {
             $db = "pendaftaran";
+
+            // $options = array(
+            //   'cluster' => env('PUSHER_APP_CLUSTER'),
+            //   'encrypted' => true
+            // );
+            // $pusher = new Pusher(
+            //   env('PUSHER_APP_KEY'),
+            //   env('PUSHER_APP_SECRET'),
+            //   env('PUSHER_APP_ID'), 
+            //   $options
+            // );
+
+            // $data['name'] = 'New patient registration';
+            // $data['type'] = 'register';
+            // $data['status'] = '0';
+            // $data['created'] = date('Y-m-d H:i:s');
+
+            // $res = DB::table('notify')->insert([
+            //         'name_notif' => $data['name'],
+            //         'type_notif' => $data['type'],
+            //         'status_notif' => $data['status'],
+            //         'created_at_notif' => $data['created'],
+            //     ]);
+
+            // $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
+
         }else{
             $db = "pendaftaran_leads";
         }
@@ -372,6 +422,8 @@ class ProcessTransaction extends Controller
             'reference_date' => 'required|date_format:Y-m-d',
             'partner' => 'required|max:50',
             'billing_of_type' => 'required|max:50',
+            'saran' => 'max:500',
+            'catatan' => 'max:500',
         ]);
         if ($validator->fails()) {
                 HelperLog::addToLog('Fail VALIDATOR Edit data registration', json_encode($request->all())); 
@@ -383,6 +435,8 @@ class ProcessTransaction extends Controller
                                 'pentglrujukan' => $request->reference_date,
                                 'penpengid' => $request->partner,
                                 'penpemid' => $request->billing_of_type,
+                                'saran' => $request->saran,
+                                'catatan' => $request->catatan,
                             ]);
                 if ($Update) {
                     HelperLog::addToLog('Edit data registration', json_encode([ 'data' => $request->all(), 'update user' => auth()->user()->id])); 

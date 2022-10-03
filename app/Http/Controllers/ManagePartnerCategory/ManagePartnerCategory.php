@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper as HelperLog;
 
+use App\Models\User;
+
 class ManagePartnerCategory extends Controller
 {
     public function __construct()
@@ -27,11 +29,16 @@ class ManagePartnerCategory extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $actionBtn = '';
+                    if ($this->CheckAcc()->can('edit category partner')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm round btn-info upPC" vall="'.$row->katpengirimnama.'" data-id="'.$row->katpengirimid .'">edit</button>&nbsp;';
-                    
-   
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm round btn-info" onclick="return alert(\'You no have access !\')">edit</button>&nbsp;';
+                    }   
+                    if ($this->CheckAcc()->can('edit category partner')) {
                         $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round delPC" data-id="'.$row->katpengirimid .'">del</button>';
-                    
+                    }else{
+                        $actionBtn .= '<button type="button" class="btn btn-sm btn-outline-danger round" onclick="return alert(\'You no have access !\')">del</button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -90,5 +97,11 @@ class ManagePartnerCategory extends Controller
         DB::table('kategoripengirim')->where('katpengirimid', '=', $id)->delete();
         return response()->json(['code' =>  '1', 'res' => $res]);
 
+    }
+
+    //cek akses
+    protected function CheckAcc(){
+        $userAcc = User::with('roles')->where('id','=', auth()->user()->id)->first();//get role user
+        return $userAcc;
     }
 }
