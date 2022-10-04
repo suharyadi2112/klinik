@@ -3,14 +3,37 @@ namespace App\Helpers;
 
 use Config;
 use Illuminate\Support\Str;
-
+use Pusher\Pusher;
+use DB;
 
 use Request;
 use App\Models\LogActivity as LogActivityModel;
 
 class Helper
 { 
-    
+
+  //notifyyyy
+  public static function SendNotif($name, $type, $id_event){
+
+    $options = array('cluster' => env('PUSHER_APP_CLUSTER'),'encrypted' => true);
+
+    $pusher = new Pusher( env('PUSHER_APP_KEY'),env('PUSHER_APP_SECRET'),env('PUSHER_APP_ID'),
+      $options
+    );
+
+    $data['name'] = $name;
+    $data['type'] = $type;
+    $data['status'] = '0';
+    $data['created_by'] = auth()->check() ? auth()->user()->id : 1;
+    $data['id_event'] = $id_event;
+    $data['created'] = date('Y-m-d H:i:s');
+
+    DB::table('notify')->insert(['name_notif' => $data['name'],'type_notif' => $data['type'], 'status_notif' => $data['status'],'created_at_notif' => $data['created'], 'id_event' => $data['id_event'], 'created_by' => $data['created_by']]);
+
+    return $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
+
+  }
+
 	public static function FormatRupiah($value){ 
     return number_format($value,0,',','.'); 
   }

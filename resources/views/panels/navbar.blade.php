@@ -130,7 +130,18 @@ var pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
 
 var channel = pusher.subscribe('notify-channel');
 channel.bind('App\\Events\\Notify', function(data) {
-  alert('tes')
+
+  var totnewnotif = document.getElementById('TotalCountPush');
+  let attributeValue = element.getAttribute("data_TotalTotalCountPush");
+  var div = document.getElementById('mylistNotify');
+  //render new notif
+  div.innerHTML += '<div class="media d-flex align-items-center"><div class="media-left pr-0">'+
+                      '<div class="avatar bg-primary bg-lighten-5 mr-1 m-0 p-25"><span class="avatar-content text-primary font-medium-2">NEW</span></div>'+
+                    '</div>'+
+                    '<div class="media-body">'+
+                      '<h6 class="media-heading"><span class="text-bold-500">New customer</span> is registered</h6><small class="notification-text">1 hrs ago</small>'+
+                    '</div></div>';
+
 });
 
 RenderNotfy("0");

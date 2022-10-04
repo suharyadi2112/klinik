@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
-use Pusher\Pusher;
 
 use Illuminate\Http\Request;
 
@@ -306,31 +305,7 @@ class ProcessTransaction extends Controller
         if ($type == "single") {
             $db = "pendaftaran";
 
-            $options = array(
-              'cluster' => env('PUSHER_APP_CLUSTER'),//cluster
-              'encrypted' => true
-            );
-
-            $pusher = new Pusher(
-              env('PUSHER_APP_KEY'),//key
-              env('PUSHER_APP_SECRET'),//secret
-              env('PUSHER_APP_ID'),//id
-              $options
-            );
-
-            $data['name'] = 'New patient registration';
-            $data['type'] = 'register';
-            $data['status'] = '0';
-            $data['created'] = date('Y-m-d H:i:s');
-
-            $res = DB::table('notify')->insert([
-                    'name_notif' => $data['name'],
-                    'type_notif' => $data['type'],
-                    'status_notif' => $data['status'],
-                    'created_at_notif' => $data['created'],
-                ]);
-
-            $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
+            HelperLog::SendNotif("New patient register", "register", 250);//param pertama name, kedua type, ketiga idevent
 
         }else{
             $db = "pendaftaran_leads";
