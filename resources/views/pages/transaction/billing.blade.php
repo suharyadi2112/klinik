@@ -20,10 +20,10 @@
 @endsection
 @section('content')
 
-@if(auth()->user()->can('view screening')/* && $some_other_condition*/)
-<!-- screening list start -->
-<section class="screening-list-wrapper">
-  <div class="screening-list-table">
+@if(auth()->user()->can('view billing')/* && $some_other_condition*/)
+<!-- billing list start -->
+<section class="billing-list-wrapper">
+  <div class="billing-list-table">
     <div class="card">
       <div class="card-body">
         <!-- datatable start -->
@@ -33,7 +33,7 @@
 		    </div>
 		@endif
         <div class="table-responsive">
-          <table id="screening-list-datatable" class="table table-striped table-sm table-hover" width="100%">
+          <table id="billing-list-datatable" class="table table-striped table-sm table-hover" width="100%">
             <thead>
              	<tr>
              		<th>No</th>
@@ -106,11 +106,11 @@ didOpen: (toast) => {
 })
 
 $(document).ready(function(){
-	var dt = $('#screening-list-datatable').DataTable({
+	var dt = $('#billing-list-datatable').DataTable({
 	    processing: true,
 	    ordering: true,
 	    serverSide: true,
-	    ajax: "{{ route('Screening',['id_registration' => $id_pen]) }}",
+	    ajax: "{{ route('Billing') }}",
 	    columns: [
 	      {data: 'DT_RowIndex', name: 'DT_RowIndex'},
         {data: 'penid', name: 'penid'},

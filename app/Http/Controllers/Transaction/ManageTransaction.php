@@ -350,9 +350,9 @@ class ManageTransaction extends Controller
                                         <button type="button" class="btn btn-xs btn-icon glow btn-info" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
                                     </div>
                                     </a>
-                                    <a href="'.route('Screening',['id_registration' => Crypt::encryptString($row->penid)]).'">
+                                    <a href="'.route('Billing').'">
                                     <div class="btn-group dropup dropdown-icon-wrapper">
-                                        <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Billing"><i class="bx bxs-file-find" ></i></button>
                                     </div></a>';
                     return $actionBtn;
                 })
@@ -406,10 +406,8 @@ class ManageTransaction extends Controller
     }
 
 
-    //--------------------------------Screening-------------------------------------//
-    public function Screening(Request $request, $id_registration){
-
-        $dec_penid = Crypt::decryptString($id_registration);//decrypt id
+    //--------------------------------Billing-------------------------------------//
+    public function Billing(Request $request){
 
         $Res = DB::table('pendaftaran')
             ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*')
@@ -446,9 +444,9 @@ class ManageTransaction extends Controller
         }
 
         $breadcrumbs = [
-              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_registration."", 'name' => "screening"], ['name' => "view screening"],
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/billing/", 'name' => "billing"], ['name' => "view billing"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_penDec' => $dec_penid ,'id_pen' => $id_registration]);
+        return view("/pages/transaction/billing",['breadcrumbs' => $breadcrumbs]);
 
     }
 

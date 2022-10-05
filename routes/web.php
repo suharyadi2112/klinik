@@ -141,10 +141,10 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::get('/report/result/{id_registration}', [ReportResult::class, 'ReportPDFResult'])->name('ReportPDFResult');
 
 	//screening
-	Route::get('/screening/{id_registration}', [ManageTransaction::class, 'Screening'])->name('Screening');
+	Route::get('/billing/', [ManageTransaction::class, 'Billing'])->name('Billing');
 
-  //notif
-  Route::post('/nofif', [Notifyy::class, 'GetNotif'])->name('GetNotif');
+	//notif
+	Route::post('/nofif', [Notifyy::class, 'GetNotif'])->name('GetNotif');
 
 	//billng type
 	Route::get('/pasien/billing', [ManagePasienBilling::class, 'ShowBillingType'])->name('ShowBillingType');
