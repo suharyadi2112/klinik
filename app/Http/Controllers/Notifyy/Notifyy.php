@@ -12,7 +12,7 @@ class Notifyy extends Controller
         $res = DB::table('notify')->select('*')->where([['status_notif','=','0'],['created_by','!=',auth()->check() ? auth()->user()->id : 1]])->orderBy('id_notif','DESC')->limit(10)->get();
         $notif = '';
         $notif .= '<a class="nav-link nav-link-label" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i>
-                    <span class="badge badge-pill badge-danger badge-up" id="TotalCountPush" data_TotalTotalCountPush="'.$res->count().'">'.$res->count().'</span>
+                    <span class="badge badge-pill badge-danger badge-up" id="TotalCountPush" data_CountPush="'.$res->count().'">'.$res->count().'</span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
