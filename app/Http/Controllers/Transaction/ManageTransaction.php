@@ -461,10 +461,12 @@ class ManageTransaction extends Controller
         $ResBasic = $this->GetInfoRegistration($dec_penid);
         $Users = DB::table('users')->select('name')->where('users.id','=',$ResBasic->created_by)->first();
 
+        $GetScrReassessment = $this->GetScrReassessment($dec_penid);
+
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'databasic' => $ResBasic, 'users' => $Users]);
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment]);
 
     }
 
@@ -509,6 +511,16 @@ class ManageTransaction extends Controller
             ->where('pendaftaran.penid','=',$id_pen)
             ->get();
         return $data;
+    }
+
+    protected function GetScrReassessment($id_regis){
+        $res = DB::table('screening')->select('*')->where('id_pendaftaran','=',$id_regis)->limit(1)->orderBy('id_print_screening','DESC')->first();
+        if ($res) {
+            return $res;
+        }else{
+            return "";
+        }
+
     }
 
 }

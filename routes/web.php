@@ -24,6 +24,7 @@ use App\Http\Controllers\ManageBlood\ManageBlood;
 use App\Http\Controllers\ManageGender\ManageGender;
 use App\Http\Controllers\ManageNationality\ManageNationality;
 use App\Http\Controllers\ManageMStatus\ManageMStatus;
+use App\Http\Controllers\Laboratorium\ReportScreening;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,7 +145,10 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 	Route::get('/billing/', [ManageTransaction::class, 'Billing'])->name('Billing');
 
 	//screening
-	Route::get('/screening/{id_regis}', [ManageTransaction::class, 'ReportScreening'])->name('ReportScreening');	
+	Route::get('/screening/{id_regis}', [ManageTransaction::class, 'ReportScreening'])->name('ReportScreening');
+	Route::post('/screening/print/satu/{id_regis}', [ReportScreening::class, 'UpdateScreeningSatu'])->name('UpdateScreeningSatu');
+	Route::get('/print/reassessment/health/{id_regis}', [ReportScreening::class, 'PrintReassessmentHealth'])->name('PrintReassessmentHealth');
+		
 
 	//notif
 	Route::post('/nofif', [Notifyy::class, 'GetNotif'])->name('GetNotif');
