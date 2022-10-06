@@ -353,6 +353,10 @@ class ManageTransaction extends Controller
                                     <a href="'.route('Billing').'">
                                     <div class="btn-group dropup dropdown-icon-wrapper">
                                         <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Billing"><i class="bx bxs-file-find" ></i></button>
+                                    </div></a>
+                                    <a href="'.route('ReportScreening',['id_regis' => Crypt::encryptString($row->penid)]).'">
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-warning" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-check-shield"></i></button>
                                     </div></a>';
                     return $actionBtn;
                 })
@@ -449,6 +453,21 @@ class ManageTransaction extends Controller
         return view("/pages/transaction/billing",['breadcrumbs' => $breadcrumbs]);
 
     }
+
+    // --------------------Report Screening-----------------//
+    public function ReportScreening($id_regis){
+
+        $dec_penid = Crypt::decryptString($id_regis);//decrypt id
+        $ResBasic = $this->GetInfoRegistration($dec_penid);
+        $Users = DB::table('users')->select('name')->where('users.id','=',$ResBasic->created_by)->first();
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
+        ];
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'databasic' => $ResBasic, 'users' => $Users]);
+
+    }
+
 
     //cek tindkan keluar
     protected function TndkKlr($penid){
