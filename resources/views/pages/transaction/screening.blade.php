@@ -39,27 +39,27 @@
       	<div class="row match-height">
           <div class="col-12">
                <div class="row">
-		            <div class="col-sm-4 col-12">
-		                <h6><small class="text-muted">Registration Date</small></h6>
-		                <p><b>{{ $databasic->pentgl }}</b></p>
-		            </div>
-		            <div class="col-sm-4 col-12">
-		                <h6><small class="text-muted">Reference Date</small></h6>
-		                <p><b>{{ $databasic->pentglrujukan }}</b></p>
-		            </div>
-		            <div class="col-sm-4 col-12">
-		                <h6><small class="text-muted">Patient Name</small></h6>
-		                <p><b>{{ $databasic->pasnama }}</b></p>
-		            </div>
-		            <div class="col-sm-4 col-12">
-		                <h6><small class="text-muted">Partner</small></h6>
-		                <p><b>{{ $databasic->pennama }}</b></p>
-		            </div>
-		            <div class="col-sm-4 col-12">
-		                <h6><small class="text-muted">Type Of Billing</small></h6>
-		                <p><b>{{ $databasic->pemnama }}</b></p>
-		            </div>
-		        </div>
+  		            <div class="col-sm-4 col-12">
+  		                <h6><small class="text-muted">Registration Date</small></h6>
+  		                <p><b>{{ $databasic->pentgl }}</b></p>
+  		            </div>
+  		            <div class="col-sm-4 col-12">
+  		                <h6><small class="text-muted">Reference Date</small></h6>
+  		                <p><b>{{ $databasic->pentglrujukan }}</b></p>
+  		            </div>
+  		            <div class="col-sm-4 col-12">
+  		                <h6><small class="text-muted">Patient Name</small></h6>
+  		                <p><b>{{ $databasic->pasnama }}</b></p>
+  		            </div>
+  		            <div class="col-sm-4 col-12">
+  		                <h6><small class="text-muted">Partner</small></h6>
+  		                <p><b>{{ $databasic->pennama }}</b></p>
+  		            </div>
+  		            <div class="col-sm-4 col-12">
+  		                <h6><small class="text-muted">Type Of Billing</small></h6>
+  		                <p><b>{{ $databasic->pemnama }}</b></p>
+  		            </div>
+  		        </div>
 		        <hr>
 
 
@@ -239,45 +239,9 @@
                       <hr>
 
                       {{-- CLINIC EXAMINATION --}}
-                      <h6 class="card-title">Clinic Examination</h6>
+                 
+                      <h6 class="card-title">Clinic Examination, Laboratory Test, Other Test</h6>
                       <div class="row">
-
-                          <div class="col-md-3 mb-1">
-                            <label for="weight">Weight</label>
-                              <div class="position-relative has-icon-left">
-                                  <input type="text" name="weight" class="form-control" placeholder="Weight">
-                                  <div class="form-control-position">
-                                      <i class='bx bx-dumbbell'></i>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-md-3 mb-1">
-                            <label for="height">Height</label>
-                              <div class="position-relative has-icon-left">
-                                  <input type="text" name="height" class="form-control" placeholder="Height">
-                                  <div class="form-control-position">
-                                      <i class='bx bx-ruler'></i>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-md-3 mb-1">
-                            <label for="bmi">BMI <code>body mass indeks</code></label>
-                              <div class="position-relative has-icon-left">
-                                  <input type="text" name="bmi" class="form-control" placeholder="BMI">
-                                  <div class="form-control-position">
-                                      <i class='bx bx-dumbbell'></i>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-md-3 mb-1">
-                            <label for="visus">Visus</label>
-                              <div class="position-relative has-icon-left">
-                                  <input type="text" name="visus" class="form-control" placeholder="Visus">
-                                  <div class="form-control-position">
-                                      <i class='bx bx-show-alt'></i>
-                                  </div>
-                              </div>
-                          </div>
 
                           {{-- TABELING INPUT CLINIC EXAMINATION --}}
                           
@@ -285,11 +249,203 @@
                             <table border="0">
                               <tbody>
                                 <tr>
+                                  <td>
+                                    <div class="row">
+                                      <div class="col-md-6 mb-1">
+                                        <label for="weight">Weight</label>
+                                          <div class="position-relative has-icon-left">
+                                              <input type="text" name="weight" class="form-control" placeholder="Weight">
+                                              <div class="form-control-position">
+                                                  <i class='bx bx-dumbbell'></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 mb-1">
+                                        <label for="height">Height</label>
+                                          <div class="position-relative has-icon-left">
+                                              <input type="text" name="height" class="form-control" placeholder="Height">
+                                              <div class="form-control-position">
+                                                  <i class='bx bx-ruler'></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6 mb-1">
+                                        <label for="bmi">BMI <code>body mass indeks</code></label>
+                                          <div class="position-relative has-icon-left">
+                                              <input type="text" name="bmi" class="form-control" placeholder="BMI">
+                                              <div class="form-control-position">
+                                                  <i class='bx bx-dumbbell'></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 mb-1">
+                                        <label for="visus">Visus</label>
+                                          <div class="position-relative has-icon-left">
+                                              <input type="text" name="visus" class="form-control" placeholder="Visus">
+                                              <div class="form-control-position">
+                                                  <i class='bx bx-show-alt'></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  {{-- td jarak --}}
+                                  <td class="p-1"></td>
+
+                                  <td style="width:50%; vertical-align: top;" rowspan="2">
+                                     <table class="table table-bordered table-sm">
+                                        {{-- laboratory test --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">laboratory Test</th>
+                                          </tr>
+                                        </thead>
+                                        <thead>
+                                          <tr>
+                                            <th style="text-align:center;">Type</th>
+                                            <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          @php $nokk = 1 @endphp
+                                          @foreach($LabTest as $keyLabTest => $ValLabTest)
+                                          @if($ValLabTest->type_laboratory_test == 'main')
+                                          <tr>
+                                            <td style="padding-left:10px;">{{ $nokk }}. {{ $ValLabTest->name_laboratory_test }}</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" name="laboratory_test[]" id="{{ $ValLabTest->id_laboratory_test }}">
+                                                  <label class="custom-control-label" for="{{ $ValLabTest->id_laboratory_test }}">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          @php $nokk++ @endphp
+                                          @endif
+                                          @endforeach
+                                        </tbody>
+                                      </table>
+
+                                      <table class="table table-bordered table-sm">
+                                        {{-- Other test --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">Other Test</th>
+                                          </tr>
+                                        </thead>
+                                        <thead>
+                                          <tr>
+                                            <th style="text-align:center;">Type</th>
+                                            <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          @php $nokk = 1 @endphp
+                                          @foreach($LabTest as $keyLabTest => $ValLabTest)
+                                          @if($ValLabTest->type_laboratory_test == 'other')
+                                          <tr>
+                                            <td style="padding-left:10px;">{{ $nokk }}. {{ $ValLabTest->name_laboratory_test }}</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" name="other_test[]" id="{{ $ValLabTest->id_laboratory_test }}">
+                                                  <label class="custom-control-label" for="{{ $ValLabTest->id_laboratory_test }}">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          @php $nokk++ @endphp
+                                          @endif
+                                          @endforeach
+                                        </tbody>
+                                      </table>
+
+                                      <table class="table table-bordered table-sm">
+                                        {{-- Remark --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">Remark</th>
+                                          </tr>
+                                        </thead>
+                                       
+                                        <tbody>
+                                         <tr>
+                                           <td>
+                                             <label for="remark_health_screening">Remark</label>
+                                              <div class="position-relative has-icon-left">
+                                                  <textarea class="form-control" id="remark_health_screening" name="remark_health_screening" placeholder="leave remark health screening" aria-label="remark"></textarea>
+                                                  <div class="form-control-position">
+                                                    <i class='bx bxs-info-circle'></i>
+                                                  </div>
+                                              </div>
+                                           </td>
+                                         </tr>
+                                        </tbody>
+                                      </table>
+
+                                      <table class="table table-bordered table-sm">
+                                        {{-- Panel Doctor Decleration --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">Panel Doctor Declaration</th>
+                                          </tr>
+                                        </thead>
+                                       
+                                        <tbody>
+                                         <tr>
+                                           <td>
+                                             <label for="panel_doctor_declaration">Panel Doctor Decleration</label>
+                                              <div class="position-relative has-icon-left">
+                                                  <textarea class="form-control" id="panel_doctor_declaration" name="panel_doctor_declaration" placeholder="leave panel doctor declaration" aria-label="panel_doctor_declaration"></textarea>
+                                                  <div class="form-control-position">
+                                                    <i class='bx bxs-info-circle'></i>
+                                                  </div>
+                                              </div>
+                                           </td>
+                                         </tr>
+                                        </tbody>
+                                      </table>
+
+                                      <table class="table table-bordered table-sm">
+                                        {{-- Advice Health Screening Page 2 --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">Advice</th>
+                                          </tr>
+                                        </thead>
+                                       
+                                        <tbody>
+                                         <tr>
+                                           <td>
+                                             <label for="advice_2">Advice</label>
+                                              <div class="position-relative has-icon-left">
+                                                  <textarea class="form-control" id="advice_health_screening" name="advice_health_screening" placeholder="leave advice health screening" aria-label="advice_health_screening"></textarea>
+                                                  <div class="form-control-position">
+                                                    <i class='bx bxs-info-circle'></i>
+                                                  </div>
+                                              </div>
+                                           </td>
+                                         </tr>
+                                        </tbody>
+                                      </table>
+
+                                  </td>
+                                </tr>
+                                <tr>
                                   <td style="width:50%; vertical-align: top;">
-                                    
                                     <table class="table table-bordered table-sm">
                                         {{-- vision --}}
                                         <thead class="thead-dark">
+                                          <tr>
+                                            <th colspan="2" style="text-align: center; font-size: 13px;">Clinic Examination</th>
+                                          </tr>
+                                        </thead>
+                                        <thead >
                                           <tr>
                                             <th style="text-align:center;">Type</th>
                                             <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
@@ -440,10 +596,7 @@
 
                                       </table>
 
-                                  </td>
-                                  <td style="width:50%; vertical-align: top;" >
-
-                                     <table class="table table-bordered table-sm">
+                                      <table class="table table-bordered table-sm">
                                         <thead class="thead-dark">
                                           <tr>
                                             <th style="text-align:center;">Type</th>
@@ -567,6 +720,7 @@
                                       </table>
 
                                   </td>
+                                 
                                 </tr>
                               </tbody>
                             </table>
@@ -587,8 +741,7 @@
                       </p>
                   </div>
               </div>
-				     
-              </div>
+				    </div>
 		   	</div>
 		  {{-- endform --}}
 		  <hr>
