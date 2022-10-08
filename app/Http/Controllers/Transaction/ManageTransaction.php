@@ -350,9 +350,13 @@ class ManageTransaction extends Controller
                                         <button type="button" class="btn btn-xs btn-icon glow btn-info" data-toggle="tooltip" data-placement="top" title="Report Result"><i class="bx bxs-file-pdf" ></i></button>
                                     </div>
                                     </a>
-                                    <a href="'.route('Screening',['id_registration' => Crypt::encryptString($row->penid)]).'">
+                                    <a href="'.route('Billing').'">
                                     <div class="btn-group dropup dropdown-icon-wrapper">
-                                        <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-file-find" ></i></button>
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-success" data-toggle="tooltip" data-placement="top" title="Billing"><i class="bx bxs-file-find" ></i></button>
+                                    </div></a>
+                                    <a href="'.route('ReportScreening',['id_regis' => Crypt::encryptString($row->penid)]).'">
+                                    <div class="btn-group dropup dropdown-icon-wrapper">
+                                        <button type="button" class="btn btn-xs btn-icon glow btn-warning" data-toggle="tooltip" data-placement="top" title="Screening"><i class="bx bxs-check-shield"></i></button>
                                     </div></a>';
                     return $actionBtn;
                 })
@@ -406,16 +410,15 @@ class ManageTransaction extends Controller
     }
 
 
-    //--------------------------------Screening-------------------------------------//
-    public function Screening(Request $request, $id_registration){
-
-        $dec_penid = Crypt::decryptString($id_registration);//decrypt id
+    //--------------------------------Billing-------------------------------------//
+    public function Billing(Request $request){
 
         $Res = DB::table('pendaftaran')
             ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*')
             ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
             ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
             ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->where('pendaftaran.status_request','=','approved')
             ->orderBy('penid', 'desc')
             ->get();
 
@@ -423,12 +426,17 @@ class ManageTransaction extends Controller
             return DataTables::of($Res)->addIndexColumn()
             ->addColumn('action', function($row){
 
-                $resAction = DB::table('tindakankeluar')
-                    ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
-                    ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
-                    ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
-                    ->where('tndklrpenid','=',$row->penid)->count();
-                return $resAction;
+                return $this->TndkKlr($row->penid)->count();
+
+            })
+            ->addColumn('billing', function($row){
+
+              $reees = $this->TndkKlr($row->penid)->selectRaw('tindakankeluar.tndklrpenid, sum(tndklrdiskonprice) as TotTndKlr')->groupBy('tindakankeluar.tndklrpenid')->first();
+              if ($reees) {
+                return HelperLog::FormatRupiah($reees->TotTndKlr);
+              }else{
+                return "-";
+              }
 
             })
             ->addColumn('bayar', function($row){
@@ -440,12 +448,38 @@ class ManageTransaction extends Controller
         }
 
         $breadcrumbs = [
-              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_registration."", 'name' => "screening"], ['name' => "view screening"],
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/billing/", 'name' => "billing"], ['name' => "view billing"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_penDec' => $dec_penid ,'id_pen' => $id_registration]);
+        return view("/pages/transaction/billing",['breadcrumbs' => $breadcrumbs]);
 
     }
 
+    // --------------------Report Screening-----------------//
+    public function ReportScreening($id_regis){
+
+        $dec_penid = Crypt::decryptString($id_regis);//decrypt id
+        $ResBasic = $this->GetInfoRegistration($dec_penid);
+        $Users = DB::table('users')->select('name')->where('users.id','=',$ResBasic->created_by)->first();
+
+        $GetScrReassessment = $this->GetScrReassessment($dec_penid);
+
+        $breadcrumbs = [
+              ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
+        ];
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment]);
+
+    }
+
+
+    //cek tindkan keluar
+    protected function TndkKlr($penid){
+      $resAction = DB::table('tindakankeluar')
+                  ->join('tindakan','tindakan.tndid','=','tindakankeluar.tndklrtndid')
+                  ->join('pendaftaran','pendaftaran.penid','=','tindakankeluar.tndklrpenid')
+                  ->join('kategoritindakan','kategoritindakan.kattndid','=','tindakan.tndkattndid')
+                  ->where('tndklrpenid','=',$penid);
+      return $resAction;
+    }
 
     //cek akses
     protected function CheckAcc(){
@@ -477,6 +511,16 @@ class ManageTransaction extends Controller
             ->where('pendaftaran.penid','=',$id_pen)
             ->get();
         return $data;
+    }
+
+    protected function GetScrReassessment($id_regis){
+        $res = DB::table('screening')->select('*')->where('id_pendaftaran','=',$id_regis)->limit(1)->orderBy('id_print_screening','DESC')->first();
+        if ($res) {
+            return $res;
+        }else{
+            return "";
+        }
+
     }
 
 }
