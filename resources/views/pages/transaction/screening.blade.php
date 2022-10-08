@@ -84,6 +84,9 @@
                 </li>
               </ul>
               <div class="tab-content p-0">
+                  
+                  {{-- PAGE 1 --}}
+
                   <div class="tab-pane home-tab" id="home" aria-labelledby="home-tab" role="tabpanel">
                     <form id="UpdateScreeningSatu" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
                     <div class="form-body">
@@ -199,11 +202,128 @@
                   </form>
                   </div>
 
+                  {{-- PAGE 2 --}}
+
                   <div class="tab-pane profile-tab" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                      <p>
-                          Health Screening 
-                      </p>
+                    <form id="UpdateScreeningSatu" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
+                    <div class="form-body">
+
+                      {{-- Medical History --}}
+                      <h6 class="card-title">Medical History</h6>
+                      <div class="row">
+
+                          <div class="col-md-5 mb-1 mr-0">
+                            <label for="medical-history">Medical History<code>pick if have</code></label>
+                            <select class="select2 form-control" multiple="multiple" name="medical_history[]">
+                              @forelse($MedHis as $keyf => $valMedHis)
+                                <option value="{{ $valMedHis->id_medical_history }}">{{ $valMedHis->name_medical_history }}</option>
+                              @empty
+                                <option value="">Data Not Found !</option>
+                              @endforelse
+                            </select>
+                          </div>
+
+                          <div class="col-md-1 mb-1">
+                            <li class="d-inline-block pt-2">
+                              <fieldset>
+                                  <div class="checkbox checkbox-primary checkbox-glow">
+                                      <input type="checkbox" id="checkboxGlow1" name="medical_history[]">
+                                      <label for="checkboxGlow1">Others</label>
+                                  </div>
+                              </fieldset>
+                            </li>
+                          </div>
+                          
+
+                      </div>
+                      <hr>
+
+                      {{-- CLINIC EXAMINATION --}}
+                      <h6 class="card-title">Clinic Examination</h6>
+                      <div class="row">
+
+                          <div class="col-md-3 mb-1">
+                            <label for="weight">Weight</label>
+                              <div class="position-relative has-icon-left">
+                                  <input type="text" name="weight" class="form-control" placeholder="Weight">
+                                  <div class="form-control-position">
+                                      <i class='bx bx-dumbbell'></i>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <label for="height">Height</label>
+                              <div class="position-relative has-icon-left">
+                                  <input type="text" name="height" class="form-control" placeholder="Height">
+                                  <div class="form-control-position">
+                                      <i class='bx bx-ruler'></i>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <label for="bmi">BMI <code>body mass indeks</code></label>
+                              <div class="position-relative has-icon-left">
+                                  <input type="text" name="bmi" class="form-control" placeholder="BMI">
+                                  <div class="form-control-position">
+                                      <i class='bx bx-dumbbell'></i>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <label for="visus">Visus</label>
+                              <div class="position-relative has-icon-left">
+                                  <input type="text" name="visus" class="form-control" placeholder="Visus">
+                                  <div class="form-control-position">
+                                      <i class='bx bx-show-alt'></i>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-12 mb-1">
+                            <table class="table table-striped table-sm">
+                              {{-- vision --}}
+                              <thead>
+                                <tr>
+                                  <th>1. Vision</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td style="padding-left:10px;">a. Distant Vision</td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-left:10px;">b. Near Vision</td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-left:10px;">c. Colour Vision</td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-left:10px;">d. Any Organic Eye Disease</td>
+                                </tr>
+                              </tbody>
+                              {{-- hearing --}}
+                              <thead>
+                                <tr>
+                                  <th>2. Hearing</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td style="padding-left:10px;">Unable to hear ordinary conversation at 2 m</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          
+                      </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-success PrintSatu glow shadow"><i class='bx bx-check HaveChangeSatu'></i> <font class="UpdateSatu">Up to date</font></button>
+                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt])}}"><i class='bx bx-printer'></i> Print</a>
+                  </form>
                   </div>
+
                   <div class="tab-pane about-tab" id="about" aria-labelledby="about-tab" role="tabpanel">
                       <p>
                           Health Screening 2
@@ -280,6 +400,14 @@ $("form #certification, #remarkexam, #conclusion_remark, #recertification, #advi
   $(".UpdateSatu").html("Update");
 });
 
+// Basic Select2 select
+$(".select2").select2({
+  dropdownAutoWidth: true,
+  placeholder: "Select Medical History",
+  allowClear: true,
+  width: '100%'
+});
+
 /*---------------------update reassessment health report------------------------*/
 $(document).on('submit', '#UpdateScreeningSatu', function(e) {
     e.preventDefault();
@@ -342,4 +470,13 @@ $(document).ready(function() {
 });
 
 </script>
+<style type="text/css">
+.select2-search--inline {
+    display: contents; /*this will make the container disappear, making the child the one who sets the width of the element*/
+}
+
+.select2-search__field:placeholder-shown {
+    width: 100% !important; /*makes the placeholder to be 100% of the width while there are no options selected*/
+}
+</style>
 @endsection

@@ -460,13 +460,14 @@ class ManageTransaction extends Controller
         $dec_penid = Crypt::decryptString($id_regis);//decrypt id
         $ResBasic = $this->GetInfoRegistration($dec_penid);
         $Users = DB::table('users')->select('name')->where('users.id','=',$ResBasic->created_by)->first();
+        $MedHis = DB::table('medical_history')->select('*')->orderBy('name_medical_history','ASC')->get();
 
         $GetScrReassessment = $this->GetScrReassessment($dec_penid);
 
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment]);
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment, 'MedHis' => $MedHis]);
 
     }
 
