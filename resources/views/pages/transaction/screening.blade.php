@@ -205,7 +205,7 @@
                   {{-- PAGE 2 --}}
 
                   <div class="tab-pane profile-tab" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                    <form id="UpdateScreeningSatu" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
+                    <form id="UpdateScreeningDua" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
                     <div class="form-body">
 
                       {{-- Medical History --}}
@@ -285,14 +285,19 @@
                             <table border="0">
                               <tbody>
                                 <tr>
-                                  <td style="width:50%">
+                                  <td style="width:50%; vertical-align: top;">
                                     
                                     <table class="table table-bordered table-sm">
                                         {{-- vision --}}
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th style="text-align:center;">Type</th>
+                                            <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                                          </tr>
+                                        </thead>
                                         <thead>
                                           <tr>
-                                            <th>1. Vision</th>
-                                            <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                                            <th colspan="2">1. Vision</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -407,12 +412,161 @@
                                               </div>
                                             </td>
                                           </tr>
+                                          <tr>
+                                            <td style="padding-left:10px;">b. Heart Disease</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                <input type="checkbox" class="custom-control-input" id="heart_disease">
+                                                <label class="custom-control-label" for="heart_disease">
+                                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                    <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td style="padding-left:10px;">c. Varicose Veins</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                <input type="checkbox" class="custom-control-input" id="varicose_veins">
+                                                <label class="custom-control-label" for="varicose_veins">
+                                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                    <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                </label>
+                                              </div>
+                                            </td>
+                                          </tr>
                                         </tbody>
 
                                       </table>
 
                                   </td>
-                                  <td style="width:50%"></td>
+                                  <td style="width:50%; vertical-align: top;" >
+
+                                     <table class="table table-bordered table-sm">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th style="text-align:center;">Type</th>
+                                            <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                                          </tr>
+                                        </thead>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Respiratory System</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Respiratory System</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="respiratory_system">
+                                                  <label class="custom-control-label" for="respiratory_system">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Skin-Chronic</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Skin-Chronic</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="skin_chronic">
+                                                  <label class="custom-control-label" for="skin_chronic">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Abdomen</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Abdomen</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="abdomen">
+                                                  <label class="custom-control-label" for="abdomen">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Locomotor/Neurogical</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Locomotor/Neurogical</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="locomotor/neurogical">
+                                                  <label class="custom-control-label" for="locomotor/neurogical">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Endocrine disorders</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Endocrine disorders</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="endocrine_disorders">
+                                                  <label class="custom-control-label" for="endocrine_disorders">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                        <thead>
+                                          <tr>
+                                            <th colspan="2">Mental State</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td style="padding-left:10px;">Mental State</td>
+                                            <td style=" text-align: center;">
+                                              <div class="custom-control custom-switch custom-switch-success">
+                                                  <input type="checkbox" class="custom-control-input" id="mental_state">
+                                                  <label class="custom-control-label" for="mental_state">
+                                                      <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                      <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                  </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+
+                                  </td>
                                 </tr>
                               </tbody>
                             </table>
