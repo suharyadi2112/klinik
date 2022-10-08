@@ -26,6 +26,14 @@
   <div class="add_registration-list-table">
     <div class="card ">
       <div class="card-body">
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
       	{{-- <form id="InsertRegistration" data-route="{{ route('InsertRegistration') }}" role="form" method="POST" accept-charset="utf-8"> --}}
         {{-- start form --}}
       	<div class="row match-height">
@@ -103,7 +111,7 @@
                               </div>
                           </div>
                           <div class="col-md-4 mb-1">
-                            <label for="certification">Remark exam/medical history</label>
+                            <label for="remark/medical history">Remark exam/medical history</label>
                               <div class="position-relative has-icon-left">
                                   <textarea class="form-control" id="remarkexam" name="remarkexam" placeholder="leave remark exam" aria-label="remark exam">@if($GetScrReassessment){{ $GetScrReassessment->remark_exam }}@endif</textarea>
                                   <div class="form-control-position">
@@ -150,7 +158,7 @@
                           <div class="col-md-4 mb-1">
                             <label for="conclusion/remark">Conclusion/Remark</label>
                               <div class="position-relative has-icon-left">
-                                  <textarea class="form-control" name="conclusion_remark" placeholder="leave remark exam" aria-label="remark exam">@if($GetScrReassessment){{ $GetScrReassessment->conclusion_remark }}@endif</textarea>
+                                  <textarea class="form-control" id="conclusion_remark" name="conclusion_remark" placeholder="leave remark exam" aria-label="remark exam">@if($GetScrReassessment){{ $GetScrReassessment->conclusion_remark }}@endif</textarea>
                                   <div class="form-control-position">
                                     <i class='bx bxs-info-circle'></i>
                                   </div>
@@ -167,7 +175,7 @@
                           <div class="col-md-6 mb-1">
                             <label for="recertification">Recertification</label>
                               <div class="position-relative has-icon-left">
-                                  <textarea class="form-control" name="recertification" placeholder="leave recertification" aria-label="recertification">@if($GetScrReassessment){{ $GetScrReassessment->recertification }}@endif</textarea>
+                                  <textarea class="form-control" id="recertification" name="recertification" placeholder="leave recertification" aria-label="recertification">@if($GetScrReassessment){{ $GetScrReassessment->recertification }}@endif</textarea>
                                   <div class="form-control-position">
                                     <i class='bx bxs-certification'></i>
                                   </div>
@@ -177,7 +185,7 @@
                           <div class="col-md-6 mb-1">
                             <label for="advice">advice</label>
                               <div class="position-relative has-icon-left">
-                                  <textarea class="form-control" name="advice" placeholder="leave advice" aria-label="advice">@if($GetScrReassessment){{ $GetScrReassessment->advice }}@endif</textarea>
+                                  <textarea class="form-control" id="advice" name="advice" placeholder="leave advice" aria-label="advice">@if($GetScrReassessment){{ $GetScrReassessment->advice }}@endif</textarea>
                                   <div class="form-control-position">
                                     <i class='bx bxs-smile'></i>
                                   </div>
@@ -186,7 +194,8 @@
                       
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-info PrintSatu"><i class='bx bx-printer'></i> Update & Print</button>
+                    <button type="submit" class="btn btn-success PrintSatu glow shadow"><i class='bx bx-check HaveChangeSatu'></i> <font class="UpdateSatu">Up to date</font></button>
+                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt])}}"><i class='bx bx-printer'></i> Print</a>
                   </form>
                   </div>
 
@@ -263,6 +272,14 @@ didOpen: (toast) => {
 	}
 })
 
+// button update
+$("form #certification, #remarkexam, #conclusion_remark, #recertification, #advice").change(function() {
+  // <i class='bx bxs-cloud-upload'></i>
+  $(".PrintSatu").addClass("btn-info");
+  $(".HaveChangeSatu").addClass("ficon bx-tada bx-flip-horizontal bxs-cloud-upload");
+  $(".UpdateSatu").html("Update");
+});
+
 /*---------------------update reassessment health report------------------------*/
 $(document).on('submit', '#UpdateScreeningSatu', function(e) {
     e.preventDefault();
@@ -281,14 +298,16 @@ $(document).on('submit', '#UpdateScreeningSatu', function(e) {
           success: function(data) {
             switch (data.code) {
               case "1":
-                ToastToB.fire({icon: 'error',title: data.fail})
+                ToastToB.fire({icon: 'error',title: data.fail});
               break;
               case "2":
-                ToastToB.fire({icon: 'success',title: 'Succes update Reassessment Health Report'})
-                setInterval(function () {window.location.href = "{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt])}}";}, 3000);
+                ToastToB.fire({icon: 'success',title: 'Succes update Reassessment Health Report'});
+                $(".HaveChangeSatu").removeClass("ficon bx-tada bx-flip-horizontal bxs-cloud-upload");
+                $(".PrintSatu").removeClass("btn-info");
+                $(".UpdateSatu").html("Up to date");
               break;
               case "3":
-                ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'})
+                ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'});
               break;
               default:
               break;

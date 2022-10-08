@@ -21,7 +21,7 @@ class ReportScreening extends Controller
         $this->middleware(['web']);
     }
 
-    public function UpdateScreeningSatu(Request $request, $id_regis){
+    public function UpdateScreeningSatu(Request $request, $id_regis){//REASSESSMENT HEALTH
 
         $dec_penid = Crypt::decryptString($id_regis);//decrypt id
 
@@ -88,28 +88,63 @@ class ReportScreening extends Controller
 
     }
 
-    protected function CheckExistIDRegis($id_regis){//cek exist data
-        $res = DB::table('screening')->where('id_pendaftaran','=',$id_regis);
-        return $res;
-    }   
-
-
-
-
     // _________________________ ZONA PRINT_____________________________//
     public function PrintReassessmentHealth($id_regis){
 
         $dec_penid = Crypt::decryptString($id_regis);//decrypt id
-    
-        $data = [
-            'id_regis' => $dec_penid,
-        ];
-          
-        $pdf = PDF::loadView('pages/report/reassessment_health', $data);
-    
-        // return $pdf->download('Testing.pdf'); //ini untuk langsong download
-        return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+        $resdata = $this->GetInfoRegistration($dec_penid);
 
+        if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//check data screening jika tidak ada
+            $data = [
+                'id_regis' => $dec_penid,
+                'data' => $resdata,
+                'jk' => $this->artijk($resdata->pasjk),
+                'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
+            ];
+              
+            $pdf = PDF::loadView('pages/report/reassessment_health', $data);
+            $pdf->set_paper("A4", "portrait");
+            //log
+            HelperLog::addToLog('Print Reassessment Health', json_encode($data)); 
+            // return $pdf->download('Testing.pdf'); //ini untuk langsong download
+            return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+        }else{
+            return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
+        }
+
+    }
+
+    protected function GetInfoRegistration($id_pen){
+        $data = DB::table('pendaftaran')
+            ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*','screening.*','users.name')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->join('screening','screening.id_pendaftaran','=','pendaftaran.penid')
+            ->join('users','users.id','=','pendaftaran.created_by')
+            ->orderBy('penid', 'desc')
+            ->where('pendaftaran.penid','=',$id_pen)
+            ->first();
+        return $data;
+    }
+
+    protected function CheckExistIDRegis($id_regis){//cek exist data
+        $res = DB::table('screening')->where('id_pendaftaran','=',$id_regis);
+        return $res;
+    }   
+    //arti jenis kelamin
+    protected function artijk($jk){
+        if ($jk) {
+            if ($jk == "Man" || $jk == "man") {
+                return "Laki-laki";
+            }else if($jk == "Women" || $jk == "women"){
+                return "Perempuan";
+            }else{
+                return "Lainnya";
+            }
+        }else{
+            return "-";
+        }
     }
 
 }
