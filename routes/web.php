@@ -146,9 +146,9 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 
 	//screening
 	Route::get('/screening/{id_regis}', [ManageTransaction::class, 'ReportScreening'])->name('ReportScreening');
-	Route::post('/screening/print/satu/{id_regis}', [ReportScreening::class, 'UpdateScreeningSatu'])->name('UpdateScreeningSatu');
-	Route::get('/print/reassessment/health/{id_regis}', [ReportScreening::class, 'PrintReassessmentHealth'])->name('PrintReassessmentHealth');
-		
+	Route::post('/screening/print/satu/{id_regis}/{type}', [ReportScreening::class, 'UpdateScreening'])->name('UpdateScreening');
+	Route::get('/print/reassessment/health/{id_regis}/{type}', [ReportScreening::class, 'PrintReassessmentHealth'])->name('PrintReassessmentHealth');
+		 
 
 	//notif
 	Route::post('/nofif', [Notifyy::class, 'GetNotif'])->name('GetNotif');

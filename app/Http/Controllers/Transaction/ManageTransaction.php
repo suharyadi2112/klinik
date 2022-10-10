@@ -464,11 +464,19 @@ class ManageTransaction extends Controller
         $LabTest = DB::table('laboratory_test')->select('*')->orderBy('name_laboratory_test','ASC')->get();
 
         $GetScrReassessment = $this->GetScrReassessment($dec_penid);
+        if($GetScrReassessment){
+            $hsrt =  json_decode($GetScrReassessment->health_screening_report_one, true);//data page 2
+        }else{
+            $hsrt = null;
+        }
+        
+
+        // dd($hsrt);
 
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment, 'MedHis' => $MedHis, 'LabTest' => $LabTest]);
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment, 'MedHis' => $MedHis, 'LabTest' => $LabTest, 'DataPageTwo' => $hsrt]);
 
     }
 

@@ -21,96 +21,146 @@ class ReportScreening extends Controller
         $this->middleware(['web']);
     }
 
-    public function UpdateScreeningSatu(Request $request, $id_regis){//REASSESSMENT HEALTH
+    public function UpdateScreening(Request $request, $id_regis, $type){//REASSESSMENT HEALTH
 
         $dec_penid = Crypt::decryptString($id_regis);//decrypt id
 
-        $validator = Validator::make($request->all(), [
-            'advice' => 'required|max:500',
-            'certification' => 'required|max:500',
-            'conclusion_remark' => 'required|max:500',
-            'recertification' => 'required|max:500',
-            'remarkexam' => 'required|max:500',
-        ]);
+        if ($type == 'screening_satu') {
+        
+            $validator = Validator::make($request->all(), [
+                'advice' => 'required|max:500',
+                'certification' => 'required|max:500',
+                'conclusion_remark' => 'required|max:500',
+                'recertification' => 'required|max:500',
+                'remarkexam' => 'required|max:500',
+            ]);
 
-        if ($validator->fails()) {
-            HelperLog::addToLog('Fail Request Data Update Reassessment Health Report', json_encode(['request data' => $request->all(), 'error message' => $validator->messages()->first() ])); 
-            return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
-        }else{
-
-            if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//update jika id pendaftar exist
-
-                $res = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update([
-                        'id_pendaftaran' => $dec_penid,
-                        'certification' => $request->certification,
-                        'remark_exam' => $request->remarkexam,
-                        'place_of_exam' => $request->place_of_exam,
-                        'conclusion_remark' => $request->conclusion_remark,
-                        'recertification' => $request->recertification,
-                        'advice' => $request->advice,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_by' => auth()->user()->id,
-                    ]);
-                if ($res) {
-                    HelperLog::addToLog('Update Data Reassessment Health Report', json_encode($request->all()));
-                    return response()->json(['code' => '2','id_insert' => $res], 200);
-                }else{
-                    HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
-                    return response()->json(['code' => '3'], 200);
-                }
-
+            if ($validator->fails()) {
+                HelperLog::addToLog('Fail Request Data Update Reassessment Health Report', json_encode(['request data' => $request->all(), 'error message' => $validator->messages()->first() ])); 
+                return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
             }else{
 
-                $GetIdInsert = DB::table('screening')->insert([
-                        'id_pendaftaran' => $dec_penid,
-                        'certification' => $request->certification,
-                        'remark_exam' => $request->remarkexam,
-                        'place_of_exam' => $request->place_of_exam,
-                        'conclusion_remark' => $request->conclusion_remark,
-                        'recertification' => $request->recertification,
-                        'advice' => $request->advice,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'created_by' => auth()->user()->id,
-                    ]);
-                if ($GetIdInsert) {//insert
+                if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//update jika id pendaftar exist
 
-                    //param pertama subject dan kedua data request
-                    HelperLog::addToLog('Update (New Insert) Data Reassessment Health Report', json_encode($request->all()));
-                    return response()->json(['code' => '2','id_insert' => $GetIdInsert], 200);
+                    $res = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update([
+                            'id_pendaftaran' => $dec_penid,
+                            'status_page_one' => 1,
+                            'certification' => $request->certification,
+                            'remark_exam' => $request->remarkexam,
+                            'place_of_exam' => $request->place_of_exam,
+                            'conclusion_remark' => $request->conclusion_remark,
+                            'recertification' => $request->recertification,
+                            'advice' => $request->advice,
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'created_by' => auth()->user()->id,
+                        ]);
+                    if ($res) {
+                        HelperLog::addToLog('Update Data Reassessment Health Report', json_encode($request->all()));
+                        return response()->json(['code' => '2','id_insert' => $res], 200);
+                    }else{
+                        HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
+                        return response()->json(['code' => '3'], 200);
+                    }
+
                 }else{
-                    HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
-                    return response()->json(['code' => '3'], 200);
-                }   
+
+                    $GetIdInsert = DB::table('screening')->insert([
+                            'id_pendaftaran' => $dec_penid,
+                            'status_page_one' => 1,
+                            'certification' => $request->certification,
+                            'remark_exam' => $request->remarkexam,
+                            'place_of_exam' => $request->place_of_exam,
+                            'conclusion_remark' => $request->conclusion_remark,
+                            'recertification' => $request->recertification,
+                            'advice' => $request->advice,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'created_by' => auth()->user()->id,
+                        ]);
+                    if ($GetIdInsert) {//insert
+
+                        //param pertama subject dan kedua data request
+                        HelperLog::addToLog('Update (New Insert) Data Reassessment Health Report', json_encode($request->all()));
+                        return response()->json(['code' => '2','id_insert' => $GetIdInsert], 200);
+                    }else{
+                        HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
+                        return response()->json(['code' => '3'], 200);
+                    }   
+
+                }
 
             }
 
+        }else if($type == 'screening_dua'){//page 2 health screening report
+
+            $arr_tojson = json_encode($request->all());// request all to json
+
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//update jika id pendaftar exist
+                $Resss = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update(["health_screening_report_one" => $arr_tojson,'updated_at' => date('Y-m-d H:i:s')]);
+                return response()->json(['code' => '2', $request->all()], 200);
+            }else{
+                $Ress = DB::table('screening')->insert([
+                            'id_pendaftaran' => $dec_penid,
+                            'status_page_two' => 1,
+                            'health_screening_report_one' => $arr_tojson,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'created_by' => auth()->user()->id,
+                        ]);
+                if ($Ress) {
+                    //param pertama subject dan kedua data request
+                    HelperLog::addToLog('Update (New Insert) Health Screening Report Page 2', json_encode($request->all()));
+                    return response()->json(['code' => '2'], 200);
+                }else{
+                    HelperLog::addToLog('Fail Update Data Health Screening Report Page 2', json_encode($request->all())); 
+                    return response()->json(['code' => '3'], 200);
+                }
+            }
+
+        }else{
+            return response()->json(['code' => '3', 'not in condition'], 200);
         }
 
     }
 
     // _________________________ ZONA PRINT_____________________________//
-    public function PrintReassessmentHealth($id_regis){
+    public function PrintReassessmentHealth($id_regis, $type){
 
         $dec_penid = Crypt::decryptString($id_regis);//decrypt id
         $resdata = $this->GetInfoRegistration($dec_penid);
 
-        if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//check data screening jika tidak ada
-            $data = [
-                'id_regis' => $dec_penid,
-                'data' => $resdata,
-                'jk' => $this->artijk($resdata->pasjk),
-                'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
-            ];
-              
-            $pdf = PDF::loadView('pages/report/reassessment_health', $data);
-            $pdf->set_paper("A4", "portrait");
-            //log
-            HelperLog::addToLog('Print Reassessment Health', json_encode($data)); 
-            // return $pdf->download('Testing.pdf'); //ini untuk langsong download
-            return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+        if ($type == 'screening_satu') {
+         
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0 && $resdata->status_page_one == 1) {//check data screening jika tidak ada
+                $data = [
+                    'id_regis' => $dec_penid,
+                    'data' => $resdata,
+                    'jk' => $this->artijk($resdata->pasjk),
+                    'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
+                ];
+                  
+                $pdf = PDF::loadView('pages/report/reassessment_health', $data);
+                $pdf->set_paper("A4", "portrait");
+                //log
+                HelperLog::addToLog('Print Reassessment Health', json_encode($data)); 
+                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
+                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+            }else{
+                return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
+            }
+
+        }elseif ($type == 'screening_dua') {
+            
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0 && $resdata->status_page_two == 1) {//check data screening jika tidak ada
+
+                $ResJpageTwo = json_decode($resdata->health_screening_report_one, true);//decode json data
+                dd($ResJpageTwo);
+
+            }
+        
         }else{
-            return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
+            return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Internal Server Error !');
         }
+
+
 
     }
 
