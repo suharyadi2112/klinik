@@ -19,8 +19,8 @@
   </div>
   <div id="content">
     <div style="margin-top: -60px; margin-left: 5px; margin-bottom: -60px;">
-        <center>
-            <h3>REASSESSMENT HEALTH REPORT</h3>
+        <center style="font-family: Arial, Helvetica, sans-serif;">
+            <h4>REASSESSMENT HEALTH REPORT</h4>
         </center>
 
         {{-- PERSONAL DATA --}}

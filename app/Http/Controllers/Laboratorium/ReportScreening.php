@@ -56,7 +56,7 @@ class ReportScreening extends Controller
                         ]);
                     if ($res) {
                         HelperLog::addToLog('Update Data Reassessment Health Report', json_encode($request->all()));
-                        return response()->json(['code' => '2','id_insert' => $res], 200);
+                        return response()->json(['code' => '2','type' => $type], 200);
                     }else{
                         HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
                         return response()->json(['code' => '3'], 200);
@@ -80,7 +80,7 @@ class ReportScreening extends Controller
 
                         //param pertama subject dan kedua data request
                         HelperLog::addToLog('Update (New Insert) Data Reassessment Health Report', json_encode($request->all()));
-                        return response()->json(['code' => '2','id_insert' => $GetIdInsert], 200);
+                        return response()->json(['code' => '2','type' => $type], 200);
                     }else{
                         HelperLog::addToLog('Fail Update Data Reassessment Health Report', json_encode($request->all())); 
                         return response()->json(['code' => '3'], 200);
@@ -95,8 +95,15 @@ class ReportScreening extends Controller
             $arr_tojson = json_encode($request->all());// request all to json
 
             if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {//update jika id pendaftar exist
-                $Resss = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update(["health_screening_report_one" => $arr_tojson,'updated_at' => date('Y-m-d H:i:s')]);
-                return response()->json(['code' => '2', $request->all()], 200);
+                $Resss = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update(["health_screening_report_one" => $arr_tojson,'updated_at' => date('Y-m-d H:i:s'), 'status_page_two' => 1,]);
+
+                if ($Resss) {
+                    HelperLog::addToLog('Update Data Health Screening Report Page 2', json_encode($request->all()));
+                    return response()->json(['code' => '2','type' => $type], 200);
+                }else{
+                    HelperLog::addToLog('Fail Update Health Screening Report Page 2', json_encode($request->all())); 
+                    return response()->json(['code' => '3'], 200);
+                }
             }else{
                 $Ress = DB::table('screening')->insert([
                             'id_pendaftaran' => $dec_penid,
@@ -108,9 +115,40 @@ class ReportScreening extends Controller
                 if ($Ress) {
                     //param pertama subject dan kedua data request
                     HelperLog::addToLog('Update (New Insert) Health Screening Report Page 2', json_encode($request->all()));
-                    return response()->json(['code' => '2'], 200);
+                    return response()->json(['code' => '2','type' => $type], 200);
                 }else{
                     HelperLog::addToLog('Fail Update Data Health Screening Report Page 2', json_encode($request->all())); 
+                    return response()->json(['code' => '3'], 200);
+                }
+            }
+
+        }else if($type == 'screening_tiga'){
+                
+            $arr_tojson = json_encode($request->all());
+
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0) {
+                $Resss = DB::table('screening')->where('id_pendaftaran', $dec_penid)->update(["health_screening_report_two" => $arr_tojson,'updated_at' => date('Y-m-d H:i:s'), 'status_page_three' => 1,]);
+                if ($Resss) {
+                    HelperLog::addToLog('Update Data Health Screening Report Page 3', json_encode($request->all()));
+                    return response()->json(['code' => '2','type' => $type], 200);
+                }else{
+                    HelperLog::addToLog('Fail Update Health Screening Report Page 3', json_encode($request->all())); 
+                    return response()->json(['code' => '3'], 200);
+                }
+            }else{
+                 $Ress = DB::table('screening')->insert([
+                            'id_pendaftaran' => $dec_penid,
+                            'status_page_three' => 1,
+                            'health_screening_report_two' => $arr_tojson,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'created_by' => auth()->user()->id,
+                        ]);
+                if ($Ress) {
+                    //param pertama subject dan kedua data request
+                    HelperLog::addToLog('Update (New Insert) Health Screening Report Page 3', json_encode($request->all()));
+                    return response()->json(['code' => '2','type' => $type], 200);
+                }else{
+                    HelperLog::addToLog('Fail Update Data Health Screening Report Page 3', json_encode($request->all())); 
                     return response()->json(['code' => '3'], 200);
                 }
             }
@@ -154,8 +192,42 @@ class ReportScreening extends Controller
                 $ResJpageTwo = json_decode($resdata->health_screening_report_one, true);//decode json data
                 dd($ResJpageTwo);
 
+            }else{
+                return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
             }
         
+        }elseif($type == 'screening_tiga'){
+
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0 && $resdata->status_page_three == 1) {//check data screening jika tidak ada
+
+                $ResPhysical = DB::select("select
+                            a.id_print_screening,
+                            b.id_physical,
+                            b.name_physical 
+                            from screening a
+                            inner join physical_examination b ON JSON_CONTAINS( a.health_screening_report_two, 
+                            CAST( CONCAT('\"',b.id_physical,'\"') AS JSON), '$.physical_examination') where a.id_pendaftaran = ?", [$dec_penid]);
+
+                $ResJpageThree = json_decode($resdata->health_screening_report_two, true);//decode json data
+                $data = [
+                    'id_regis' => $dec_penid,
+                    'data' => $resdata,
+                    'json_data' => $ResJpageThree,
+                    'jk' => $this->artijk($resdata->pasjk),
+                    'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
+                ];
+
+                $pdf = PDF::loadView('pages/report/health_screening_report_tiga', $data);
+                $pdf->set_paper("A4", "portrait");
+                //log
+                HelperLog::addToLog('Print Health Screening Report Page 3', json_encode($data)); 
+                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
+                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+
+            }else{
+                return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
+            }
+
         }else{
             return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Internal Server Error !');
         }
@@ -198,3 +270,37 @@ class ReportScreening extends Controller
     }
 
 }
+
+
+
+// $arr_tojson = json_encode($request->all());
+//       //check array deskripsi ada isi atau tidak
+//       $arrdesabnor = array_filter($request->describe_abnormalities, function($a) {return trim($a) !== "";});
+
+//       if(!empty($request->physical_examination)){
+
+//           if ($arrdesabnor) {//cek deskripsi jika diisi, tapi physical tidak dicentang
+//               for ($i=0; $i < count($request->physical_examination); $i++) { 
+//                   if (!in_array($request->physical_examination[$i], array_keys($arrdesabnor))) {
+//                       return response()->json(['code' => '1', 'fail' => 'Physical Examination, No/Normal - Yes/Abnormal Required !'], 200);
+//                   }
+//               }
+
+//               $validator = Validator::make($request->all(), [
+//                   'physical_examination' => 'required|max:11',
+//               ],['physical_examination.required' => 'Physical Examination, No/Normal - Yes/Abnormal Required !']);
+
+//               $ResValid = $validator->fails();
+//           }else{
+//               $ResValid = false;
+//           }
+
+//           return response()->json(['code' => '1', 'fail' => count($request->physical_examination)], 200);
+//       }else{
+//           return response()->json(['code' => '1', 'fail' => "nil"], 200);
+//       }
+
+//       if ($ResValid) {
+//           HelperLog::addToLog('Fail Request Data Update Health Screening Report Page 3', json_encode(['request data' => $request->all(), 'error message' => $validator->messages()->first() ])); 
+//           return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
+//       }
