@@ -206,7 +206,7 @@ class ReportScreening extends Controller
                             b.name_physical 
                             from screening a
                             inner join physical_examination b ON JSON_CONTAINS( a.health_screening_report_two, 
-                            CAST( CONCAT('\"',b.id_physical,'\"') AS JSON), '$.physical_examination') where a.id_pendaftaran = ?", [$dec_penid]);
+                            CONCAT('\"',b.id_physical,'\"'), '$.physical_examination') where a.id_pendaftaran = ?", [$dec_penid]);
 
                 dd($ResPhysical);
 
