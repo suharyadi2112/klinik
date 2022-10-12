@@ -203,18 +203,19 @@ class ReportScreening extends Controller
                 $ResPhysical = DB::select("select
                             a.id_print_screening,
                             b.id_physical,
-                            b.name_physical 
+                            b.name_physical
                             from screening a
                             inner join physical_examination b ON JSON_CONTAINS( a.health_screening_report_two, 
                             CONCAT('\"',b.id_physical,'\"'), '$.physical_examination') where a.id_pendaftaran = ?", [$dec_penid]);
 
-                dd($ResPhysical);
-
+                
                 $ResJpageThree = json_decode($resdata->health_screening_report_two, true);//decode json data
+
                 $data = [
                     'id_regis' => $dec_penid,
                     'data' => $resdata,
                     'json_data' => $ResJpageThree,
+                    'detail_physical' => $ResPhysical,
                     'jk' => $this->artijk($resdata->pasjk),
                     'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
                 ];
