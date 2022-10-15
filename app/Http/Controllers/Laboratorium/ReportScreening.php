@@ -190,7 +190,24 @@ class ReportScreening extends Controller
             if ($this->CheckExistIDRegis($dec_penid)->count() > 0 && $resdata->status_page_two == 1) {//check data screening jika tidak ada
 
                 $ResJpageTwo = json_decode($resdata->health_screening_report_one, true);//decode json data
-                dd($ResJpageTwo);
+                
+                // dd($ResJpageTwo);
+
+                $data = [
+                    'id_regis' => $dec_penid,
+                    'data' => $resdata,
+                    'json_data' => $ResJpageTwo,
+                    'jk' => $this->artijk($resdata->pasjk),
+                    'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d'))
+                ];
+
+                $pdf = PDF::loadView('pages/report/health_screening_report_dua', $data);
+                $pdf->set_paper("A4", "portrait");
+                //log
+                HelperLog::addToLog('Print Health Screening Report Page 2', json_encode($data)); 
+                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
+                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+
 
             }else{
                 return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
