@@ -19,8 +19,8 @@
   </div>
   <div id="content">
     <div style="margin-top: -60px; margin-left: 5px; margin-bottom: -60px;">
-        <center>
-            <h3>REASSESSMENT HEALTH REPORT</h3>
+        <center style="font-family: Arial, Helvetica, sans-serif;">
+            <h4>REASSESSMENT HEALTH REPORT</h4>
         </center>
 
         {{-- PERSONAL DATA --}}
@@ -182,11 +182,11 @@
             <table border="0" width="100%">
                 <tr>
                 <td style="width: 350px" rowspan="2"></td>
-                    <td style="text-align:center; vertical-align: middle;">
+                    <td style="text-align:center; vertical-align: middle; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                         Batam, {{ $tgl_ttd }}<br><br><br><br><br>
                     </td>
                 <tr>
-                    <td style="text-align:center; vertical-align: middle; font-style: italic;">
+                    <td style="text-align:center; vertical-align: middle; font-style: italic; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                         <hr style="width: 50%; background-color:black;">
                         {{ auth()->user()->name }}{{-- dr. Tigor Pandapotan Sianturi, Sp.PK --}}
                     </td>

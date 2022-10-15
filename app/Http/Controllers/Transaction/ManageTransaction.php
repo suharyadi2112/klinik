@@ -462,13 +462,24 @@ class ManageTransaction extends Controller
         $Users = DB::table('users')->select('name')->where('users.id','=',$ResBasic->created_by)->first();
         $MedHis = DB::table('medical_history')->select('*')->orderBy('name_medical_history','ASC')->get();
         $LabTest = DB::table('laboratory_test')->select('*')->orderBy('name_laboratory_test','ASC')->get();
+        $PhysExam = DB::table('physical_examination')->select('*')->orderBy('name_physical','ASC')->get();
 
         $GetScrReassessment = $this->GetScrReassessment($dec_penid);
+        if($GetScrReassessment){
+            $hsrt =  json_decode($GetScrReassessment->health_screening_report_one, true);//data page 2
+            $hsrt_two =  json_decode($GetScrReassessment->health_screening_report_two, true);//data page 3
+        }else{
+            $hsrt = null;
+            $hsrt_two = null;
+        }
+
+        // dd(array_keys($hsrt_two['describe_abnormalities']));
+        // dd($hsrt_two['describe_abnormalities']['19']);
 
         $breadcrumbs = [
               ['link' => "/view/laboratorium", 'name' => "laboratorium"], ['link' => "/screening/".$id_regis."", 'name' => "screening"], ['name' => "view screening"],
         ];
-        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment, 'MedHis' => $MedHis, 'LabTest' => $LabTest]);
+        return view("/pages/transaction/screening",['breadcrumbs' => $breadcrumbs, 'id_registration' => $dec_penid, 'id_res_encrypt' => $id_regis, 'databasic' => $ResBasic, 'users' => $Users, 'GetScrReassessment' => $GetScrReassessment, 'MedHis' => $MedHis, 'LabTest' => $LabTest, 'DataPageTwo' => $hsrt, 'DataPageThree' => $hsrt_two,'PhysExam' => $PhysExam]);
 
     }
 

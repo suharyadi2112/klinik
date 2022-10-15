@@ -88,7 +88,7 @@
                   {{-- PAGE 1 --}}
 
                   <div class="tab-pane home-tab" id="home" aria-labelledby="home-tab" role="tabpanel">
-                    <form id="UpdateScreeningSatu" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
+                    <form id="UpdateScreeningSatu" data-route="{{ route('UpdateScreening',['id_regis' => $id_res_encrypt, 'type' => 'screening_satu']) }}" role="form" method="POST" accept-charset="utf-8">
                     <div class="form-body">
                     <h6 class="card-title">Medical check up data</h6>
                       <div class="row">
@@ -197,15 +197,19 @@
                       
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-success PrintSatu glow shadow"><i class='bx bx-check HaveChangeSatu'></i> <font class="UpdateSatu">Up to date</font></button>
-                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt])}}"><i class='bx bx-printer'></i> Print</a>
+                    <button type="submit" class="btn btn-info PrintSatu glow shadow"><i class='bx bx-cloud-upload HaveChangeSatu'></i> Update</button>
+                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt, 'type' => 'screening_satu'])}}"><i class='bx bx-printer'></i> Print</a>
                   </form>
                   </div>
 
-                  {{-- PAGE 2 --}}
+
+
+                  {{--__________________ PAGE 2 ________________--}}
+
+
 
                   <div class="tab-pane profile-tab" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                    <form id="UpdateScreeningDua" data-route="{{ route('UpdateScreeningSatu',['id_regis' => $id_res_encrypt]) }}" role="form" method="POST" accept-charset="utf-8">
+                    <form id="UpdateScreeningDua" data-route="{{ route('UpdateScreening',['id_regis' => $id_res_encrypt, 'type' => 'screening_dua']) }}" role="form" method="POST" accept-charset="utf-8">
                     <div class="form-body">
 
                       {{-- Medical History --}}
@@ -214,7 +218,7 @@
 
                           <div class="col-md-5 mb-1 mr-0">
                             <label for="medical-history">Medical History<code>pick if have</code></label>
-                            <select class="select2 form-control" multiple="multiple" name="medical_history[]">
+                            <select class="select2MedicalHistory form-control" multiple="multiple" name="medical_history[]">
                               @forelse($MedHis as $keyf => $valMedHis)
                                 <option value="{{ $valMedHis->id_medical_history }}">{{ $valMedHis->name_medical_history }}</option>
                               @empty
@@ -227,7 +231,13 @@
                             <li class="d-inline-block pt-2">
                               <fieldset>
                                   <div class="checkbox checkbox-primary checkbox-glow">
-                                      <input type="checkbox" id="checkboxGlow1" name="medical_history[]">
+                                      <input type="checkbox" id="checkboxGlow1" name="medical_history[]"
+                                      @if($DataPageTwo['medical_history'] ?? null) 
+                                        @if(in_array('on', $DataPageTwo['medical_history']))
+                                          checked 
+                                        @endif
+                                      @endif
+                                      >
                                       <label for="checkboxGlow1">Others</label>
                                   </div>
                               </fieldset>
@@ -254,7 +264,13 @@
                                       <div class="col-md-6 mb-1">
                                         <label for="weight">Weight</label>
                                           <div class="position-relative has-icon-left">
-                                              <input type="text" name="weight" class="form-control" placeholder="Weight">
+                                              <input type="text" name="weight" class="form-control" placeholder="Weight" 
+                                              @if($DataPageTwo != '')
+                                                @if($DataPageTwo['weight'] ?? null)
+                                                value="{{ $DataPageTwo['weight'] ? $DataPageTwo['weight'] : '' }}" 
+                                                @endif
+                                              @endif
+                                              >
                                               <div class="form-control-position">
                                                   <i class='bx bx-dumbbell'></i>
                                               </div>
@@ -263,7 +279,13 @@
                                       <div class="col-md-6 mb-1">
                                         <label for="height">Height</label>
                                           <div class="position-relative has-icon-left">
-                                              <input type="text" name="height" class="form-control" placeholder="Height">
+                                              <input type="text" name="height" class="form-control" placeholder="Height"
+                                              @if($DataPageTwo != '')
+                                                @if($DataPageTwo['height'] ?? null)
+                                                value="{{ $DataPageTwo['height'] ? $DataPageTwo['height'] : '' }}"
+                                                @endif
+                                              @endif
+                                              >
                                               <div class="form-control-position">
                                                   <i class='bx bx-ruler'></i>
                                               </div>
@@ -274,7 +296,13 @@
                                       <div class="col-md-6 mb-1">
                                         <label for="bmi">BMI <code>body mass indeks</code></label>
                                           <div class="position-relative has-icon-left">
-                                              <input type="text" name="bmi" class="form-control" placeholder="BMI">
+                                              <input type="text" name="bmi" class="form-control" placeholder="BMI" 
+                                              @if($DataPageTwo != '')
+                                                @if($DataPageTwo['bmi'] ?? null)
+                                                value="{{ $DataPageTwo['bmi'] ? $DataPageTwo['bmi'] : '' }}"
+                                                @endif
+                                              @endif
+                                              >
                                               <div class="form-control-position">
                                                   <i class='bx bx-dumbbell'></i>
                                               </div>
@@ -283,7 +311,13 @@
                                       <div class="col-md-6 mb-1">
                                         <label for="visus">Visus</label>
                                           <div class="position-relative has-icon-left">
-                                              <input type="text" name="visus" class="form-control" placeholder="Visus">
+                                              <input type="text" name="visus" class="form-control" placeholder="Visus" 
+                                              @if($DataPageTwo != '')
+                                                @if($DataPageTwo['visus'] ?? null)
+                                                value="{{ $DataPageTwo['visus'] ? $DataPageTwo['visus'] : '' }}"
+                                                @endif
+                                              @endif
+                                              >
                                               <div class="form-control-position">
                                                   <i class='bx bx-show-alt'></i>
                                               </div>
@@ -309,20 +343,30 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          @php $nokk = 1 @endphp
+                                          @php 
+                                          $nokk = 1;
+                                          @endphp
                                           @foreach($LabTest as $keyLabTest => $ValLabTest)
                                           @if($ValLabTest->type_laboratory_test == 'main')
                                           <tr>
                                             <td style="padding-left:10px;">{{ $nokk }}. {{ $ValLabTest->name_laboratory_test }}</td>
+
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" name="laboratory_test[]" id="{{ $ValLabTest->id_laboratory_test }}">
+                                                  <input type="checkbox" class="custom-control-input" name="laboratory_test[]" id="{{ $ValLabTest->id_laboratory_test }}" value="{{ $ValLabTest->id_laboratory_test }}"
+                                                  @if($DataPageTwo['laboratory_test'] ?? null) 
+                                                    @if(in_array($ValLabTest->id_laboratory_test, $DataPageTwo['laboratory_test']))
+                                                      checked
+                                                    @endif
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="{{ $ValLabTest->id_laboratory_test }}">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
                                                   </label>
                                               </div>
                                             </td>
+
                                           </tr>
                                           @php $nokk++ @endphp
                                           @endif
@@ -344,15 +388,22 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          @php $nokk = 1 @endphp
-                                          @foreach($LabTest as $keyLabTest => $ValLabTest)
-                                          @if($ValLabTest->type_laboratory_test == 'other')
+                                          @php $nokk = 1; 
+                                          @endphp
+                                          @foreach($LabTest as $keyLabTest => $ValLabTestOther)
+                                          @if($ValLabTestOther->type_laboratory_test == 'other')
                                           <tr>
-                                            <td style="padding-left:10px;">{{ $nokk }}. {{ $ValLabTest->name_laboratory_test }}</td>
+                                            <td style="padding-left:10px;">{{ $nokk }}. {{ $ValLabTestOther->name_laboratory_test }}</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" name="other_test[]" id="{{ $ValLabTest->id_laboratory_test }}">
-                                                  <label class="custom-control-label" for="{{ $ValLabTest->id_laboratory_test }}">
+                                                  <input type="checkbox" class="custom-control-input" name="other_test[]" id="{{ $ValLabTestOther->id_laboratory_test }}" value="{{ $ValLabTestOther->id_laboratory_test }}"
+                                                  @if($DataPageTwo['other_test'] ?? null) 
+                                                    @if(in_array($ValLabTestOther->id_laboratory_test, $DataPageTwo['other_test']))
+                                                      checked
+                                                    @endif
+                                                  @endif
+                                                  >
+                                                  <label class="custom-control-label" for="{{ $ValLabTestOther->id_laboratory_test }}">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
                                                   </label>
@@ -376,9 +427,9 @@
                                         <tbody>
                                          <tr>
                                            <td>
-                                             <label for="remark_health_screening">Remark</label>
+                                             <label for="remark_health_screening_page_dua">Remark <code>Page 2</code></label>
                                               <div class="position-relative has-icon-left">
-                                                  <textarea class="form-control" id="remark_health_screening" name="remark_health_screening" placeholder="leave remark health screening" aria-label="remark"></textarea>
+                                                  <textarea class="form-control" id="remark_health_screening_page_dua" name="remark_health_screening_page_dua" placeholder="leave remark health screening" aria-label="remark">@if($DataPageTwo['remark_health_screening_page_dua'] ?? null) {{ $DataPageTwo['remark_health_screening_page_dua'] }} @endif</textarea>
                                                   <div class="form-control-position">
                                                     <i class='bx bxs-info-circle'></i>
                                                   </div>
@@ -401,7 +452,7 @@
                                            <td>
                                              <label for="panel_doctor_declaration">Panel Doctor Decleration</label>
                                               <div class="position-relative has-icon-left">
-                                                  <textarea class="form-control" id="panel_doctor_declaration" name="panel_doctor_declaration" placeholder="leave panel doctor declaration" aria-label="panel_doctor_declaration"></textarea>
+                                                  <textarea class="form-control" id="panel_doctor_declaration" name="panel_doctor_declaration" placeholder="leave panel doctor declaration" aria-label="panel_doctor_declaration">@if($DataPageTwo['panel_doctor_declaration'] ?? null) {{ $DataPageTwo['panel_doctor_declaration'] }} @endif</textarea>
                                                   <div class="form-control-position">
                                                     <i class='bx bxs-info-circle'></i>
                                                   </div>
@@ -422,9 +473,9 @@
                                         <tbody>
                                          <tr>
                                            <td>
-                                             <label for="advice_2">Advice</label>
+                                             <label for="advice_health_screening">Advice <code>Page 2</code></label>
                                               <div class="position-relative has-icon-left">
-                                                  <textarea class="form-control" id="advice_health_screening" name="advice_health_screening" placeholder="leave advice health screening" aria-label="advice_health_screening"></textarea>
+                                                  <textarea class="form-control" id="advice_health_screening" name="advice_health_screening" placeholder="leave advice health screening" aria-label="advice_health_screening">@if($DataPageTwo['advice_health_screening'] ?? null) {{ $DataPageTwo['advice_health_screening'] }} @endif</textarea>
                                                   <div class="form-control-position">
                                                     <i class='bx bxs-info-circle'></i>
                                                   </div>
@@ -461,7 +512,11 @@
                                             <td style="padding-left:10px;">a. Distant Vision</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="distant_vision">
+                                                  <input type="checkbox" class="custom-control-input" id="distant_vision" name="distant_vision" 
+                                                  @if($DataPageTwo['distant_vision'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="distant_vision">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -473,7 +528,11 @@
                                             <td style="padding-left:10px;">b. Near Vision</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="near_vision">
+                                                <input type="checkbox" class="custom-control-input" id="near_vision" name="near_vision"
+                                                @if($DataPageTwo['near_vision'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="near_vision">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -485,7 +544,11 @@
                                             <td style="padding-left:10px;">c. Colour Vision</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="colour_vision">
+                                                <input type="checkbox" class="custom-control-input" id="colour_vision" name="colour_vision"
+                                                @if($DataPageTwo['colour_vision'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="colour_vision">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -497,7 +560,11 @@
                                             <td style="padding-left:10px;">d. Any Organic Eye Disease</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="any_organic_eye_disease">
+                                                <input type="checkbox" class="custom-control-input" id="any_organic_eye_disease" name="any_organic_eye_disease"
+                                                @if($DataPageTwo['any_organic_eye_disease'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="any_organic_eye_disease">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -517,7 +584,11 @@
                                             <td style="padding-left:10px; font-size:12px; text-align: left;">Unable to hear ordinary conversation at 2 m</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="hearing">
+                                                <input type="checkbox" class="custom-control-input" id="hearing" name="hearing"
+                                                @if($DataPageTwo['hearing'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="hearing">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -538,7 +609,11 @@
                                             <td style="padding-left:10px;">a. Blood Pressure</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="blood_pressure">
+                                                <input type="checkbox" class="custom-control-input" id="blood_pressure" name="blood_pressure"
+                                                @if($DataPageTwo['blood_pressure'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="blood_pressure">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -550,7 +625,11 @@
                                             <td style="padding-left:30px; font-size: 13px;">Systolic/Diastolic</td>
                                             <td style=" text-align: center;">
                                               <div class="input-group">
-                                                <input class="form-control form-control-sm" name="Systolic/Diastolic" id="Systolic_Diastolic" type="text" placeholder="Input Systolic/Diastolic" />
+                                                <input class="form-control form-control-sm" name="systolic_diastolic" id="systolic_diastolic" type="text" placeholder="Input Systolic/Diastolic" 
+                                                @if($DataPageTwo['systolic_diastolic'] ?? null)
+                                                  value="{{ $DataPageTwo['systolic_diastolic'] }}" 
+                                                @endif
+                                                />
                                                 <div class="input-group-append">
                                                     <span class="input-group-text form-control-sm">mmHg</span>
                                                 </div>
@@ -561,7 +640,11 @@
                                             <td style="padding-left:30px; font-size: 13px;">Pulse</td>
                                             <td style=" text-align: center;">
                                               <div class="input-group">
-                                                <input class="form-control form-control-sm" name="Pulse" id="pulse" type="text" placeholder="Input Pulse" />
+                                                <input class="form-control form-control-sm" name="pulse" id="pulse" type="text" placeholder="Input Pulse" 
+                                                @if($DataPageTwo['pulse'] ?? null)
+                                                  value="{{ $DataPageTwo['pulse'] }}" 
+                                                @endif
+                                                />
                                                 <div class="input-group-append">
                                                     <span class="input-group-text form-control-sm">x/minute</span>
                                                 </div>
@@ -572,7 +655,11 @@
                                             <td style="padding-left:10px;">b. Heart Disease</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="heart_disease">
+                                                <input type="checkbox" class="custom-control-input" id="heart_disease" name="heart_disease"
+                                                @if($DataPageTwo['heart_disease'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="heart_disease">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -584,7 +671,11 @@
                                             <td style="padding-left:10px;">c. Varicose Veins</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                <input type="checkbox" class="custom-control-input" id="varicose_veins">
+                                                <input type="checkbox" class="custom-control-input" id="varicose_veins" name="varicose_veins"
+                                                @if($DataPageTwo['varicose_veins'] ?? null)
+                                                  checked
+                                                @endif
+                                                >
                                                 <label class="custom-control-label" for="varicose_veins">
                                                     <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                     <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -613,7 +704,11 @@
                                             <td style="padding-left:10px;">Respiratory System</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="respiratory_system">
+                                                  <input type="checkbox" class="custom-control-input" id="respiratory_system" name="respiratory_system"
+                                                  @if($DataPageTwo['respiratory_system'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="respiratory_system">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -632,7 +727,11 @@
                                             <td style="padding-left:10px;">Skin-Chronic</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="skin_chronic">
+                                                  <input type="checkbox" class="custom-control-input" id="skin_chronic" name="skin_chronic"
+                                                  @if($DataPageTwo['skin_chronic'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="skin_chronic">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -651,7 +750,11 @@
                                             <td style="padding-left:10px;">Abdomen</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="abdomen">
+                                                  <input type="checkbox" class="custom-control-input" id="abdomen" name="abdomen"
+                                                  @if($DataPageTwo['abdomen'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="abdomen">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -670,7 +773,11 @@
                                             <td style="padding-left:10px;">Locomotor/Neurogical</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="locomotor/neurogical">
+                                                  <input type="checkbox" class="custom-control-input" id="locomotor/neurogical" name="locomotor_neurogical"
+                                                  @if($DataPageTwo['locomotor_neurogical'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  > 
                                                   <label class="custom-control-label" for="locomotor/neurogical">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -689,7 +796,11 @@
                                             <td style="padding-left:10px;">Endocrine disorders</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="endocrine_disorders">
+                                                  <input type="checkbox" class="custom-control-input" id="endocrine_disorders" name="endocrine_disorders"
+                                                  @if($DataPageTwo['endocrine_disorders'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="endocrine_disorders">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -708,7 +819,11 @@
                                             <td style="padding-left:10px;">Mental State</td>
                                             <td style=" text-align: center;">
                                               <div class="custom-control custom-switch custom-switch-success">
-                                                  <input type="checkbox" class="custom-control-input" id="mental_state">
+                                                  <input type="checkbox" class="custom-control-input" id="mental_state" name="mental_state"
+                                                  @if($DataPageTwo['mental_state'] ?? null)
+                                                    checked
+                                                  @endif
+                                                  >
                                                   <label class="custom-control-label" for="mental_state">
                                                       <span class="switch-icon-left"><i class="bx bx-check"></i></span>
                                                       <span class="switch-icon-right"><i class="bx bx-check"></i></span>
@@ -730,15 +845,92 @@
 
                     </div>
 
-                    <button type="submit" class="btn btn-success PrintSatu glow shadow"><i class='bx bx-check HaveChangeSatu'></i> <font class="UpdateSatu">Up to date</font></button>
-                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt])}}"><i class='bx bx-printer'></i> Print</a>
+                    <button type="submit" class="btn btn-info PrintSatu glow shadow"><i class='bx bx-cloud-upload HaveChangeDua'></i> Update</button>
+                    <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt,'type' => 'screening_dua'])}}"><i class='bx bx-printer'></i> Print</a>
                   </form>
                   </div>
 
+                  {{-- HEALTH SCREENING REPORT PAGE 3 --}}
                   <div class="tab-pane about-tab" id="about" aria-labelledby="about-tab" role="tabpanel">
-                      <p>
-                          Health Screening 2
-                      </p>
+
+                    <form id="UpdateScreeningTiga" data-route="{{ route('UpdateScreening',['id_regis' => $id_res_encrypt, 'type' => 'screening_tiga']) }}" role="form" method="POST" accept-charset="utf-8">
+                      <div class="form-body">
+
+                        <label for="remark_page_tiga">Remark Health Screening Report<code>Page 3</code></label>
+                        <div class="position-relative has-icon-left mb-1">
+                            <textarea class="form-control" id="remark_health_screening_page_tiga" name="remark_health_screening_page_tiga" placeholder="Describe Abnormalities" aria-label="remark_health_screening_page_tiga">@if($DataPageThree['remark_health_screening_page_tiga'] ?? null) {{ $DataPageThree['remark_health_screening_page_tiga'] }} @endif</textarea>
+                            <div class="form-control-position">
+                              <i class='bx bxs-info-circle'></i>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-sm">
+                          {{-- physical examination --}}
+                          <thead class="thead-dark">
+                            <tr>
+                              <th colspan="4" style="text-align: center; font-size: 13px;">Physical Examination</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th style="text-align:center;">No</th>
+                              <th style="text-align:center;">Type</th>
+                              <th style="text-align:center;" nowrap>No/Normal - Yes/Abnormal</th>
+                              <th style="text-align:center;">Describe Abnormalities in detail</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @php 
+                            $phyc = 1;
+                            @endphp
+                            @foreach($PhysExam as $keyPhysExam => $ValPhysExam)
+                            <tr>
+                              <td style="text-align:center; width: 5px;">{{ $phyc }}</td>
+                              <td style="padding-left:10px;">{{ $ValPhysExam->name_physical }}</td>
+                              <td style=" text-align: center;">
+                                 @php $Valdescribe_abnormalities = null; @endphp
+                                 @if($DataPageThree['describe_abnormalities'] ?? null) 
+                                    @if($DataPageThree['physical_examination'] ?? null) 
+                                        @if(in_array($ValPhysExam->id_physical, $DataPageThree['physical_examination']))
+                                          @php $Valdescribe_abnormalities = $DataPageThree['describe_abnormalities'][$ValPhysExam->id_physical] @endphp
+                                        @else
+                                          @php $Valdescribe_abnormalities = null; @endphp
+                                        @endif
+                                    @endif
+                                  @endif
+                                <div class="custom-control custom-switch custom-switch-success">
+                                    <input type="checkbox" class="custom-control-input CheckPhysicExam" data_idphysc="{{ $ValPhysExam->id_physical }}" name="physical_examination[]" id="phyc{{ $ValPhysExam->id_physical }}" value="{{ $ValPhysExam->id_physical }}"
+                                    @if($DataPageThree['physical_examination'] ?? null) 
+                                      @if(in_array($ValPhysExam->id_physical, $DataPageThree['physical_examination']))
+                                        checked
+                                      @endif
+                                    @endif
+                                    >
+                                    <label class="custom-control-label" for="phyc{{ $ValPhysExam->id_physical }}">
+                                        <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                        <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                    </label>
+                                </div>
+                              </td>
+                              <td style=" text-align: center;">
+                                <div class="position-relative has-icon-left">
+                                    <textarea class="form-control" id="fdescribe_abnormalities{{ $ValPhysExam->id_physical }}" name="describe_abnormalities[{{ $ValPhysExam->id_physical }}]" placeholder="Describe {{ $ValPhysExam->name_physical }}" aria-label="describe_abnormalities" @if(!$Valdescribe_abnormalities) disabled @endif>{{ $Valdescribe_abnormalities }}</textarea>
+                                    <div class="form-control-position">
+                                      <i class='bx bxs-info-circle'></i>
+                                    </div>
+                                </div>
+                              </td>
+
+                            </tr>
+                            @php $phyc++ @endphp
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      <button type="submit" class="btn btn-info PrintSatu glow shadow"><i class='bx bx-cloud-upload HaveChangeTiga'></i> Update</button>
+                      <a target="_blank" class="btn btn-primary glow shadow" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt,'type' => 'screening_tiga'])}}"><i class='bx bx-printer'></i> Print</a>
+                    </form>
+
                   </div>
               </div>
 				    </div>
@@ -773,7 +965,16 @@
 </div>
 @endif
 
+@php
+if($DataPageTwo['medical_history'] ?? null){
+  $varMedHis = json_encode(array_values($DataPageTwo['medical_history']));//hanya ambil value, tidak beserta key
+}else{
+  $varMedHis = '[]';//set empty array if nil
+}
+@endphp
+
 @endsection
+
 
 {{-- vendor scripts --}}
 @section('vendor-scripts')
@@ -802,27 +1003,51 @@ didOpen: (toast) => {
 	}
 })
 
-// button update
-$("form #certification, #remarkexam, #conclusion_remark, #recertification, #advice").change(function() {
-  // <i class='bx bxs-cloud-upload'></i>
-  $(".PrintSatu").addClass("btn-info");
-  $(".HaveChangeSatu").addClass("ficon bx-tada bx-flip-horizontal bxs-cloud-upload");
-  $(".UpdateSatu").html("Update");
-});
+var varMedHiss = "{{ $varMedHis }}";
 
 // Basic Select2 select
-$(".select2").select2({
+$(".select2MedicalHistory").select2({
   dropdownAutoWidth: true,
   placeholder: "Select Medical History",
   allowClear: true,
   width: '100%'
 });
+$('.select2MedicalHistory').val(JSON.parse(varMedHiss.replace(/&quot;/g,'"'))).change();
 
-/*---------------------update reassessment health report------------------------*/
+jQuery(document).ready(function($){
+  $('.CheckPhysicExam').on('click',function(){
+    var valId = $(this).attr("data_idphysc");
+    if(this.checked) {
+      $('#fdescribe_abnormalities'+valId+'').prop("disabled", false);
+    }else {
+      $('#fdescribe_abnormalities'+valId+'').prop("disabled", true);
+    }
+  });
+});
+
+/*---------------------update screening report------------------------*/
 $(document).on('submit', '#UpdateScreeningSatu', function(e) {
-    e.preventDefault();
-    var route = $('#UpdateScreeningSatu').data('route');
-    var form_data = $(this);
+  varTargetID = event.target.id;
+  e.preventDefault();
+  var form_data = $(this);
+  ActionPostScreening(e, varTargetID, form_data);
+});
+$(document).on('submit', '#UpdateScreeningDua', function(e) {
+  varTargetID = event.target.id;
+  e.preventDefault();
+  var form_data = $(this);
+  ActionPostScreening(e, varTargetID, form_data);
+});
+$(document).on('submit', '#UpdateScreeningTiga', function(e) {
+  varTargetID = event.target.id;
+  e.preventDefault();
+  var form_data = $(this);
+  ActionPostScreening(e, varTargetID, form_data);
+});
+
+function ActionPostScreening(e, TargetID, form_data){
+  e.preventDefault();
+    var route = $('#'+TargetID).data('route');
     $.ajaxSetup({headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}});
     Pace.track(function(){
       Pace.restart();
@@ -840,12 +1065,9 @@ $(document).on('submit', '#UpdateScreeningSatu', function(e) {
               break;
               case "2":
                 ToastToB.fire({icon: 'success',title: 'Succes update Reassessment Health Report'});
-                $(".HaveChangeSatu").removeClass("ficon bx-tada bx-flip-horizontal bxs-cloud-upload");
-                $(".PrintSatu").removeClass("btn-info");
-                $(".UpdateSatu").html("Up to date");
               break;
               case "3":
-                ToastToB.fire({icon: 'error',title: 'Insert Registration Failed'});
+                ToastToB.fire({icon: 'error',title: 'Update Screening Failed'});
               break;
               default:
               break;
@@ -859,8 +1081,7 @@ $(document).on('submit', '#UpdateScreeningSatu', function(e) {
           },
       });
   });
-});
-
+}
 
 //--------------- setingan active tab--------------------//
 $(document).ready(function() {
