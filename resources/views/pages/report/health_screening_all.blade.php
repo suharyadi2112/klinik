@@ -10,7 +10,7 @@
   </style>
   <title>Osmaro</title>
 <body>
-  <div id="header"> 
+  <div id="header">
     <img src="{{ public_path('images/logo_report/header.PNG') }}" style="width:100%;">
   </div>
   <div id="footer">
@@ -19,6 +19,192 @@
   </div>
   <div id="content">
     <div style="margin-top: -60px; margin-left: 5px; margin-bottom: -60px;">
+        <center style="font-family: Arial, Helvetica, sans-serif;">
+            <h4>REASSESSMENT HEALTH REPORT</h4>
+        </center>
+
+        {{-- PERSONAL DATA --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left;" colspan="3">
+                        According to the health screening report of this employee :
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83" colspan="3">
+                        PERSONAL DATA
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 15px;">No. Medical Record</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->penid }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Employee Name</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pasnama }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Age/Sex/Employee ID</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $jk }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Telephone</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pastlp }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Address</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pasalamat }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Occupation</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->paspekerjaan }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px;">Name of Employer/Recruitment Agency</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pennama }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 250px; padding-left: 15px;">Address of Employer/Recruitment Agency</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->penalamat }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {{-- MEDICAL CHECK-UP DATA --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83" colspan="3">
+                        MEDICAL CHECK-UP DATA
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 15px;">Date of Exam</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pentglrujukan }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px; vertical-align: top;">Certification</td>
+                    <td style="width:1px; vertical-align: top;">:</td>
+                    <td style="vertical-align: top; text-align: justify;">{{ $data->certification }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 250px; padding-left: 15px; vertical-align: top;">Remark Exam/Medical History</td>
+                    <td style="width:1px; vertical-align: top;">:</td>
+                    <td style="vertical-align: top; text-align: justify;">{{ $data->remark_exam }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {{-- THEN FUTHER EXAMINATION WAS CONDUCTED --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83" colspan="3">
+                        THEN FUTHER EXAMINATION WAS CONDUCTED
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:left;" colspan="3">
+                        The employee was referred :
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 15px;">Doctor's Name</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->name }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 15px; vertical-align: top;">Date Of Exam</td>
+                    <td style="width:1px; vertical-align: top;">:</td>
+                    <td style="vertical-align: top; text-align: justify;">{{ $data->pentglrujukan }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 250px; padding-left: 15px; vertical-align: top;">Place Of Exam</td>
+                    <td style="width:1px; vertical-align: top;">:</td>
+                    <td style="vertical-align: top; text-align: justify;">{{ $data->place_of_exam }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 250px; padding-left: 15px; vertical-align: top;">Conclusion/Remark</td>
+                    <td style="width:1px; vertical-align: top;">:</td>
+                    <td style="vertical-align: top; text-align: justify;">{{ $data->conclusion_remark }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {{-- RECERTIFICATION --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83">
+                        RECERTIFICATION
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 15px; vertical-align: top; text-align: justify;">{{ $data->recertification }}</td>
+                </tr>
+            </tbody>
+        </table>    
+        {{-- RECERTIFICATION --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83">
+                        Advice
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 15px; vertical-align: top; text-align: justify;">{{ $data->advice }}</td>
+                </tr>
+            </tbody>
+        </table>        
+        <br>
+        <div style="margin-left: 9px; font-size: 12px;">
+            <table border="0" width="100%">
+                <tr>
+                <td style="width: 350px" rowspan="2"></td>
+                    <td style="text-align:center; vertical-align: middle; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                        Batam, {{ $tgl_ttd }}<br><br><br><br><br>
+                    </td>
+                <tr>
+                    <td style="text-align:center; vertical-align: middle; font-style: italic; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                        <hr style="width: 50%; background-color:black;">
+                        {{ auth()->user()->name }}{{-- dr. Tigor Pandapotan Sianturi, Sp.PK --}}
+                    </td>
+                </tr>
+               {{--  <tr>
+                    <td style="text-align:center; vertical-align: middle;">
+                        SIP. 002.III/019-540/SIP.TM/TPMPTSP-BTM/XII/2021 
+                    </td>
+                </tr> --}}
+             
+                </tr>
+            </table>
+        </div>
+        
+        {{-------------------------- PEMBATAS PAGE 2 --------------------------}}
+
+        <p style="page-break-before: always; margin-top: -80px;"></p>
+
         <center style="font-family: Arial, Helvetica, sans-serif;">
             <h4 style="margin-bottom: 0px; text-decoration: underline;">HEALTH SCREENING REPORT</h4>
             <h5 style="margin-top: 0px;"> Regular Employment Health Screening </h5>
@@ -407,26 +593,163 @@
         <br>
 
         <table border="0" width="100%">
+            <tr>
+            <td style="width: 350px" rowspan="2"></td>
+                <td style="text-align:center; vertical-align: middle; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                    Batam, {{ $tgl_ttd }}<br><br><br><br><br>
+                </td>
+            <tr>
+                <td style="text-align:center; vertical-align: middle; font-style: italic;font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                    <hr style="width: 50%; background-color:black;">
+                    {{ auth()->user()->name }}{{-- dr. Tigor Pandapotan Sianturi, Sp.PK --}}
+                </td>
+            </tr>
+           {{--  <tr>
+                <td style="text-align:center; vertical-align: middle;">
+                    SIP. 002.III/019-540/SIP.TM/TPMPTSP-BTM/XII/2021 
+                </td>
+            </tr> --}}
+         
+            </tr>
+        </table>
+        
+        {{-------------------------- PEMBATAS PAGE 3 --------------------------}}
+
+        <p style="page-break-before: always; margin-top: -80px;"></p>
+
+        <center style="font-family: Arial, Helvetica, sans-serif;">
+            <h4 style="margin-bottom: 0px; text-decoration: underline;">HEALTH SCREENING REPORT</h4>
+            <h5 style="margin-top: 0px;"> Regular Employment Health Screening </h5>
+        </center>
+
+        {{-- PERSONAL DATA --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
                 <tr>
-                <td style="width: 350px" rowspan="2"></td>
-                    <td style="text-align:center; vertical-align: middle; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-                        Batam, {{ $tgl_ttd }}<br><br><br><br><br>
-                    </td>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83" colspan="3">
+                        PERSONAL DATA
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
                 <tr>
-                    <td style="text-align:center; vertical-align: middle; font-style: italic;font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-                        <hr style="width: 50%; background-color:black;">
-                        {{ auth()->user()->name }}{{-- dr. Tigor Pandapotan Sianturi, Sp.PK --}}
+                    <td style="padding-left: 5px;">No. Medical Record</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->penid }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Employee Name</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pasnama }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Age/Sex/Employee ID</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $jk }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Telephone</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pastlp }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Address</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pasalamat }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Occupation</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->paspekerjaan }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5px;">Name of Employer/Recruitment Agency</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->pennama }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 250px; padding-left: 5px;">Address of Employer/Recruitment Agency</td>
+                    <td style="width:1px;">:</td>
+                    <td>{{ $data->penalamat }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        {{-- PHYSICAL EXAMINATION --}}
+        <table width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83">
+                        PHYSICAL EXAMINATION
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table width="100%" id="PhysicalExam" style="padding-left:5px; padding-right: 5px;">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:center;">
+                        No
+                    </th>
+                    <th style="text-align:center;">
+                        Physical
+                    </th>
+                    <th style="text-align:center;">
+                        Abnormal / Normal
+                    </th>
+                    <th style="text-align:center;">
+                        Describe Abnormalities in details
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                @php
+                $no = 1;
+                @endphp
+                @forelse($detail_physical as $Valdetail_physical)
+                <tr>
+                    <td style="width:1px; text-align: center; vertical-align: middle;">{{ $no; }}</td>
+                    <td style="vertical-align: middle;" nowrap>{{ $Valdetail_physical->name_physical }}</td>
+                    <td style="vertical-align: middle; text-align: center;">Abnormal</td>
+                    <td style="vertical-align: middle; text-align: left;">
+                     
+                        {{ $json_data_three['describe_abnormalities'][$Valdetail_physical->id_physical]; }}
+
                     </td>
                 </tr>
-               {{--  <tr>
-                    <td style="text-align:center; vertical-align: middle;">
-                        SIP. 002.III/019-540/SIP.TM/TPMPTSP-BTM/XII/2021 
-                    </td>
-                </tr> --}}
-             
+                @php 
+                $no++;
+                @endphp
+                @empty
+                <tr>
+                    <td style="width:1px; text-align: center; vertical-align: middle;" colspan="4">Data Not Found</td>
                 </tr>
-            </table>
-    {{-- <p style="page-break-before: always; margin-top: -40px;">the second page</p> --}}
+                @endforelse
+            </tbody>
+        </table>
+
+        <br>
+        {{-- REMARK --}}
+        <table border="0" width="100%">
+            <thead style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;">
+                <tr>
+                    <th style="text-align:left; text-decoration: underline; background-color: #b5be83">
+                        REMARK
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
+                <tr>
+                    <td style="padding-left: 5px; vertical-align: top; text-align: justify;">{{ $json_data_three['remark_health_screening_page_tiga'] }}</td>
+                </tr>
+                <tr>
+                    <td><hr></td>
+                </tr>
+            </tbody>
+        </table> 
+
+  
   </div>
 </div>
 </body>
@@ -448,4 +771,14 @@
       padding: 2px;
     }
 
+    #PhysicalExam {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #PhysicalExam td, #PhysicalExam th {
+      border: 1px solid;
+      padding: 2px;
+    }
 </style>

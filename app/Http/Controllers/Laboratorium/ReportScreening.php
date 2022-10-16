@@ -179,8 +179,8 @@ class ReportScreening extends Controller
                 $pdf->set_paper("A4", "portrait");
                 //log
                 HelperLog::addToLog('Print Reassessment Health', json_encode($data)); 
-                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
-                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+                // return $pdf->download('Screening.pdf'); //ini untuk langsong download
+                return $pdf->stream("Screening.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
             }else{
                 return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
             }
@@ -205,8 +205,8 @@ class ReportScreening extends Controller
                 $pdf->set_paper("A4", "portrait");
                 //log
                 HelperLog::addToLog('Print Health Screening Report Page 2', json_encode($data)); 
-                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
-                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+                // return $pdf->download('Screening.pdf'); //ini untuk langsong download
+                return $pdf->stream("Screening.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
 
 
             }else{
@@ -241,13 +241,55 @@ class ReportScreening extends Controller
                 $pdf->set_paper("A4", "portrait");
                 //log
                 HelperLog::addToLog('Print Health Screening Report Page 3', json_encode($data)); 
-                // return $pdf->download('Testing.pdf'); //ini untuk langsong download
-                return $pdf->stream("Testing.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+                // return $pdf->download('Screening.pdf'); //ini untuk langsong download
+                return $pdf->stream("Screening.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
 
             }else{
                 return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Data Screening Not Found, Update Screening First !');
             }
 
+        }elseif($type == 'screening_all'){
+
+            if ($this->CheckExistIDRegis($dec_penid)->count() > 0 && $resdata->status_page_three == 1 && $resdata->status_page_one == 1 && $resdata->status_page_two == 1){// check update all data
+
+                $ResPhysical = DB::select("select
+                            a.id_print_screening,
+                            b.id_physical,
+                            b.name_physical
+                            from screening a
+                            inner join physical_examination b ON JSON_CONTAINS( a.health_screening_report_two, 
+                            CONCAT('\"',b.id_physical,'\"'), '$.physical_examination') where a.id_pendaftaran = ?", [$dec_penid]);
+
+                
+                $ResJpageTwo = json_decode($resdata->health_screening_report_one, true);//decode json data 2
+                $ResJpageThree = json_decode($resdata->health_screening_report_two, true);//decode json data 3
+
+                $data = [
+                    //untuk umum
+                    'id_regis' => $dec_penid,
+                    'data' => $resdata,
+                    'jk' => $this->artijk($resdata->pasjk),
+                    'tgl_ttd' => HelperLog::tanggal_indo(date('Y-m-d')),
+
+                    // ----untuk page 2----//
+                    'json_data' => $ResJpageTwo,
+
+                    // ----untuk page 3----//
+                    'json_data_three' => $ResJpageThree,
+                    'detail_physical' => $ResPhysical,
+                ];
+
+                $pdf = PDF::loadView('pages/report/health_screening_all', $data);
+                $pdf->set_paper("A4", "portrait");
+                //log
+                HelperLog::addToLog('Print Screening All Page', json_encode($data)); 
+                // return $pdf->download('Screening.pdf'); //ini untuk langsong download
+                return $pdf->stream("Screening.pdf", array("Attachment" => false));// dipakai untuk tengok di browser
+
+            }else{
+                return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Update all page first !');
+            }
+        
         }else{
             return redirect()->route('ReportScreening',['id_regis' => $id_regis])->with('error', 'Internal Server Error !');
         }
@@ -290,37 +332,3 @@ class ReportScreening extends Controller
     }
 
 }
-
-
-
-// $arr_tojson = json_encode($request->all());
-//       //check array deskripsi ada isi atau tidak
-//       $arrdesabnor = array_filter($request->describe_abnormalities, function($a) {return trim($a) !== "";});
-
-//       if(!empty($request->physical_examination)){
-
-//           if ($arrdesabnor) {//cek deskripsi jika diisi, tapi physical tidak dicentang
-//               for ($i=0; $i < count($request->physical_examination); $i++) { 
-//                   if (!in_array($request->physical_examination[$i], array_keys($arrdesabnor))) {
-//                       return response()->json(['code' => '1', 'fail' => 'Physical Examination, No/Normal - Yes/Abnormal Required !'], 200);
-//                   }
-//               }
-
-//               $validator = Validator::make($request->all(), [
-//                   'physical_examination' => 'required|max:11',
-//               ],['physical_examination.required' => 'Physical Examination, No/Normal - Yes/Abnormal Required !']);
-
-//               $ResValid = $validator->fails();
-//           }else{
-//               $ResValid = false;
-//           }
-
-//           return response()->json(['code' => '1', 'fail' => count($request->physical_examination)], 200);
-//       }else{
-//           return response()->json(['code' => '1', 'fail' => "nil"], 200);
-//       }
-
-//       if ($ResValid) {
-//           HelperLog::addToLog('Fail Request Data Update Health Screening Report Page 3', json_encode(['request data' => $request->all(), 'error message' => $validator->messages()->first() ])); 
-//           return response()->json(['code' => '1', 'fail' => $validator->messages()->first()], 200);
-//       }

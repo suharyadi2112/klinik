@@ -33,7 +33,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1;">
+            <tbody style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5;">
                 <tr>
                     <td style="padding-left: 5px;">No. Medical Record</td>
                     <td style="width:1px;">:</td>
