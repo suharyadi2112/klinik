@@ -940,7 +940,7 @@
       <div class="col-12 d-flex justify-content-end p-0 m-0">
         <div class="shadow-lg p-1 bg-white rounded">
             <a href="{{ route('ViewLaboratorium') }}"><button type="button" class="btn btn-warning mr-1"><i class='bx bx-arrow-back' ></i> Back</button></a>
-            <button type="submit" class="btn btn-outline-primary mr-0 btn_insert_registration"><i class='bx bx-printer'></i> Print All Report Screening</button>
+            <a target="_blank" class="btn btn-outline-primary mr-0" href="{{ route('PrintReassessmentHealth',['id_regis' => $id_res_encrypt,'type' => 'screening_all'])}}"><i class='bx bx-printer'></i> Print All Report Screening</a>
         </div>
       </div>
       {{-- </form> --}}
