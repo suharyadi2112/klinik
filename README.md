@@ -26,8 +26,10 @@
 
 [![Sentry](https://img.shields.io/badge/Sentry-black?style=for-the-badge&logo=Sentry&logoColor=#362D59)](https://sentry.io/about/)
 
-SweetAlert2 https://sweetalert2.github.io/
-Spatie Laravel Permission https://spatie.be/docs/laravel-permission/v5/introduction
+SweetAlert2 https://sweetalert2.github.io/<br>
+Spatie Laravel Permission https://spatie.be/docs/laravel-permission/v5/introduction<br>
+Datatable Yajrabox https://yajrabox.com/<br>
+DomPDF https://github.com/dompdf/dompdf
 
 
 # Description
