@@ -39,7 +39,7 @@ Cooperation between the company's clinics and outside clinics or third parties i
 # App preview
 
 <ol>
-  <li>Patient Register</li>
+  <li>The patient registers at the company's clinic</li>
   <li>Actions performed for the patient</li>
   <li>Send a medical check-up request from the company's clinic to a third-party clinic</li>
   <li>Patient request is received and taken to the laboratory for medical checkup</li>
