@@ -131,8 +131,8 @@
 	                              	<div class="col-md-3 col-12">
 	                              		<label for="discount-price">#</label>
 	                              		<div class="position-relative has-icon-left">
-	                              			<button type="submit" class="insertact btn btn-outline-primary pl-1 pr-1"><i class='bx bx-chevrons-down'></i></button>
-	                              			<button type="button" class="btn btn-warning pl-1 pr-1"><i class='bx bx-reset' ></i></button>
+	                              			<button type="submit" class="insertact btn btn-outline-primary pl-1 pr-1"><i class='bx bx-chevrons-down'></i> Insert</button>
+	                              			{{-- <button type="button" class="btn btn-warning pl-1 pr-1"><i class='bx bx-reset' ></i></button> --}}
 	                              		</div>
 	                              	</div>
 	                              

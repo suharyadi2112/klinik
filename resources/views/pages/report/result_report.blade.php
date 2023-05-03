@@ -5,16 +5,16 @@
   <style>
     @page { margin: 180px 50px; }
     #header { position: fixed; left:-30px; top: -170px; right: -30px; height: 120px; text-align: center;}
-    #footer { position: fixed; left: -30px; bottom: -240px; right: -30px; height: 120px; }
+    #footer { position: fixed; left: -30px; bottom: -140px; right: -30px; height: 120px; }
     #footer .page:after { content: counter(page, upper-roman);}
   </style>
   <title>Osmaro</title>
 <body>
   <div id="header">
-    <img src="{{ public_path('images/logo_report/header.PNG') }}" style="width:100%;">
+    <img src="{{ public_path('images/logo_report/header_baru.PNG') }}" style="width:100%;">
   </div>
   <div id="footer">
-    <img src="{{ public_path('images/logo_report/footer.PNG') }}" style="width:100%;">
+    <img src="{{ public_path('images/logo_report/footer_baru.PNG') }}" style="width:100%;">
     {{-- isi content footer --}}
   </div>
   <div id="content">
@@ -149,12 +149,12 @@
                         <td></td>
                     <tr>
                         <td style="text-align:center; vertical-align: middle;">
-                            dr. Tigor Pandapotan Sianturi, Sp.PK
+                            dr. Sekian dan Terimakasih
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align:center; vertical-align: middle;">
-                            SIP. 002.III/019-540/SIP.TM/TPMPTSP-BTM/XII/2021 
+                            SIP. 002.III/019-540/XXX/BBB
                         </td>
                     </tr>
                     <tr>

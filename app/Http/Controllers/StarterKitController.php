@@ -3,12 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StarterKitController extends Controller
 {
     //index
     public function index(){
-      return view('pages.dashboard-ecommerce');
+      //list tahun
+      $listTahun = DB::table('pendaftaran')
+                ->select(DB::raw('YEAR(pentglrujukan) as year'))
+                ->groupBy('year')
+                ->orderBy('year', 'DESC')
+                ->get();
+
+      //last recent transaction 
+
+      $dataTransaction = DB::table('pendaftaran')
+            ->select('pendaftaran.*','pasien.*','pengirim.*','jenispembayaran.*','users.name')
+            ->join('pasien','pasien.pasid','=','pendaftaran.penpasid')
+            ->join('pengirim','pengirim.pengid','=','pendaftaran.penpengid')
+            ->join('jenispembayaran','jenispembayaran.pemid','=','pendaftaran.penpemid')
+            ->join('users','users.id','=','pendaftaran.created_by')
+            ->orderBy('penid', 'desc')
+            ->latest('pendaftaran.pentgl')
+            ->take(4)
+            ->get();
+      
+      return view('pages.dashboard-ecommerce', ['listTahun' => $listTahun, 'dataTransaction' => $dataTransaction]);
     }
     public function column_1Sk(){
        // Breadcrumbs

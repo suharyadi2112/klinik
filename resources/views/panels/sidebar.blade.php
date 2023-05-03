@@ -36,7 +36,7 @@
         </svg> -->
       </div>
       <h2 class="brand-text mb-0">
-        Osmaro
+        <font color="orange">Web</font> Klinik
         <!-- @if(!empty($configData['templateTitle']) && isset($configData['templateTitle']))
         {{$configData['templateTitle']}}
         @else
