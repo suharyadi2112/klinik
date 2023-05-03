@@ -54,7 +54,7 @@ The composition that forms the basis for building this application is:
 
 <ol>
   <li>The programming language is PHP</li>
-  <li>Using Laravel 5.8 as php framework</li>
+  <li>Using Laravel 8 as php framework</li>
 </ol>
 
 <h4>Front End Side</h4>
@@ -71,7 +71,7 @@ Databases
 Using MySQL Database and Navicat Management for database
 
 Templates
-Using https://adminlte.io/themes/v3/ as template.
+Using https://themeforest.net/user/pixinvent as template.
 
 # Some Screenshots
 
