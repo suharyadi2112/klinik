@@ -124,4 +124,10 @@ Dashboard | Role Management
 :-------------------------:|:-------------------------:
 <img src="https://user-images.githubusercontent.com/105489642/235916538-200ce13c-0f6c-4cf0-8945-078b3b3f0ba1.png">  |  <img src="https://user-images.githubusercontent.com/105489642/235916554-464fb75d-f08b-4fb9-bf88-823e4343da55.jpg">
 
+<h3>Software Monitoring Issue&#x1F53D;</h3>
+
+Error 1 | Error 2
+:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/105489642/235991904-eda91da4-9926-44c8-a7ff-47b275b8b6d4.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235991918-4a028ef4-8ff7-4927-8d87-ddfbc2f4153d.jpg">
+
 and much more..
