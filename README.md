@@ -36,8 +36,14 @@ DomPDF https://github.com/dompdf/dompdf
 
 Cooperation between the company's clinics and outside clinics or third parties is a form of mutually beneficial collaboration to provide better health services for company employees or their families.
 
+# App preview
+
 <ol>
-  <li>Job appraisal</li><li>Employment Assignment</li><li>Honorarium</li><li>Employee Leave</li><li>Academic Assignment Letter</li><li>Academic Invitation Letter</li><li>Staffing</li><li>Application Setup</li>
+  <li>Patient Register</li>
+  <li>Actions performed for the patient</li>
+  <li>Send a medical check-up request from the company's clinic to a third-party clinic</li>
+  <li>Patient request is received and taken to the laboratory for medical checkup</li>
+  <li>Laboratory results are entered into the database and produce a final report in PDF form</li>
 </ol> 
 
 The composition that forms the basis for building this application is:
