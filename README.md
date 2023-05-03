@@ -50,16 +50,12 @@ The composition that forms the basis for building this application is:
  
 <h4>Server Side</h4>
 
-[![LinkServerSide](https://img.shields.io/badge/Link-ServerSideFolder-blue.svg)](https://github.com/suharyadi2112/Aplikasi-Tenaga-Kependidikan/tree/main/app/Http/Controllers)
-
 <ol>
   <li>The programming language is PHP</li>
   <li>Using Laravel 8 as php framework</li>
 </ol>
 
 <h4>Front End Side</h4>
-
-[![LinkFrontEnd](https://img.shields.io/badge/Link-FrontEndFolder-green.svg)](https://github.com/suharyadi2112/Aplikasi-Tenaga-Kependidikan/tree/main/resources/views/admin/dashboard)
 
 <ol>
   <li>Built using HTML, CSS</li>
