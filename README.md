@@ -25,10 +25,7 @@
 
 # Description
 
-The folder above is some preview code that I wrote myself to see, because I didn't include the entire resource, for security reasons. I hope what I have attached is clear and can be taken into consideration. Thank You 😄
-
-The education staff application is a supporting application for company needs, features made according to existing requests and needs,
-in 1 application there are other applications in it that are connected to each other in 1 data.
+Cooperation between the company's clinics and outside clinics or third parties is a form of mutually beneficial collaboration to provide better health services for company employees or their families.
 
 <ol>
   <li>Job appraisal</li><li>Employment Assignment</li><li>Honorarium</li><li>Employee Leave</li><li>Academic Assignment Letter</li><li>Academic Invitation Letter</li><li>Staffing</li><li>Application Setup</li>
