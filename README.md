@@ -95,30 +95,27 @@ Confirm Status | Send Request Check Up
 :-------------------------:|:-------------------------:
 <img src="https://user-images.githubusercontent.com/105489642/235909364-a17f7da0-9844-4045-b1cc-a9f2de199418.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235908678-ffbbad77-7c4d-4c8e-a2d3-15ef1bd5eaba.png">
 
-<h3>Surat Undangan Tugas Akhir/Magang&#x1F53D;</h3>
+<h3>Laboratorium&#x1F53D;</h3>
 
-Dashboard | Print Setup
+Dashboard | Input Result Labor
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168777297-819f7f41-23ad-43ca-b7ef-e70d4986096a.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168777384-853b0569-e3a2-45a6-bf5b-8ee548576b00.jpg">
+<img src="https://user-images.githubusercontent.com/105489642/235909949-648dff50-5fa4-49e9-a0c2-f94c5457bc30.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235909969-ed3280b9-c25d-4bf4-9513-532283391452.jpg">
 
-Add Data | Setup MultiPrint
+Detail Result | Print Result
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168777891-a720137a-50f0-4a95-9c15-4eca9d349f83.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168777964-609c7b53-f628-49af-be8c-540f9ea0d3a7.jpg">
+<img src="https://user-images.githubusercontent.com/105489642/235910906-7127e6f3-0d2f-48ac-abb0-7482ed876e87.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235910882-e5ad7ba6-a7ef-4e80-a468-026aa562d967.jpg">
 
-<h3>Employee Management&#x1F53D;</h3>
+<h3>Screening&#x1F53D;</h3>
 
-Dashboard | Add Employee
-:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168792693-10b48861-dac2-432d-bd13-e248fad8720e.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168792763-5edbe93a-3391-44d3-8dfe-a137cb1db74f.jpg">
+Screening Tab 1 | Screening Tab 2 | Screening Tab 3
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/105489642/235911467-5883824c-a9ef-4f9d-a3fb-fb27726b068a.png">  |  <img src="https://user-images.githubusercontent.com/105489642/235911475-5325ec53-cca4-40a9-9aaa-f9111d3f6ff7.png"> | <img src="https://user-images.githubusercontent.com/105489642/235911696-cfe011e0-c86e-4ccd-9f2f-9dd5bb53a86a.png">
 
-Add Detail Position | Information Employee
-:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168793107-6147c2be-65e7-433b-a1b6-b217ca5895d2.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168793168-f50bab35-35e0-4147-92b3-31c57cfbf171.jpg">
+Print Screening Tab 1 | Print Screening Tab 2 | Print Screening Tab 3
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/105489642/235913935-5f407a9f-03d4-40cb-9660-6905fa0d998e.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235913945-39324501-1202-4c47-a08e-f9d1a867a04f.jpg"> | <img src="https://user-images.githubusercontent.com/105489642/235913963-0de8621a-a719-4204-b161-c725ed674469.jpg"> 
 
-<h3>Access Setup&#x1F53D;</h3>
-
-Setup Access | Setup Access 2
-:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168778712-88e95fec-e0ea-4b4e-bbfa-70065e5ae706.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168779130-d9194e75-569c-4463-b780-6c8303a281e9.jpg">
+PDF Export using DomPDF Preview &#x1F53D;
+[Klinik Web - Screening.pdf](https://github.com/suharyadi2112/clinic/files/11382286/Klinik.Web.-.Screening.pdf)
 
 and much more..
