@@ -8,7 +8,7 @@
     #footer { position: fixed; left: -30px; bottom: -140px; right: -30px; height: 120px; }
     #footer .page:after { content: counter(page, upper-roman);}
   </style>
-  <title>Osmaro</title>
+  <title>Klinik Web</title>
 <body>
   <div id="header">
     <img src="{{ public_path('images/logo_report/header_baru.PNG') }}" style="width:100%;">

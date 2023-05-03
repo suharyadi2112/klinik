@@ -151,7 +151,7 @@
                           <div class="col-md-4 col-12 mb-1">
                             <label for="place of exam">Place of exam</label>
                               <div class="position-relative has-icon-left">
-                                  <input type="text" value="Laboratorium Klinik Osmaro" name="place_of_exam" class="form-control" placeholder="Place of exam" readonly>
+                                  <input type="text" value="Laboratorium Klinik Web" name="place_of_exam" class="form-control" placeholder="Place of exam" readonly>
                                   <div class="form-control-position">
                                       <i class="bx bx-home"></i>
                                   </div>
