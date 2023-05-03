@@ -21,6 +21,11 @@
 
 [![MySql](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
+
+# Other
+
+[![Sentry](https://img.shields.io/badge/Sentry-black?style=for-the-badge&logo=Sentry&logoColor=#362D59)
+
 # Description
 
 Cooperation between the company's clinics and outside clinics or third parties is a form of mutually beneficial collaboration to provide better health services for company employees or their families.
