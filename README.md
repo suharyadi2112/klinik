@@ -87,9 +87,13 @@ Dashboard Registration | Add Registration with action
 :-------------------------:|:-------------------------:
 <img src="https://user-images.githubusercontent.com/105489642/235907293-78d6395d-5e10-419f-9dc9-f821d0094f42.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235907538-6f0b91b0-3ae3-45aa-948b-46d09328417e.jpg">
 
-Finish Data | Add Data
+Pick Patient | Data Detail Registration
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168775090-b0a3cf0c-7645-429b-ac56-41c50c3445fc.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168775155-2709ef00-3ba2-418c-be2a-b9815d04db52.jpg">
+<img src="https://user-images.githubusercontent.com/105489642/235909219-4d8de501-27ca-4834-8ef2-b1f2f65b39e3.png">  |  <img src="https://user-images.githubusercontent.com/105489642/235908640-cfe39c15-a625-4891-9eea-80f6ce4c26c8.jpg">
+
+Confirm Status | Send Request Check Up
+:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/105489642/235909364-a17f7da0-9844-4045-b1cc-a9f2de199418.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235908678-ffbbad77-7c4d-4c8e-a2d3-15ef1bd5eaba.png">
 
 <h3>Surat Undangan Tugas Akhir/Magang&#x1F53D;</h3>
 
