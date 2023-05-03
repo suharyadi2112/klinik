@@ -71,21 +71,21 @@ Using https://themeforest.net/user/pixinvent as template.
 
 # Some Screenshots
 
-<h3>Cuti Pegawai (Leave of Absence)&#x1F53D;</h3>
+<h3>Klinik Web &#x1F53D;</h3>
 
-Dashboard Cuti             |  Add Period Cuti
+Main Dashboard             | 
+:-------------------------:|
+<img src="https://user-images.githubusercontent.com/105489642/235905374-6bb00859-24c7-435f-bdca-1c1dc81a7693.jpg"> |
+
+Dashboard Patient           |  Add Patient
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168763205-3b9c7958-bc9a-45c4-a81f-b9214af36824.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168764589-3092f911-0423-4377-a4dd-a143f8c4ed2a.jpg">
+<img src="https://user-images.githubusercontent.com/105489642/235906459-069c40d8-3f5b-40fd-8e77-8a8a7805f6f5.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235906530-127e0eca-be73-4f98-8d47-7c09adfcb456.jpg">
 
-Add Cuti             |  Add Employee in period
+<h3>Registration&#x1F53D;</h3>
+
+Dashboard Registration | Add Registration with action
 :-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168767143-5f529ce0-18d0-43d9-803a-f73581550b44.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168767632-65a2294b-4963-4fc4-911a-2bc313277741.jpg">
-
-<h3>Honorarium&#x1F53D;</h3>
-
-Dashboard Honorarium (New Data) | Waiting Data (On Progress)
-:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/105489642/168768820-b0dfda05-9742-449c-ae23-cd7cdebf0223.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/168769420-8ed4ff94-6189-4d2b-99a8-e286d8a12760.jpg">
+<img src="https://user-images.githubusercontent.com/105489642/235907293-78d6395d-5e10-419f-9dc9-f821d0094f42.jpg">  |  <img src="https://user-images.githubusercontent.com/105489642/235907538-6f0b91b0-3ae3-45aa-948b-46d09328417e.jpg">
 
 Finish Data | Add Data
 :-------------------------:|:-------------------------:
