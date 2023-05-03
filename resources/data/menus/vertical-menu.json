@@ -5,7 +5,7 @@
       "name": "Dashboard",
       "slug": "dashboard",
       "icon": "desktop",
-      "tag": "2",
+      "tag": "",
       "tagcustom": "badge badge-light-danger badge-pill badge-round 50"
     },
 
