@@ -26,6 +26,11 @@
 
 [![Sentry](https://img.shields.io/badge/Sentry-black?style=for-the-badge&logo=Sentry&logoColor=#362D59)](https://sentry.io/about/)
 
+<ol>
+  <li>SweetAlert2 https://sweetalert2.github.io/</li>
+</ol> 
+
+
 # Description
 
 Cooperation between the company's clinics and outside clinics or third parties is a form of mutually beneficial collaboration to provide better health services for company employees or their families.
