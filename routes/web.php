@@ -25,6 +25,8 @@ use App\Http\Controllers\ManageGender\ManageGender;
 use App\Http\Controllers\ManageNationality\ManageNationality;
 use App\Http\Controllers\ManageMStatus\ManageMStatus;
 use App\Http\Controllers\Laboratorium\ReportScreening;
+use App\Http\Controllers\ManageMail\SendEmailController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -226,6 +228,8 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 
 
 });
+
+Route::get('/tesmail', [SendEmailController::class, 'index'])->name('TesMail');
 
 // locale Route
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('language');
