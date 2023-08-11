@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
- <title>Testing Kirim Email</title>
-</head>
-<body>
- 
- <h1>Judul Email</h1>
- <p>Deskripsi Email</p>
- 
-</body>
+  <head>
+   <title>Test Mail</title>
+  </head>
+  <body>
+
+   <p>Body Email</p>
+
+  </body>
 </html> 

@@ -229,7 +229,7 @@ Route::group(['middleware' => 'auth'], function(){//akses untuk super-admin dan 
 
 });
 
-Route::get('/tesmail', [SendEmailController::class, 'index'])->name('TesMail');
+Route::get('/testmail', [SendEmailController::class, 'index']);
 
 // locale Route
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('language');
