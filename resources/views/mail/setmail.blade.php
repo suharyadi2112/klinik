@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-   <title>Test Mail</title>
+   <title>Example Email</title>
   </head>
   <body>
 
-   <p>Body Email</p>
+   <p>AWS SES Configuration: Setting Up Email Delivery in Laravel</p>
 
   </body>
 </html> 
