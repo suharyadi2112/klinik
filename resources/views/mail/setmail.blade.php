@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
- <title>Testing Kirim Email</title>
-</head>
-<body>
- 
- <h1>Judul Email</h1>
- <p>Deskripsi Email</p>
- 
-</body>
+  <head>
+   <title>Example Email</title>
+  </head>
+  <body>
+
+   <p>AWS SES Configuration: Setting Up Email Delivery in Laravel</p>
+
+  </body>
 </html> 
