@@ -5,15 +5,27 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Mail;
 use App\Mail\NotifyMail;
+use Illuminate\Support\Facades\DB;
 
 class SendEmailController extends Controller
 {
-    public function index() {
-          Mail::to('yadisuhar05@gmail.com')->send(new NotifyMail());
+  public function index($id) {
+      try {
+
+          //get mail
+          $resultMail = DB::table('pasien')->select('pasien.pasemail')->join('pendaftaran', 'pasien.pasid','=','pendaftaran.penpasid')->where('pendaftaran.penid', '=', $id)->first();
+
+          Mail::to($resultMail->pasemail)->send(new NotifyMail($id));
+
           if (Mail::failures()) {
-               return response()->json(['msg' => 'Fail'], 500);
+            return response()->json(['code' => '1', 'msg' => 'Fail'], 500);
           }else{
-               return response()->json(['msg' => 'Success'], 200);
+            return response()->json(['code' => '2', 'msg' => 'Success'], 200);
           }
-     }
+
+      }catch (\Throwable $e) {
+          return response()->json(['code' => '3', 'msg' => $e->getMessage()], 500);
+      }
+
+  }
 }
