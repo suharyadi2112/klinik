@@ -17,6 +17,8 @@ use App\Models\TypeOfBilling;
 use Spatie\Permission\Models\Role;
 
 use App\Helpers\Helper as HelperLog;
+use App\Http\Controllers\ManageMail\SendEmailController; //get class dari email
+use App\Jobs\SendingEmail;//job mail
 
 class ProcessTransaction extends Controller
 {
@@ -131,6 +133,13 @@ class ProcessTransaction extends Controller
                 }elseif($status == 'request'){
                   // update status untuk status request
                   $affected = DB::table('pendaftaran')->where('penid', $req->pendaftaran_id)->update(['status_request' => $var,'ket_request' => $req->keterangan]);
+
+                  if ($affected) { //send mail
+                    SendingEmail::dispatch($req->pendaftaran_id);//id pendaftaran
+
+                    HelperLog::addToLog('Send Mail Request Status', json_encode(["id user" => auth()->user()->id]));
+                  }
+
                 }else{
                   return response()->json(['code' => '1', 'fail' => 'Something wrong with server !'], 200);
                 }
