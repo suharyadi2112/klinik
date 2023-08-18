@@ -41,6 +41,8 @@
                 	<th>Reference Date</th>
                 	<th>Patient Name</th>
                 	<th>Partner</th>
+                  <th>Status Result</th>
+                  <th>Status Screening</th>
                 	<th style="text-align: center;"><i class="bx bx-cog"></i></th>
             	</tr>
             </thead>
@@ -172,12 +174,14 @@ function format ( d ) {
 		        {data: 'pentglrujukan', name: 'pentglrujukan'},
 		        {data: 'pasnama', name: 'pasnama'},
 		        {data: 'pennama', name: 'pennama'},
+            {data: 'statresult', name: 'statresult'},
+            {data: 'statscreening', name: 'statscreening'},
 		        {data: 'action', name: 'action'},
 		    ],
 		    createdRow:function(row,data,index){
 		    	$('td',row).eq(1).attr("nowrap","nowrap");
 		    	$('td',row).eq(5).attr("nowrap","nowrap");
-		    	$('td',row).eq(5).css("text-align","center");
+		    	$('td',row).eq(7).css("text-align","center");
 			}
 		});
 

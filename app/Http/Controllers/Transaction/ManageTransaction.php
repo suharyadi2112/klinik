@@ -364,7 +364,65 @@ class ManageTransaction extends Controller
                     $actionBtnn= $this->getlisttindakankeluarwithrelasi($row->penid);
                     return ['data' => $actionBtnn];
                 })
-                ->rawColumns(['action'])
+                ->addColumn('statresult', function($row){
+
+                  $tndkKlrResult = $this->TndkKlr($row->penid)->count();//cek total result lab
+                  $totResult = $this->TotalResult($row->penid)->count();//cek total result  number lab
+
+                  if ($totResult < $tndkKlrResult) {
+                    return '<span class="badge badge-light-warning" style="width:120px;">Not Yet ('.$totResult.'/'.$tndkKlrResult.')</span>';
+                  }else{
+                    return '<span class="badge badge-light-success" style="width:120px;">Done ('.$totResult.'/'.$tndkKlrResult.')</span>';
+                  }
+
+
+                })
+                ->addColumn('statscreening', function($row){
+
+                  $scren = $this->GetScrReassessment($row->penid);//get screening data
+
+                  $tble = '';
+                  $tble .= '<table>
+                              <thead>
+                                <tr>
+                                  <th>Page 1</th>
+                                  <th>Page 2</th>
+                                  <th>Page 3</th>
+                                </tr>
+                              </thead>
+                              <tbody>';
+                  if ($scren) {
+                    if ($scren->status_page_one == '1' || $scren->status_page_two == '1' || $scren->status_page_three == '1') {
+                      $tble .=  '<tr>';
+
+                                if ($scren->status_page_one == '1') {
+                      $tble .=  '<td title="Reassesment health" style="text-align:center;"><i class="bx bx-check-circle"></i></td>';
+                                }else{
+                      $tble .=  '<td title="Reassesment health" style="text-align:center;"><i class="bx bxs-error-circle"></i></td>';
+                                }
+                                if ($scren->status_page_two == '1') {
+                      $tble .= '<td title="Health Screening" style="text-align:center;"><i class="bx bx-check-circle"></i></td>';
+                                }else{
+                      $tble .= '<td title="Health Screening" style="text-align:center;"><i class="bx bxs-error-circle"></i></td>';
+                                }
+                                if ($scren->status_page_three == '1') {
+                      $tble .=   '<td title="Health Screening 2" style="text-align:center;"><i class="bx bx-check-circle"></i></td>';
+                                }else{
+                      $tble .=  '<td title="Health Screening 2" style="text-align:center;"><i class="bx bxs-error-circle"></i></td>';
+                                }
+
+                      $tble .=  '</tr>';
+                    }
+                  }else{
+                    $tble .=  '<tr><td colspan="3">Not Yet</td></tr>';
+
+                  }
+                    $tble .=    '</tbody>
+                              </table>';
+
+                  return $tble;
+                })
+                ->rawColumns(['action','statresult','statscreening'])
                 ->make(true);
         }
 
@@ -533,6 +591,13 @@ class ManageTransaction extends Controller
         }else{
             return "";
         }
+
+    }
+
+    protected function TotalResult($idPen){
+
+      $ress = DB::table('result')->where('resultpenid','=',$idPen)->get();
+      return $ress;
 
     }
 
