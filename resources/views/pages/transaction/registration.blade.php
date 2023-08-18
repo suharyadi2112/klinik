@@ -18,6 +18,31 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/pages/app-users.css')}}">
 @endsection
 @section('content')
+
+<script
+  src="https://browser.sentry-cdn.com/7.64.0/bundle.replay.min.js"
+  integrity="sha384-eIBhmVs6phxABM7+IIv3ns4W+ShqowNbNrv8gOqCw8sqxfvNjsA5M9c64D5Oobcv"
+  crossorigin="anonymous"
+></script>
+
+<script>
+  const replay = new Sentry.Replay();
+  Sentry.init({
+    dsn: "https://8a8ac884b917445aa2158e67b5fca295@o4504304479109120.ingest.sentry.io/4504304484548608",
+
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 0,
+
+    // this assumes your build process replaces `process.env.npm_package_version` with a value
+    integrations: [
+      // If you use a bundle with session replay enabled, add the SessionReplay integration
+     replay
+    ],
+
+  });
+  replay.start();
+</script>
+
 <!-- registration list start -->
 @if(auth()->user()->can('view registration')/* && $some_other_condition*/)
 <section class="registration-list-wrapper">

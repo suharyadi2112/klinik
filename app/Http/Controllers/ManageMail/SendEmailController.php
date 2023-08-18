@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Mail;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\DB;
+use Sentry;
 
 class SendEmailController extends Controller
 {
@@ -24,6 +25,7 @@ class SendEmailController extends Controller
           }
 
       }catch (\Throwable $e) {
+          Sentry::captureException($e); //set sentry queue
           return response()->json(['code' => '3', 'msg' => $e->getMessage()], 500);
       }
 
